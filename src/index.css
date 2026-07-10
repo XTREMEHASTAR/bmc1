@@ -1,0 +1,221 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300..800&family=Plus+Jakarta+Sans:wght@400..800&family=JetBrains+Mono:wght@400..700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Plus Jakarta Sans", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  /* Primary Scale (#003F8A Base) */
+  --color-primary-50: #e5edfa;
+  --color-primary-100: #c2d5f2;
+  --color-primary-200: #99bbe7;
+  --color-primary-300: #70a0da;
+  --color-primary-400: #4b85cd;
+  --color-primary: #003f8a;
+  --color-primary-600: #00377d;
+  --color-primary-700: #002f6f;
+  --color-primary-800: #00255c;
+  --color-primary-900: #001a45;
+
+  /* Accent Scale (#FF9933 Base) */
+  --color-accent-50: #fff5eb;
+  --color-accent-100: #ffe0bd;
+  --color-accent-200: #ffc58f;
+  --color-accent-300: #ffa961;
+  --color-accent-400: #ff913d;
+  --color-accent: #ff9933;
+  --color-accent-600: #e07d1e;
+  --color-accent-700: #c2630a;
+  --color-accent-800: #a34e00;
+  --color-accent-900: #853c00;
+
+  /* Theme Containers */
+  --color-primary-container: var(--color-primary-100);
+  --color-secondary: var(--color-primary-600);
+  --color-secondary-container: var(--color-primary-50);
+  --color-background-custom: #f7fafd;
+  --color-surface-custom: #ffffff;
+  --color-success-custom: #10b981;
+  --color-error-custom: #ef4444;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: #f7fafd;
+  color: #181c1e;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Custom scrollbar hiding */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* HIGH-CONTRAST NIGHT MODE COLOR SCHEME OVERRIDES */
+.dark {
+  color-scheme: dark;
+}
+
+/* Backgrounds */
+.dark .bg-white {
+  background-color: #0f172a !important; /* Slate 900 for high-contrast deep base */
+}
+
+.dark .bg-\[\#f7fafd\] {
+  background-color: #020617 !important; /* Slate 950 for background */
+}
+
+.dark .bg-gray-50 {
+  background-color: #1e293b !important; /* Slate 800 */
+}
+
+.dark .bg-gray-50\/50 {
+  background-color: rgba(30, 41, 59, 0.5) !important;
+}
+
+.dark .bg-blue-50 {
+  background-color: rgba(59, 130, 246, 0.12) !important;
+}
+
+.dark .bg-blue-50\/30 {
+  background-color: rgba(59, 130, 246, 0.08) !important;
+}
+
+.dark .bg-\[\#002068\] {
+  background-color: #1e3a8a !important; /* Dark Blue */
+}
+
+.dark .bg-\[\#002068\]\/5 {
+  background-color: rgba(96, 165, 250, 0.15) !important;
+}
+
+.dark .bg-green-50 {
+  background-color: rgba(16, 185, 129, 0.12) !important;
+}
+
+.dark .bg-red-50 {
+  background-color: rgba(239, 68, 68, 0.12) !important;
+}
+
+.dark .bg-amber-50 {
+  background-color: rgba(245, 158, 11, 0.12) !important;
+}
+
+/* Borders & Dividers */
+.dark .border-gray-100 {
+  border-color: #1e293b !important; /* Slate 800 */
+}
+
+.dark .border-gray-200 {
+  border-color: #334155 !important; /* Slate 700 */
+}
+
+.dark .border-blue-100 {
+  border-color: rgba(59, 130, 246, 0.25) !important;
+}
+
+.dark .divide-gray-100 > * + * {
+  border-color: #1e293b !important;
+}
+
+/* Typography Overrides */
+.dark .text-gray-900 {
+  color: #f8fafc !important; /* Slate 50 */
+}
+
+.dark .text-gray-800 {
+  color: #f1f5f9 !important; /* Slate 100 */
+}
+
+.dark .text-gray-700 {
+  color: #e2e8f0 !important; /* Slate 200 */
+}
+
+.dark .text-gray-600 {
+  color: #cbd5e1 !important; /* Slate 300 */
+}
+
+.dark .text-gray-500 {
+  color: #94a3b8 !important; /* Slate 400 */
+}
+
+.dark .text-gray-400 {
+  color: #64748b !important; /* Slate 500 */
+}
+
+.dark .text-\[\#002068\] {
+  color: #3b82f6 !important; /* Sky Blue accent */
+}
+
+.dark .text-\[\#0050cc\] {
+  color: #60a5fa !important; /* Lighter Blue */
+}
+
+.dark .text-\[\#ba1a1a\] {
+  color: #fca5a5 !important; /* Light Red */
+}
+
+.dark .text-green-700 {
+  color: #34d399 !important;
+}
+
+.dark .text-green-600 {
+  color: #34d399 !important;
+}
+
+.dark .text-amber-600 {
+  color: #fbbf24 !important;
+}
+
+.dark .text-red-900 {
+  color: #fca5a5 !important;
+}
+
+.dark .text-red-800 {
+  color: #fca5a5 !important;
+}
+
+/* Inputs & Form Elements */
+.dark input, .dark textarea, .dark select {
+  background-color: #1e293b !important;
+  color: #f8fafc !important;
+  border-color: #334155 !important;
+}
+
+.dark input::placeholder, .dark textarea::placeholder {
+  color: #64748b !important;
+}
+
+/* Hover States */
+.dark .hover\:bg-gray-50:hover {
+  background-color: #1e293b !important;
+}
+
+.dark .hover\:bg-blue-50\/30:hover {
+  background-color: rgba(59, 130, 246, 0.12) !important;
+}
+
+.dark .hover\:bg-blue-50\/50:hover {
+  background-color: rgba(59, 130, 246, 0.18) !important;
+}
+
+.dark .hover\:bg-red-50\/50:hover {
+  background-color: rgba(239, 68, 68, 0.1) !important;
+}
+
+.dark .hover\:bg-gray-100:hover {
+  background-color: #334155 !important;
+}
+
+/* Modals & Dialogs overlays */
+.dark .bg-black\/50, .dark .bg-black\/60 {
+  background-color: rgba(0, 0, 0, 0.75) !important;
+}
+
+

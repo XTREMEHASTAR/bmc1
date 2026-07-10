@@ -1,0 +1,10 @@
+{
+  "name": "MCGM Digital Hospital",
+  "description": "A unified digital health portal for booking appointments, viewing medical history with AI-powered diagnostics, tracking live queue positions, wallet-based checkout, and instant emergency dispatch.",
+  "requestFramePermissions": [
+    "geolocation"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
