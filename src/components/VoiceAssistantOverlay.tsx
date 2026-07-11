@@ -4,7 +4,8 @@ import {
   Mic, MicOff, Settings, X, Volume2, VolumeX, Shield, Radio, Check, 
   Wifi, WifiOff, FileText, Activity, Layers, MessageSquare, AlertCircle, Copy
 } from 'lucide-react';
-import { VoiceContextManager, VoiceIntentRouter } from '../voice-os/VoiceCommandEngine';
+import { VoiceContextManager } from '../voice-os/VoiceCommandEngine';
+import { AgentOrchestrator } from '../voice-os/agents/AgentOrchestrator';
 
 interface VoiceAssistantOverlayProps {
   currentPortal: string;
@@ -15,6 +16,8 @@ export default function VoiceAssistantOverlay({ currentPortal, isDarkMode }: Voi
   // Config & Settings
   const [isOpen, setIsOpenState] = useState(false);
   const setIsOpen = (val: boolean) => { setIsOpenState(val); isOpenRef.current = val; };
+  const [isHoldingKey, setIsHoldingKey] = useState(false);
+  const isHoldingKeyRef = useRef(false);
   const [isListening, setIsListening] = useState(false);
   const [wakeWord, setWakeWordState] = useState('Hey Arogya');
   const setWakeWord = (val: string) => { setWakeWordState(val); wakeWordRef.current = val; };
@@ -257,8 +260,6 @@ export default function VoiceAssistantOverlay({ currentPortal, isDarkMode }: Voi
 
   // Core Command Action execution (called directly or after wake word check)
   const executeCommandAction = (text: string) => {
-    const raw = text.toLowerCase().trim();
-
     // Trigger local offline buffer if simulated offline
     if (isOfflineMode) {
       const newOfflineItem = {
@@ -273,13 +274,14 @@ export default function VoiceAssistantOverlay({ currentPortal, isDarkMode }: Voi
       return;
     }
 
-    const routeResult = VoiceIntentRouter.route(text);
-    if (routeResult.success) {
+    // Route through multi-agent orchestrator
+    const { response } = AgentOrchestrator.process(text);
+    if (response.success) {
       setFeedbackType('success');
-      setResponseMessage(routeResult.message);
+      setResponseMessage(response.message);
 
       // Handle specific intents to update local state drafts
-      if (routeResult.intent === 'GENERATE_SOAP') {
+      if (response.intent === 'GENERATE_SOAP') {
         setSoapDraft({
           subjective: 'Patient reports persistent mechanical knee joint stiffness, exacerbated during deep flexion. Relieved on rest.',
           objective: 'Tenderness over the medial tibial plateau. Mild crepitus. No collateral instability or joint effusion.',
@@ -287,7 +289,7 @@ export default function VoiceAssistantOverlay({ currentPortal, isDarkMode }: Voi
           plan: 'Start Quadriceps isometric rehabilitation, prescribe Tab Aceclofenac 100mg twice daily with PPI shield, follow up 3 weeks.',
           prescription: 'Tab. Aceclofenac 100mg (1-0-1) 5 days, Tab. Pantoprazole 40mg (1-0-0) 5 days.'
         });
-      } else if (routeResult.intent === 'GENERATE_HANDOVER') {
+      } else if (response.intent === 'GENERATE_HANDOVER') {
         setHandoverDraft(
           `Orthopedic Ward Unit 4B - Shift Handover Report\n` +
           `Date: ${new Date().toLocaleDateString()} | Nurse: Sister Sneha Shinde\n\n` +
@@ -300,60 +302,12 @@ export default function VoiceAssistantOverlay({ currentPortal, isDarkMode }: Voi
       }
     } else {
       setFeedbackType('info');
-      setResponseMessage(`Heard: "${text}". Querying Arogya Clinical Agent...`);
-      speakResponse(`I heard ${text}. Processing.`);
+      setResponseMessage(response.message);
+      speakResponse(response.message);
     }
   };
 
-  // ── FUZZY MATCHING UTILITIES ────────────────────────────────────────────
-  const KNOWN_KEYWORDS = [
-    'appointments', 'queue', 'prescribe', 'discharge', 'sign', 'next', 'skip',
-    'patient', 'patients', 'vitals', 'handover', 'scribe', 'start', 'stop',
-    'generate', 'soap', 'radiology', 'pharmacy', 'emergency', 'laboratory',
-    'dashboard', 'consultation', 'messages', 'help', 'logout', 'dark', 'light',
-    'nurse', 'doctor', 'arogya', 'computer', 'medication', 'blood', 'pressure',
-    'pulse', 'temperature', 'oxygen', 'transfer', 'certificate', 'search',
-    'find', 'book', 'consult', 'abha', 'icu', 'surgery', 'assistant', 'today',
-    'open', 'close', 'show', 'tab', 'record', 'save', 'confirm', 'cancel',
-    'order', 'lab', 'report', 'ward', 'bed', 'alert', 'sos', 'code'
-  ];
-
-  const bigramSimilarity = (a: string, b: string): number => {
-    if (a === b) return 1;
-    if (a.length < 2 || b.length < 2) return a[0] === b[0] ? 0.5 : 0;
-    const getBigrams = (s: string) => {
-      const set = new Set<string>();
-      for (let i = 0; i < s.length - 1; i++) set.add(s.slice(i, i + 2));
-      return set;
-    };
-    const biA = getBigrams(a.toLowerCase());
-    const biB = getBigrams(b.toLowerCase());
-    let intersect = 0;
-    biA.forEach(bg => { if (biB.has(bg)) intersect++; });
-    return (2 * intersect) / (biA.size + biB.size);
-  };
-
-  const fuzzyCorrect = (text: string): { corrected: string; wasChanged: boolean } => {
-    const words = text.split(' ');
-    let wasChanged = false;
-    const correctedWords = words.map(word => {
-      if (word.length < 3) return word;
-      const clean = word.toLowerCase().replace(/[^a-z]/g, '');
-      if (KNOWN_KEYWORDS.includes(clean)) return word; // exact match, skip
-      let bestScore = 0;
-      let bestKeyword = '';
-      for (const kw of KNOWN_KEYWORDS) {
-        const score = bigramSimilarity(clean, kw);
-        if (score > bestScore) { bestScore = score; bestKeyword = kw; }
-      }
-      if (bestScore >= 0.6 && bestKeyword) {
-        wasChanged = true;
-        return bestKeyword;
-      }
-      return word;
-    });
-    return { corrected: correctedWords.join(' '), wasChanged };
-  };
+  // Fuzzy matching is now handled by SpeechNormalizer in the voice-os engine layer
 
   // Auto-scroll chat to bottom
   useEffect(() => {
@@ -390,9 +344,9 @@ export default function VoiceAssistantOverlay({ currentPortal, isDarkMode }: Voi
     portalNow: string,
     fromTyping = false
   ) => {
-    // Run fuzzy correction on raw text
-    const { corrected, wasChanged } = fuzzyCorrect(text);
-    const effectiveText = wasChanged ? corrected : text;
+    // Run through multi-agent orchestrator (handles fuzzy correction internally)
+    const { response, normalized, wasChanged } = AgentOrchestrator.process(text);
+    const effectiveText = normalized || text;
 
     // Push user bubble into chat history
     const ts = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -443,12 +397,22 @@ export default function VoiceAssistantOverlay({ currentPortal, isDarkMode }: Voi
       return;
     }
 
-    // Panel is open — route directly
-    const routeResult = VoiceIntentRouter.route(effectiveText);
-    if (routeResult.success) {
-      pushSystemMsg(routeResult.message, 'success');
-      speakResponse(routeResult.message);
-      if (routeResult.intent === 'GENERATE_SOAP') {
+    // Panel is open — use the already-computed orchestrator response
+    if (response.success && response.intent !== 'THROTTLED') {
+      // Map agent type to feedback styling
+      const feedbackMap: Record<string, 'success' | 'info'> = {
+        voice_command: 'success',
+        documentation: 'success',
+        search: 'success',
+        analytics: 'success',
+        conversation: 'info',
+        orchestrator: 'info',
+      };
+      const fbType = feedbackMap[response.agent] || 'success';
+      pushSystemMsg(response.message, fbType);
+      speakResponse(response.message);
+
+      if (response.intent === 'GENERATE_SOAP') {
         setSoapDraft({
           subjective: 'Patient reports persistent mechanical knee joint stiffness, exacerbated during deep flexion. Relieved on rest.',
           objective: 'Tenderness over the medial tibial plateau. Mild crepitus. No collateral instability or joint effusion.',
@@ -456,7 +420,7 @@ export default function VoiceAssistantOverlay({ currentPortal, isDarkMode }: Voi
           plan: 'Start Quadriceps isometric rehabilitation, prescribe Tab Aceclofenac 100mg twice daily with PPI shield, follow up 3 weeks.',
           prescription: 'Tab. Aceclofenac 100mg (1-0-1) 5 days, Tab. Pantoprazole 40mg (1-0-0) 5 days.'
         });
-      } else if (routeResult.intent === 'GENERATE_HANDOVER') {
+      } else if (response.intent === 'GENERATE_HANDOVER') {
         setHandoverDraft(
           `Orthopedic Ward Unit 4B - Shift Handover Report\n` +
           `Date: ${new Date().toLocaleDateString()} | Nurse: Sister Sneha Shinde\n\n` +
@@ -470,8 +434,9 @@ export default function VoiceAssistantOverlay({ currentPortal, isDarkMode }: Voi
       return;
     }
 
-    pushSystemMsg(`Heard: "${effectiveText}". Querying Arogya Clinical Agent...`, 'info');
-    speakResponse(`I heard ${effectiveText}. Processing.`);
+    // Unrecognized command — show the agent's response (never chat)
+    pushSystemMsg(response.message, 'info');
+    speakResponse(response.message);
   };
 
   // Legacy wrapper used by simulateVoiceInput and manual form
@@ -505,17 +470,77 @@ export default function VoiceAssistantOverlay({ currentPortal, isDarkMode }: Voi
     }
   };
 
-  // Keyboard shortcut listener for Siri trigger (Spacebar when overlay is open, Ctrl+Space globally)
+  // Keyboard shortcut listener for Siri trigger (Ctrl+Space globally) and Push-to-Talk (holding Space or V)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      // 1. Ctrl + Space to toggle overlay globally
       if ((e.ctrlKey || e.metaKey) && e.code === 'Space') {
         e.preventDefault();
         setIsOpen(!isOpenRef.current);
+        return;
+      }
+
+      // 2. Push-to-Talk via Space or 'v' (when not focused on inputs)
+      const isInput = 
+        e.target instanceof HTMLInputElement || 
+        e.target instanceof HTMLTextAreaElement || 
+        e.target instanceof HTMLSelectElement ||
+        (e.target as HTMLElement).isContentEditable;
+
+      if (isInput) return;
+
+      if (e.code === 'Space' || e.key.toLowerCase() === 'v') {
+        // Prevent default spacebar scrolling behavior
+        if (e.code === 'Space') {
+          e.preventDefault();
+        }
+
+        if (!isHoldingKeyRef.current) {
+          isHoldingKeyRef.current = true;
+          setIsHoldingKey(true);
+          
+          // Open overlay if closed
+          if (!isOpenRef.current) {
+            setIsOpen(true);
+          }
+
+          // Start listening
+          setTranscript('');
+          setInterimTranscript('');
+          isExplicitlyStopped.current = false;
+          if (speechRecognizerRef.current) {
+            try {
+              speechRecognizerRef.current.start();
+            } catch (_) {}
+          } else {
+            requestMicAndStart();
+          }
+        }
       }
     };
+
+    const handleKeyUp = (e: KeyboardEvent) => {
+      if (e.code === 'Space' || e.key.toLowerCase() === 'v') {
+        if (isHoldingKeyRef.current) {
+          isHoldingKeyRef.current = false;
+          setIsHoldingKey(false);
+
+          // Stop listening and process captured audio
+          isExplicitlyStopped.current = true;
+          try {
+            speechRecognizerRef.current?.stop();
+          } catch (_) {}
+        }
+      }
+    };
+
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+    window.addEventListener('keyup', handleKeyUp);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
+    };
+  }, [language]);
 
   return (
     <>
@@ -593,11 +618,13 @@ export default function VoiceAssistantOverlay({ currentPortal, isDarkMode }: Voi
                     <p className="text-[11px] text-indigo-300 italic truncate">🎙 {interimTranscript}</p>
                   ) : (
                     <p className="text-[10px] text-slate-500 font-medium">
-                      {isListening
+                      {isHoldingKey
+                        ? '🎙 Holding to talk... Release key to submit'
+                        : isListening
                         ? '● Listening...'
                         : micPermission === 'unknown'
                         ? 'Tap the orb below to enable mic'
-                        : `Say "${wakeWord}" to wake`}
+                        : `Say "${wakeWord}" or hold Spacebar`}
                     </p>
                   )}
                 </div>
@@ -853,10 +880,17 @@ export default function VoiceAssistantOverlay({ currentPortal, isDarkMode }: Voi
               )}
 
               {/* Help tip */}
-              <div className="text-[10px] text-gray-400 text-center italic border-t border-slate-800/10 dark:border-slate-800/60 pt-2 flex items-center justify-center space-x-1">
-                <span>Tip: Press</span>
-                <span className="bg-slate-800 px-1.5 py-0.5 rounded font-mono text-[9px] font-bold">Ctrl + Space</span>
-                <span>to toggle anytime.</span>
+              <div className="text-[10px] text-gray-400 text-center italic border-t border-slate-800/10 dark:border-slate-800/60 pt-2 flex flex-col items-center justify-center gap-1">
+                <div className="flex items-center justify-center space-x-1">
+                  <span>Hold</span>
+                  <span className="bg-slate-800 px-1.5 py-0.5 rounded font-mono text-[9px] font-bold text-indigo-400">Spacebar</span>
+                  <span>or</span>
+                  <span className="bg-slate-800 px-1.5 py-0.5 rounded font-mono text-[9px] font-bold text-indigo-400">V</span>
+                  <span>to speak & release to send.</span>
+                </div>
+                <div className="text-[9px] text-slate-500">
+                  Ctrl + Space to toggle assistant panel.
+                </div>
               </div>
             </motion.div>
           )}
