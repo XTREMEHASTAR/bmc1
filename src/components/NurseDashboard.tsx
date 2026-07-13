@@ -39,9 +39,12 @@ import {
   Heart,
   Droplet,
   PlusCircle,
-  FileText
+  FileText,
+  Car
 } from 'lucide-react';
 import { Patient, Appointment, HealthRecord, NotificationItem } from '../types';
+import { subscribeToRegistrations } from '../services/patients';
+import { EmergencyRegistration } from '../types/emergency';
 
 interface NurseDashboardProps {
   isDarkMode: boolean;
@@ -83,6 +86,16 @@ export default function NurseDashboard({
   notifications,
   setNotifications
 }: NurseDashboardProps) {
+  // Emergency OS sync state
+  const [emergencyRegistrations, setEmergencyRegistrations] = useState<EmergencyRegistration[]>([]);
+
+  useEffect(() => {
+    const unsubscribe = subscribeToRegistrations((data) => {
+      setEmergencyRegistrations(data);
+    });
+    return () => unsubscribe();
+  }, []);
+
   // Navigation
   const [activeTab, setActiveTab] = useState<'dashboard' | 'ward' | 'patients' | 'vitals' | 'medication' | 'orders' | 'tasks' | 'handover' | 'inventory' | 'messages' | 'settings'>('dashboard');
   const [lang, setLang] = useState<'en' | 'mr' | 'hi'>('en');
@@ -219,6 +232,40 @@ export default function NurseDashboard({
   ]);
 
   const activePatient = wardPatients.find(p => p.id === selectedPatientId) || wardPatients[0];
+
+  const admitEmergencyPatient = (reg: EmergencyRegistration, bedNo: string) => {
+    const newWardPatient: WardPatient = {
+      id: reg.patient?.id || `P-${Date.now()}`,
+      name: reg.patient?.name || 'Unknown Patient',
+      age: reg.patient?.age || 35,
+      gender: reg.patient?.gender || 'Male',
+      bedNo: bedNo,
+      roomNo: 'Room 6',
+      diagnosis: reg.chief_complaint || 'Emergency Intake',
+      priority: reg.triage?.category === 'RED' ? 'Emergency' : reg.triage?.category === 'YELLOW' ? 'Urgent' : 'Routine',
+      doctorName: 'Dr. Anil Patil',
+      allergies: [],
+      vitals: {
+        bp: reg.latest_vitals?.systolic_bp ? `${reg.latest_vitals.systolic_bp}/${reg.latest_vitals.diastolic_bp}` : '120/80',
+        pulse: reg.latest_vitals?.heart_rate || 80,
+        temp: reg.latest_vitals?.temperature || 98.6,
+        spo2: reg.latest_vitals?.spo2 || 98,
+        resp: reg.latest_vitals?.respiratory_rate || 16,
+        gcs: reg.triage?.gcs_total || 15,
+        pain: 0
+      },
+      medications: [],
+      tasks: [
+        { id: `t-intake-${Date.now()}`, title: 'Initial post-admission vitals check', due: 'Immediate', priority: 'High', completed: false }
+      ],
+      notes: reg.injury_mechanism || 'Admitted from Emergency SOS Intake.',
+      status: 'Occupied'
+    };
+
+    setWardPatients(prev => [...prev, newWardPatient]);
+    setSelectedPatientId(newWardPatient.id);
+    triggerToast('Patient Admitted', `${newWardPatient.name} assigned to ${bedNo}.`, 'success');
+  };
 
   // Inventory Levels state
   const [inventory, setInventory] = useState([
@@ -845,254 +892,598 @@ export default function NurseDashboard({
           
           {/* TAB 1: DASHBOARD VIEW */}
           {activeTab === 'dashboard' && (
-            <div className="space-y-6">
-              {/* Quick statistics row */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className={`p-4 rounded-2xl border transition-all ${isDarkMode ? 'bg-[#0f1524] border-slate-800' : 'bg-white border-gray-100 shadow-sm'}`}>
-                  <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Assigned Beds</p>
-                  <div className="flex items-baseline space-x-2 mt-1">
-                    <span className="text-2xl font-black text-emerald-500">4</span>
-                    <span className="text-xs text-gray-400">/ 10 Occupied</span>
-                  </div>
-                </div>
-
-                <div className={`p-4 rounded-2xl border transition-all ${isDarkMode ? 'bg-[#0f1524] border-slate-800' : 'bg-white border-gray-100 shadow-sm'}`}>
-                  <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Pending Meds</p>
-                  <div className="flex items-baseline space-x-2 mt-1">
-                    <span className="text-2xl font-black text-orange-500">3</span>
-                    <span className="text-xs text-gray-400">Doses Due Now</span>
-                  </div>
-                </div>
-
-                <div className={`p-4 rounded-2xl border transition-all ${isDarkMode ? 'bg-[#0f1524] border-slate-800' : 'bg-white border-gray-100 shadow-sm'}`}>
-                  <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Critical Alerts</p>
-                  <div className="flex items-baseline space-x-2 mt-1">
-                    <span className="text-2xl font-black text-red-500">1</span>
-                    <span className="text-xs text-gray-400">Active Warning</span>
-                  </div>
-                </div>
-
-                <div className={`p-4 rounded-2xl border transition-all ${isDarkMode ? 'bg-[#0f1524] border-slate-800' : 'bg-white border-gray-100 shadow-sm'}`}>
-                  <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Tasks Pending</p>
-                  <div className="flex items-baseline space-x-2 mt-1">
-                    <span className="text-2xl font-black text-blue-500">5</span>
-                    <span className="text-xs text-gray-400">In Shift Checklist</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Central Layout columns: Ward overview status + clinical notifications */}
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 xl:grid-cols-4 gap-6 items-start h-full pb-6">
+              
+              {/* Left / Middle Pane: Main Ward Status (3 cols on xl) */}
+              <div className="xl:col-span-3 space-y-6">
                 
-                {/* Ward Grid layout */}
-                <div className={`lg:col-span-2 p-5 rounded-3xl border ${isDarkMode ? 'bg-[#0f1524] border-slate-800' : 'bg-white border-gray-100 shadow-sm'} space-y-4`}>
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <h3 className="font-extrabold text-sm">Ward 4B Bed Grid View</h3>
-                      <p className="text-[11px] text-gray-400">Interactive live status monitor</p>
+                {/* Quick statistics row */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div className={`p-4 rounded-2xl border transition-all ${
+                    isDarkMode ? 'bg-[#0f1524] border-slate-800' : 'bg-white border-gray-150 shadow-sm'
+                  }`}>
+                    <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Assigned Beds</p>
+                    <div className="flex items-baseline space-x-2 mt-1">
+                      <span className="text-2xl font-black text-emerald-500">4</span>
+                      <span className="text-xs text-gray-400">/ 10 Occupied</span>
                     </div>
-                    <button 
-                      onClick={() => setActiveTab('ward')}
-                      className="text-xs font-bold text-emerald-500 hover:text-emerald-400 flex items-center space-x-1"
-                    >
-                      <span>Full layout view</span>
-                      <ChevronRight className="w-3.5 h-3.5" />
-                    </button>
                   </div>
 
-                  <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
-                    {wardPatients.map(wp => (
-                      <div
-                        key={wp.id}
-                        onClick={() => {
-                          setSelectedPatientId(wp.id);
-                          setActiveTab('patients');
-                        }}
-                        className={`p-4 rounded-2xl border cursor-pointer transition-all hover:scale-102 flex flex-col justify-between h-28 relative overflow-hidden ${
-                          selectedPatientId === wp.id
-                            ? 'bg-emerald-600/10 border-emerald-500'
-                            : wp.priority === 'Emergency'
-                            ? 'bg-red-650/10 border-red-500/30'
-                            : wp.priority === 'Urgent'
-                            ? 'bg-orange-500/10 border-orange-500/30'
-                            : isDarkMode
-                            ? 'bg-slate-900 border-slate-800'
-                            : 'bg-slate-50 border-gray-200'
-                        }`}
-                      >
-                        <div className="flex justify-between items-start">
-                          <span className="text-[10px] font-black text-gray-400">{wp.bedNo}</span>
-                          <span className={`w-2.5 h-2.5 rounded-full ${
-                            wp.priority === 'Emergency'
-                              ? 'bg-red-500 animate-ping'
-                              : wp.priority === 'Urgent'
-                              ? 'bg-orange-500'
-                              : 'bg-emerald-500'
-                          }`} />
-                        </div>
-                        <div>
-                          <h4 className="text-xs font-black truncate">{wp.name}</h4>
-                          <p className="text-[9px] text-gray-400 truncate">{wp.diagnosis}</p>
-                        </div>
-                        <div className="flex justify-between items-center mt-1">
-                          <span className="text-[9px] font-bold text-emerald-500">{wp.vitals.pulse} BPM</span>
-                          <span className="text-[9px] text-gray-400">{wp.vitals.spo2}% SpO2</span>
-                        </div>
-                      </div>
-                    ))}
-
-                    {/* Available Bed Placeholder */}
-                    <div className={`p-4 rounded-2xl border border-dashed flex flex-col items-center justify-center text-center h-28 ${
-                      isDarkMode ? 'border-slate-800 bg-slate-900/30' : 'border-gray-200 bg-gray-50/50'
-                    }`}>
-                      <Plus className="w-5 h-5 text-gray-500 mb-1" />
-                      <span className="text-[10px] font-black text-gray-400">Bed 405</span>
-                      <span className="text-[9px] text-emerald-500 font-bold">AVAILABLE</span>
+                  <div className={`p-4 rounded-2xl border transition-all ${
+                    isDarkMode ? 'bg-[#0f1524] border-slate-800' : 'bg-white border-gray-150 shadow-sm'
+                  }`}>
+                    <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Pending Meds</p>
+                    <div className="flex items-baseline space-x-2 mt-1">
+                      <span className="text-2xl font-black text-orange-500">3</span>
+                      <span className="text-xs text-gray-400">Doses Due Now</span>
                     </div>
+                  </div>
 
-                    {/* Cleaning Needed Placeholder */}
-                    <div className={`p-4 rounded-2xl border border-dashed flex flex-col items-center justify-center text-center h-28 ${
-                      isDarkMode ? 'border-slate-800 bg-slate-900/30' : 'border-gray-200 bg-gray-50/50'
-                    }`}>
-                      <RefreshCw className="w-5 h-5 text-amber-500 mb-1 animate-spin" />
-                      <span className="text-[10px] font-black text-gray-400">Bed 406</span>
-                      <span className="text-[9px] text-amber-500 font-bold">CLEANING</span>
+                  <div className={`p-4 rounded-2xl border transition-all ${
+                    isDarkMode ? 'bg-[#0f1524] border-slate-800' : 'bg-white border-gray-150 shadow-sm'
+                  }`}>
+                    <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Critical Alerts</p>
+                    <div className="flex items-baseline space-x-2 mt-1">
+                      <span className="text-2xl font-black text-red-500">1</span>
+                      <span className="text-xs text-gray-400">Active Warning</span>
+                    </div>
+                  </div>
+
+                  <div className={`p-4 rounded-2xl border transition-all ${
+                    isDarkMode ? 'bg-[#0f1524] border-slate-800' : 'bg-white border-gray-150 shadow-sm'
+                  }`}>
+                    <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Tasks Pending</p>
+                    <div className="flex items-baseline space-x-2 mt-1">
+                      <span className="text-2xl font-black text-blue-500">5</span>
+                      <span className="text-xs text-gray-400">In Shift Checklist</span>
                     </div>
                   </div>
                 </div>
 
-                {/* AI Assistant Sidebar Warnings */}
-                <div className={`p-5 rounded-3xl border ${isDarkMode ? 'bg-[#0f1524] border-slate-800' : 'bg-white border-gray-100 shadow-sm'} space-y-4`}>
-                  <div className="flex items-center space-x-2">
-                    <Flame className="w-5 h-5 text-emerald-500" />
-                    <div>
-                      <h3 className="font-extrabold text-sm">AI Clinical Assistant</h3>
-                      <p className="text-[10px] text-gray-400">Real-time telemetry scan</p>
-                    </div>
-                  </div>
-
-                  <div className="space-y-3">
-                    <div className="p-3.5 rounded-2xl bg-red-650/10 border border-red-500/20 text-xs space-y-1">
-                      <div className="flex justify-between items-center text-red-500 font-black text-[10px]">
-                        <span>DETERIORATION RISK ALERT</span>
-                        <AlertTriangle className="w-4 h-4" />
-                      </div>
-                      <p className="text-gray-300">Ramesh Joshi (Bed 403-ISO) has an elevated Early Warning Score (EWS: 5) due to high fever (101.2 F) and dipping oxygen levels (93% SpO2).</p>
-                      <button 
-                        onClick={() => {
-                          setSelectedPatientId('3');
-                          setActiveTab('vitals');
-                        }}
-                        className="text-[10px] font-black text-red-400 hover:text-red-300 mt-2 flex items-center space-x-1"
-                      >
-                        <span>Update Vitals Log</span>
-                        <ArrowRight className="w-3 h-3" />
-                      </button>
-                    </div>
-
-                    <div className="p-3.5 rounded-2xl bg-orange-500/10 border border-orange-500/20 text-xs space-y-1">
-                      <div className="flex justify-between items-center text-orange-500 font-black text-[10px]">
-                        <span>MEDICATION SCHEDULE REMINDER</span>
-                        <Clock className="w-4 h-4" />
-                      </div>
-                      <p className="text-gray-300">Inj. Tramadol 50mg due for Rahul Anil Patil (Bed 401) at 12:00 PM. Double Verification required due to recorded NSAID allergy warnings.</p>
-                      <button 
-                        onClick={() => {
-                          setSelectedPatientId('1');
-                          setActiveTab('medication');
-                        }}
-                        className="text-[10px] font-black text-orange-400 hover:text-orange-300 mt-2 flex items-center space-x-1"
-                      >
-                        <span>Open Med verification</span>
-                        <ArrowRight className="w-3 h-3" />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Down row: Shift handover checklist + communication widget */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                
-                {/* Active Ward Tasks checklist */}
-                <div className={`p-5 rounded-3xl border ${isDarkMode ? 'bg-[#0f1524] border-slate-800' : 'bg-white border-gray-100 shadow-sm'} space-y-4`}>
-                  <div className="flex justify-between items-center">
-                    <h3 className="font-extrabold text-sm">Shift Task Management</h3>
-                    <button 
-                      onClick={() => setActiveTab('tasks')}
-                      className="text-xs font-bold text-emerald-500 hover:text-emerald-400"
-                    >
-                      View all checklist items
-                    </button>
-                  </div>
-
-                  <div className="space-y-2">
-                    {activePatient.tasks.map(t => (
-                      <div
-                        key={t.id}
-                        onClick={() => {
-                          setWardPatients(prev => prev.map(p => {
-                            if (p.id === activePatient.id) {
-                              return {
-                                ...p,
-                                tasks: p.tasks.map(task => {
-                                  if (task.id === t.id) return { ...task, completed: !task.completed };
-                                  return task;
-                                })
-                              };
-                            }
-                            return p;
-                          }));
-                          triggerToast('Task State Updated', `"${t.title}" toggled.`, 'info');
-                        }}
-                        className={`p-3 rounded-2xl border flex items-center justify-between cursor-pointer transition-all ${
-                          t.completed 
-                            ? 'bg-slate-900/40 border-slate-800 text-gray-500 line-through' 
-                            : 'bg-slate-900 border-slate-800 hover:bg-slate-850'
-                        }`}
-                      >
-                        <div className="flex items-center space-x-3">
-                          <div className={`w-5 h-5 rounded-md border flex items-center justify-center ${
-                            t.completed ? 'bg-emerald-600 border-emerald-500 text-white' : 'border-slate-700'
-                          }`}>
-                            {t.completed && <Check className="w-3.5 h-3.5 stroke-[3]" />}
-                          </div>
-                          <span className="text-xs">{t.title}</span>
-                        </div>
-                        <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full ${
-                          t.priority === 'High' ? 'bg-red-500/10 text-red-500' : t.priority === 'Medium' ? 'bg-orange-500/10 text-orange-500' : 'bg-slate-800 text-gray-400'
-                        }`}>
-                          {t.priority}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Shift Handover Report generator widget */}
-                <div className={`p-5 rounded-3xl border ${isDarkMode ? 'bg-[#0f1524] border-slate-800' : 'bg-white border-gray-100 shadow-sm'} space-y-4 flex flex-col justify-between`}>
-                  <div className="space-y-1">
-                    <h3 className="font-extrabold text-sm">Automated Shift Handover</h3>
-                    <p className="text-xs text-gray-400">Compile patient summaries and clinical events for the incoming shift supervisor.</p>
-                  </div>
-
-                  <div className="p-4 rounded-2xl bg-emerald-600/10 border border-emerald-500/20 space-y-3">
+                {/* Emergency SOS & Intake Queue Panel */}
+                {emergencyRegistrations.length > 0 && (
+                  <div className={`p-5 rounded-3xl border transition-all ${
+                    isDarkMode ? 'bg-[#0f1524]/90 border-red-500/20' : 'bg-red-50/50 border-red-200 shadow-sm'
+                  } space-y-4`}>
                     <div className="flex justify-between items-center">
-                      <span className="text-xs font-black text-emerald-400">PREPARED HANDOVER REPORT</span>
-                      <span className="text-[10px] text-gray-400 font-mono">Size: 4.8 KB</span>
+                      <div className="flex items-center space-x-2.5">
+                        <span className="relative flex h-3 w-3">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                          <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                        </span>
+                        <div>
+                          <h3 className="font-extrabold text-sm text-red-500">Emergency OS Live Sync: Active SOS & Arrivals</h3>
+                          <p className="text-[10px] text-gray-400 font-semibold">Incoming/Arrived trauma patient intake queue</p>
+                        </div>
+                      </div>
+                      <span className="text-[9px] bg-red-500/10 text-red-500 font-black px-2.5 py-1 rounded-full border border-red-500/20 tracking-wider">
+                        {emergencyRegistrations.filter(r => r.status === 'EN_ROUTE' || r.status === 'ARRIVED').length} PENDING INTAKE
+                      </span>
                     </div>
-                    <p className="text-xs text-gray-300 line-clamp-3">
-                      Shift Summary: Orthopedic Ward 4B contains 4 active occupied beds. Ramesh Joshi Septic Arthritis requires strict 2-hour monitoring due to SpO2 drop. Rahul Patil knee dressing successfully updated...
-                    </p>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {emergencyRegistrations.map(reg => {
+                        return (
+                          <div
+                            key={reg.id}
+                            className={`p-4 rounded-2xl border transition-all flex flex-col justify-between space-y-3 ${
+                              reg.assigned_ward === assignedWard
+                                ? (isDarkMode ? 'bg-blue-950/20 border-blue-500/50 hover:border-blue-400' : 'bg-blue-50/20 border-blue-200 hover:border-blue-300 shadow-md')
+                                : (isDarkMode ? 'bg-slate-900/60 border-slate-800 hover:border-red-500/30' : 'bg-white border-gray-150 hover:border-red-300 shadow-sm')
+                            }`}
+                          >
+                            <div className="flex justify-between items-start">
+                              <div className="space-y-0.5">
+                                <h4 className="text-xs font-black truncate">{reg.patient?.name || 'Unknown Patient'}</h4>
+                                <p className="text-[9px] text-gray-400">
+                                  {reg.patient?.age} Y / {reg.patient?.gender} • Phone: {reg.patient?.phone || 'N/A'}
+                                </p>
+                              </div>
+                              <span className={`text-[9px] font-black px-2 py-0.5 rounded-full ${
+                                reg.triage?.category === 'RED'
+                                  ? 'bg-red-500/15 text-red-500 border border-red-500/20'
+                                  : reg.triage?.category === 'YELLOW'
+                                  ? 'bg-amber-500/15 text-amber-500 border border-amber-500/20'
+                                  : reg.triage?.category === 'GREEN'
+                                  ? 'bg-emerald-500/15 text-emerald-500 border border-emerald-500/20'
+                                  : 'bg-slate-500/15 text-gray-400 border border-slate-500/20'
+                              }`}>
+                                {reg.triage?.category || 'PENDING'}
+                              </span>
+                            </div>
+
+                            <div className="text-[10px] text-gray-400 line-clamp-2">
+                              <span className="font-bold text-gray-300">Complaint: </span>
+                              {reg.chief_complaint || reg.injury_mechanism || 'No detail provided.'}
+                            </div>
+
+                            {reg.assigned_ward && (
+                              <div className={`p-2 rounded-xl text-[10px] flex flex-col space-y-1 ${
+                                reg.assigned_ward === assignedWard
+                                  ? (isDarkMode ? 'bg-[#003f8a]/20 text-blue-200 border border-[#003f8a]/30' : 'bg-blue-50 text-[#003f8a] border border-blue-100')
+                                  : (isDarkMode ? 'bg-slate-800/40 text-gray-400 border border-slate-700/30' : 'bg-gray-50 text-gray-500 border border-gray-100')
+                              }`}>
+                                <div className="flex justify-between items-center">
+                                  <span className="font-bold flex items-center space-x-1">
+                                    <span>📍</span>
+                                    <span>{reg.assigned_ward === assignedWard ? 'Routed to Your Ward' : 'Routed to Ward'}</span>
+                                  </span>
+                                  <span className={`text-[8px] font-extrabold px-1.5 py-0.25 rounded ${
+                                    reg.assigned_ward === assignedWard
+                                      ? (isDarkMode ? 'bg-blue-600 text-white' : 'bg-[#003f8a] text-white')
+                                      : (isDarkMode ? 'bg-slate-700 text-gray-300' : 'bg-gray-200 text-gray-700')
+                                  }`}>
+                                    {reg.assigned_department}
+                                  </span>
+                                </div>
+                                <span className="font-semibold text-[9px] truncate">{reg.assigned_ward}</span>
+                              </div>
+                            )}
+
+                            <div className="flex justify-between items-center text-[10px] border-t border-slate-800/40 pt-2">
+                              <span className="text-gray-400 flex items-center space-x-1">
+                                <span className="font-bold text-gray-300">Via: </span>
+                                <span>{reg.arrival_mode}</span>
+                              </span>
+                              <span className="text-red-400 font-bold">
+                                {reg.status === 'EN_ROUTE' ? 'En-route' : 'Arrived'}
+                              </span>
+                            </div>
+
+                            {/* Allocation actions */}
+                            <div className="flex space-x-2 pt-1">
+                              {!wardPatients.some(wp => wp.id === reg.patient?.id) ? (
+                                <>
+                                  <button
+                                    onClick={() => admitEmergencyPatient(reg, 'Bed 405')}
+                                    disabled={wardPatients.some(wp => wp.bedNo === 'Bed 405')}
+                                    className={`flex-1 py-1.5 rounded-xl font-bold text-[10px] transition-all cursor-pointer text-center ${
+                                      wardPatients.some(wp => wp.bedNo === 'Bed 405')
+                                        ? 'bg-slate-800 text-gray-500 cursor-not-allowed'
+                                        : 'bg-emerald-600 hover:bg-emerald-700 text-white'
+                                    }`}
+                                  >
+                                    Assign Bed 405
+                                  </button>
+                                  <button
+                                    onClick={() => admitEmergencyPatient(reg, 'Bed 406')}
+                                    disabled={wardPatients.some(wp => wp.bedNo === 'Bed 406')}
+                                    className={`flex-1 py-1.5 rounded-xl font-bold text-[10px] transition-all cursor-pointer text-center ${
+                                      wardPatients.some(wp => wp.bedNo === 'Bed 406')
+                                        ? 'bg-slate-800 text-gray-500 cursor-not-allowed'
+                                        : 'bg-emerald-600 hover:bg-emerald-700 text-white'
+                                    }`}
+                                  >
+                                    Assign Bed 406
+                                  </button>
+                                </>
+                              ) : (
+                                <span className="w-full text-center text-[10px] font-bold text-emerald-500 bg-emerald-500/10 py-1.5 rounded-xl border border-emerald-500/20">
+                                  Admitted to Ward 4B
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {/* Left/Middle Column Grid layout split */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  
+                  {/* Patients Live Telemetry Queue */}
+                  <div className={`p-5 rounded-3xl border ${
+                    isDarkMode ? 'bg-[#0f1524] border-slate-800' : 'bg-white border-gray-150 shadow-sm'
+                  } space-y-4`}>
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <h3 className="font-extrabold text-sm">Active Ward Patients</h3>
+                        <p className="text-[11px] text-gray-400">Select to display profile</p>
+                      </div>
+                      <span className="text-[10px] bg-emerald-500/10 text-emerald-500 px-2 py-0.5 rounded-full font-bold">
+                        {wardPatients.length} Cases
+                      </span>
+                    </div>
+
+                    <div className="space-y-2.5">
+                      {wardPatients.map(wp => (
+                        <div
+                          key={wp.id}
+                          onClick={() => setSelectedPatientId(wp.id)}
+                          className={`p-3.5 rounded-2xl border cursor-pointer transition-all flex justify-between items-center ${
+                            selectedPatientId === wp.id
+                              ? 'bg-emerald-600/10 border-emerald-500'
+                              : isDarkMode
+                              ? 'bg-slate-950 border-slate-850 hover:bg-slate-900'
+                              : 'bg-slate-50 border-gray-100 hover:bg-gray-100/50 shadow-sm'
+                          }`}
+                        >
+                          <div className="flex items-center space-x-3">
+                            <div className={`w-8 h-8 rounded-full overflow-hidden border ${
+                              wp.priority === 'Emergency' ? 'border-red-500' : wp.priority === 'Urgent' ? 'border-orange-500' : 'border-emerald-500'
+                            }`}>
+                              <img
+                                src={wp.name === 'Rahul Anil Patil' ? 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150&h=150' : 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=150&h=150'}
+                                alt="avatar"
+                                className="w-full h-full object-cover"
+                                referrerPolicy="no-referrer"
+                              />
+                            </div>
+                            <div>
+                              <h4 className="text-xs font-black">{wp.name}</h4>
+                              <p className="text-[10px] text-gray-400">{wp.bedNo} • {wp.diagnosis.split(' - ')[0]}</p>
+                            </div>
+                          </div>
+                          
+                          <div className="text-right">
+                            <span className={`text-[9px] font-black px-2 py-0.5 rounded-full ${
+                              wp.priority === 'Emergency'
+                                ? 'bg-red-500/10 text-red-500'
+                                : wp.priority === 'Urgent'
+                                ? 'bg-orange-500/10 text-orange-500'
+                                : 'bg-emerald-500/10 text-emerald-500'
+                            }`}>
+                              {wp.priority}
+                            </span>
+                            <div className="text-[9px] font-mono font-bold text-gray-400 mt-1">
+                              HR: {wp.vitals.pulse} | SpO2: {wp.vitals.spo2}%
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
 
-                  <button
-                    onClick={() => setActiveTab('handover')}
-                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3.5 rounded-2xl font-bold text-xs flex items-center justify-center space-x-2 transition-all active:scale-98 cursor-pointer"
-                  >
-                    <FileSignature className="w-4 h-4" />
-                    <span>Proceed to Sign & Handover</span>
-                  </button>
+                  {/* Ward Grid layout */}
+                  <div className={`p-5 rounded-3xl border ${
+                    isDarkMode ? 'bg-[#0f1524] border-slate-800' : 'bg-white border-gray-150 shadow-sm'
+                  } space-y-4`}>
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <h3 className="font-extrabold text-sm">Ward 4B Bed Grid View</h3>
+                        <p className="text-[11px] text-gray-400">Interactive live status monitor</p>
+                      </div>
+                      <button 
+                        onClick={() => setActiveTab('ward')}
+                        className="text-xs font-bold text-emerald-500 hover:text-emerald-400 flex items-center space-x-1"
+                      >
+                        <span>Full map</span>
+                        <ChevronRight className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3">
+                      {wardPatients.map(wp => (
+                        <div
+                          key={wp.id}
+                          onClick={() => setSelectedPatientId(wp.id)}
+                          className={`p-3 rounded-2xl border cursor-pointer transition-all hover:scale-102 flex flex-col justify-between h-24 relative overflow-hidden ${
+                            selectedPatientId === wp.id
+                              ? 'bg-emerald-600/10 border-emerald-500'
+                              : wp.priority === 'Emergency'
+                              ? 'bg-red-650/10 border-red-500/30'
+                              : wp.priority === 'Urgent'
+                              ? 'bg-orange-500/10 border-orange-500/30'
+                              : isDarkMode
+                              ? 'bg-slate-900 border-slate-800'
+                              : 'bg-slate-50 border-gray-200 shadow-sm'
+                          }`}
+                        >
+                          <div className="flex justify-between items-start">
+                            <span className="text-[10px] font-black text-gray-400">{wp.bedNo}</span>
+                            <span className={`w-2 h-2 rounded-full ${
+                              wp.priority === 'Emergency'
+                                ? 'bg-red-500 animate-ping'
+                                : wp.priority === 'Urgent'
+                                ? 'bg-orange-500'
+                                : 'bg-emerald-500'
+                            }`} />
+                          </div>
+                          <div>
+                            <h4 className="text-xs font-black truncate">{wp.name}</h4>
+                            <p className="text-[8px] text-gray-400 truncate">{wp.diagnosis}</p>
+                          </div>
+                          <div className="flex justify-between items-center mt-1">
+                            <span className="text-[9px] font-bold text-emerald-500">{wp.vitals.pulse} BPM</span>
+                            <span className="text-[9px] text-gray-400">{wp.vitals.spo2}% SpO2</span>
+                          </div>
+                        </div>
+                      ))}
+
+                      {/* Available Bed Placeholder */}
+                      {!wardPatients.some(wp => wp.bedNo === 'Bed 405') && (
+                        <div className={`p-3 rounded-2xl border border-dashed flex flex-col items-center justify-center text-center h-24 ${
+                          isDarkMode ? 'border-slate-800 bg-slate-900/30' : 'border-gray-200 bg-gray-50/50'
+                        }`}>
+                          <Plus className="w-4 h-4 text-gray-500 mb-1" />
+                          <span className="text-[10px] font-black text-gray-400">Bed 405</span>
+                          <span className="text-[8px] text-emerald-500 font-bold">AVAILABLE</span>
+                        </div>
+                      )}
+
+                      {/* Cleaning Needed Placeholder */}
+                      {!wardPatients.some(wp => wp.bedNo === 'Bed 406') && (
+                        <div className={`p-3 rounded-2xl border border-dashed flex flex-col items-center justify-center text-center h-24 ${
+                          isDarkMode ? 'border-slate-800 bg-slate-900/30' : 'border-gray-200 bg-gray-50/50'
+                        }`}>
+                          <RefreshCw className="w-4 h-4 text-amber-500 mb-1 animate-spin" />
+                          <span className="text-[10px] font-black text-gray-400">Bed 406</span>
+                          <span className="text-[8px] text-amber-500 font-bold">CLEANING</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                </div>
+
+                {/* AI Assistant Feed + Tasks Checklist */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  
+                  {/* AI Assistant Warnings */}
+                  <div className={`p-5 rounded-3xl border ${
+                    isDarkMode ? 'bg-[#0f1524] border-slate-800' : 'bg-white border-gray-150 shadow-sm'
+                  } space-y-4`}>
+                    <div className="flex items-center space-x-2">
+                      <Flame className="w-5 h-5 text-emerald-500" />
+                      <div>
+                        <h3 className="font-extrabold text-sm">AI Clinical Assistant Warnings</h3>
+                        <p className="text-[10px] text-gray-400">Real-time telemetry scan</p>
+                      </div>
+                    </div>
+
+                    <div className="space-y-3">
+                      <div className="p-3.5 rounded-2xl bg-red-650/10 border border-red-500/20 text-xs space-y-1">
+                        <div className="flex justify-between items-center text-red-500 font-black text-[10px]">
+                          <span>DETERIORATION RISK ALERT</span>
+                          <AlertTriangle className="w-4 h-4" />
+                        </div>
+                        <p className="text-gray-300">Ramesh Joshi (Bed 403-ISO) has an elevated Early Warning Score (EWS: 5) due to high fever (101.2 F) and dipping oxygen levels (93% SpO2).</p>
+                        <button 
+                          onClick={() => {
+                            setSelectedPatientId('3');
+                            setActiveTab('vitals');
+                          }}
+                          className="text-[10px] font-black text-red-400 hover:text-red-300 mt-2 flex items-center space-x-1"
+                        >
+                          <span>Update Vitals Log</span>
+                          <ArrowRight className="w-3 h-3" />
+                        </button>
+                      </div>
+
+                      <div className="p-3.5 rounded-2xl bg-orange-500/10 border border-orange-500/20 text-xs space-y-1">
+                        <div className="flex justify-between items-center text-orange-500 font-black text-[10px]">
+                          <span>MEDICATION SCHEDULE REMINDER</span>
+                          <Clock className="w-4 h-4" />
+                        </div>
+                        <p className="text-gray-300">Inj. Tramadol 50mg due for Rahul Anil Patil (Bed 401) at 12:00 PM. Double Verification required due to recorded NSAID allergy warnings.</p>
+                        <button 
+                          onClick={() => {
+                            setSelectedPatientId('1');
+                            setActiveTab('medication');
+                          }}
+                          className="text-[10px] font-black text-orange-400 hover:text-orange-300 mt-2 flex items-center space-x-1"
+                        >
+                          <span>Open Med verification</span>
+                          <ArrowRight className="w-3 h-3" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Tasks list preview */}
+                  <div className={`p-5 rounded-3xl border ${
+                    isDarkMode ? 'bg-[#0f1524] border-slate-800' : 'bg-white border-gray-150 shadow-sm'
+                  } space-y-4`}>
+                    <div className="flex justify-between items-center">
+                      <h3 className="font-extrabold text-sm">Shift Task Management</h3>
+                      <button 
+                        onClick={() => setActiveTab('tasks')}
+                        className="text-xs font-bold text-emerald-500 hover:text-emerald-400"
+                      >
+                        View checklist
+                      </button>
+                    </div>
+
+                    <div className="space-y-2">
+                      {activePatient.tasks.slice(0, 3).map(t => (
+                        <div
+                          key={t.id}
+                          onClick={() => {
+                            setWardPatients(prev => prev.map(p => {
+                              if (p.id === activePatient.id) {
+                                return {
+                                  ...p,
+                                  tasks: p.tasks.map(task => {
+                                    if (task.id === t.id) return { ...task, completed: !task.completed };
+                                    return task;
+                                  })
+                                };
+                              }
+                              return p;
+                            }));
+                            triggerToast('Task State Updated', `"${t.title}" toggled.`, 'info');
+                          }}
+                          className={`p-3 rounded-2xl border flex items-center justify-between cursor-pointer transition-all ${
+                            t.completed 
+                              ? 'bg-slate-900/40 border-slate-800 text-gray-500 line-through' 
+                              : 'bg-slate-900 border-slate-800 hover:bg-slate-850'
+                          }`}
+                        >
+                          <div className="flex items-center space-x-3">
+                            <div className={`w-5 h-5 rounded-md border flex items-center justify-center ${
+                              t.completed ? 'bg-emerald-600 border-emerald-500 text-white' : 'border-slate-700'
+                            }`}>
+                              {t.completed && <Check className="w-3.5 h-3.5 stroke-[3]" />}
+                            </div>
+                            <span className="text-xs">{t.title}</span>
+                          </div>
+                          <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full ${
+                            t.priority === 'High' ? 'bg-red-500/10 text-red-500' : t.priority === 'Medium' ? 'bg-orange-500/10 text-orange-500' : 'bg-slate-800 text-gray-400'
+                          }`}>
+                            {t.priority}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+
+              {/* Right Pane: Sticky Patient Profile Card (1 col on xl) */}
+              <div className="xl:sticky xl:top-0 space-y-6">
+                
+                <div className={`p-5 rounded-3xl border ${
+                  isDarkMode ? 'bg-[#0f1524] border-slate-800 text-white' : 'bg-white border-gray-150 text-[#002068] shadow-lg'
+                } space-y-5`}>
+                  
+                  {/* Avatar / Identity header */}
+                  <div className="flex items-center space-x-3.5 pb-4 border-b border-gray-100 dark:border-slate-850">
+                    <div className={`w-14 h-14 rounded-full overflow-hidden border-2 ${
+                      activePatient.priority === 'Emergency'
+                        ? 'border-red-500'
+                        : activePatient.priority === 'Urgent'
+                        ? 'border-orange-500'
+                        : 'border-emerald-500'
+                    }`}>
+                      <img 
+                        src={activePatient.name === 'Rahul Anil Patil' ? 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150&h=150' : 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=150&h=150'}
+                        alt="patient avatar" 
+                        className="w-full h-full object-cover"
+                        referrerPolicy="no-referrer"
+                      />
+                    </div>
+                    <div className="space-y-0.5">
+                      <div className="flex items-center space-x-1.5">
+                        <h4 className="text-sm font-black">{activePatient.name}</h4>
+                        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                      </div>
+                      <p className="text-[10px] text-gray-400">
+                        {activePatient.age} Y / {activePatient.gender} • {activePatient.bedNo}
+                      </p>
+                      <span className="inline-block text-[9px] bg-slate-900 border border-slate-800 text-gray-400 px-2 py-0.5 rounded font-mono font-bold mt-1">
+                        UHID-40291-MCGM
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* SVG ECG Telemetry Wave */}
+                  <div className="bg-slate-950 p-3 rounded-2xl border border-slate-850 space-y-2">
+                    <div className="flex justify-between items-center text-[10px]">
+                      <span className="text-emerald-400 font-black tracking-widest flex items-center space-x-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping mr-1" />
+                        <span>LIVE TELEMETRY MONITOR</span>
+                      </span>
+                      <span className="font-mono text-gray-500">ECG Lead II</span>
+                    </div>
+                    <div className="relative h-12 flex items-center">
+                      <svg viewBox="0 0 100 40" className="w-full h-full text-emerald-500 stroke-current stroke-2 fill-none">
+                        <path d={"M " + ecgLine.map((val, idx) => `${idx * 2.5} ${val / 2.5}`).join(" L ")} />
+                      </svg>
+                      <div className="absolute right-2 top-1 flex items-center space-x-1 bg-slate-900/80 px-1.5 py-0.5 rounded border border-slate-850">
+                        <Heart className="w-3 h-3 text-red-500 fill-red-500 animate-pulse" />
+                        <span className="text-[10px] font-black text-emerald-400 font-mono">{activePatient.vitals.pulse}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Vitals grid cards */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="bg-slate-900/60 p-3 rounded-xl border border-slate-850">
+                      <p className="text-[9px] text-gray-400 font-bold uppercase">BLOOD PRESSURE</p>
+                      <p className="text-xs font-black text-white mt-1">{activePatient.vitals.bp} mmHg</p>
+                    </div>
+
+                    <div className="bg-slate-900/60 p-3 rounded-xl border border-slate-850">
+                      <p className="text-[9px] text-gray-400 font-bold uppercase">HEART RATE</p>
+                      <p className="text-xs font-black text-emerald-500 mt-1">{activePatient.vitals.pulse} BPM</p>
+                    </div>
+
+                    <div className="bg-slate-900/60 p-3 rounded-xl border border-slate-850">
+                      <p className="text-[9px] text-gray-400 font-bold uppercase">OXYGEN SAT</p>
+                      <p className={`text-xs font-black mt-1 ${
+                        activePatient.vitals.spo2 < 94 ? 'text-red-500' : 'text-emerald-400'
+                      }`}>{activePatient.vitals.spo2}% SpO2</p>
+                    </div>
+
+                    <div className="bg-slate-900/60 p-3 rounded-xl border border-slate-850">
+                      <p className="text-[9px] text-gray-400 font-bold uppercase">TEMPERATURE</p>
+                      <p className={`text-xs font-black mt-1 ${
+                        activePatient.vitals.temp > 100 ? 'text-red-400' : 'text-white'
+                      }`}>{activePatient.vitals.temp} °F</p>
+                    </div>
+                  </div>
+
+                  {/* Allergies & Diagnostics warning bar */}
+                  <div className="p-3 rounded-2xl bg-red-650/10 border border-red-500/20 text-xs">
+                    <span className="font-black text-[10px] text-red-500 block uppercase">Allergies & Warnings</span>
+                    <p className="text-gray-300 mt-1">{activePatient.allergies.length > 0 ? activePatient.allergies.join(', ') : 'No drug allergies reported.'}</p>
+                  </div>
+
+                  {/* Attending Team / Diagnosis info */}
+                  <div className="bg-slate-900/40 p-3.5 rounded-2xl border border-slate-850 space-y-2 text-xs">
+                    <div className="flex justify-between items-center text-gray-400">
+                      <span>Attending Doctor:</span>
+                      <span className="font-bold text-white">{activePatient.doctorName}</span>
+                    </div>
+                    <div className="flex justify-between items-center text-gray-400">
+                      <span>Diagnosis:</span>
+                      <span className="font-bold text-white truncate max-w-[150px]">{activePatient.diagnosis}</span>
+                    </div>
+                  </div>
+
+                  {/* Medications schedule checklists */}
+                  <div className="space-y-2 pt-2 border-t border-gray-100 dark:border-slate-850">
+                    <div className="flex justify-between items-center text-xs">
+                      <span className="font-black text-[10px] text-gray-400 uppercase">Medication Schedule</span>
+                      <span className="text-[9px] text-orange-400 font-bold">
+                        {activePatient.medications.filter(m => m.status === 'Pending').length} Due
+                      </span>
+                    </div>
+
+                    <div className="space-y-1.5 max-h-36 overflow-y-auto no-scrollbar">
+                      {activePatient.medications.map((m, idx) => (
+                        <div key={idx} className="bg-slate-950 p-2.5 rounded-xl border border-slate-850 flex justify-between items-center">
+                          <div className="space-y-0.5">
+                            <h5 className="text-[11px] font-black text-white">{m.name}</h5>
+                            <p className="text-[9px] text-gray-400">{m.dose} • {m.time}</p>
+                          </div>
+                          {m.status === 'Pending' ? (
+                            <button
+                              onClick={() => handleMedScanVerification(m)}
+                              className="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1 rounded-lg text-[9px] font-bold"
+                            >
+                              Verify & Give
+                            </button>
+                          ) : (
+                            <span className="text-[9px] font-bold text-emerald-500 bg-emerald-600/10 px-2 py-0.5 rounded-full">
+                              Given
+                            </span>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Quick actions panel */}
+                  <div className="grid grid-cols-2 gap-2 pt-2">
+                    <button 
+                      onClick={() => setActiveTab('vitals')}
+                      className="bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 rounded-xl text-[10px] font-bold text-center cursor-pointer"
+                    >
+                      Log Vitals
+                    </button>
+                    <button 
+                      onClick={() => setActiveTab('handover')}
+                      className="bg-slate-900 border border-slate-800 hover:bg-slate-850 text-gray-300 py-2.5 rounded-xl text-[10px] font-bold text-center cursor-pointer"
+                    >
+                      Shift Handover
+                    </button>
+                  </div>
+
                 </div>
 
               </div>
