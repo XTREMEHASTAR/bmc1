@@ -142,7 +142,7 @@ export default function CommandPalette({
                   }}
                   className={`flex items-center justify-between px-3.5 py-3 rounded-2xl cursor-pointer transition-all ${
                     isSelected 
-                      ? 'bg-[#003F8A] text-white shadow-md' 
+                      ? 'bg-[#0A5BFF] text-white shadow-md' 
                       : 'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300'
                   }`}
                 >

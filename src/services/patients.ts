@@ -176,8 +176,74 @@ export function notifyRegistrationListeners() {
   registrationListeners.forEach(cb => cb(current));
 }
 
+/** Auto-assign ward and department based on emergency type / chief complaint */
+export function getAutoAssignment(complaintStr: string, injuryMechanism?: string) {
+  const text = ((complaintStr || '') + ' ' + (injuryMechanism || '')).toLowerCase();
+  
+  if (
+    text.includes('fracture') ||
+    text.includes('accident') ||
+    text.includes('bone') ||
+    text.includes('ortho') ||
+    text.includes('leg') ||
+    text.includes('arm') ||
+    text.includes('spine') ||
+    text.includes('fall') ||
+    text.includes('wrist') ||
+    text.includes('dislocation') ||
+    text.includes('joint')
+  ) {
+    return { ward: 'Orthopedic Male Ward - Unit 4B', department: 'Orthopedics' };
+  }
+  
+  if (
+    text.includes('chest pain') ||
+    text.includes('heart') ||
+    text.includes('stemi') ||
+    text.includes('cardiac') ||
+    text.includes('stroke') ||
+    text.includes('diaphoresis') ||
+    text.includes('angina') ||
+    text.includes('heart attack')
+  ) {
+    return { ward: 'Cardiac Care Unit (CCU)', department: 'Cardiology' };
+  }
+  
+  if (
+    text.includes('asthma') ||
+    text.includes('breath') ||
+    text.includes('lungs') ||
+    text.includes('respiratory') ||
+    text.includes('dyspnea') ||
+    text.includes('oxygen') ||
+    text.includes('choking') ||
+    text.includes('copd') ||
+    text.includes('pneumonia')
+  ) {
+    return { ward: 'Respiratory Ward (ICU)', department: 'Pulmonology' };
+  }
+  
+  if (
+    text.includes('trauma') ||
+    text.includes('amputation') ||
+    text.includes('hemorrhage') ||
+    text.includes('blood') ||
+    text.includes('stab') ||
+    text.includes('gunshot') ||
+    text.includes('train') ||
+    text.includes('severe burn') ||
+    text.includes('unconscious')
+  ) {
+    return { ward: 'Trauma ICU - Unit 1A', department: 'Trauma Surgery' };
+  }
+  
+  return { ward: 'General Emergency Ward', department: 'Emergency Medicine' };
+}
+
 /** Register a new emergency patient */
 export async function registerEmergencyPatient(form: RegisterPatientForm): Promise<EmergencyRegistration> {
+  const auto = getAutoAssignment(form.chief_complaint, form.injury_mechanism);
+  
   if (!isSupabaseConfigured()) {
     // demo mode — add to in-memory store
     const registrationId = `ER-${Date.now()}`;
@@ -188,6 +254,8 @@ export async function registerEmergencyPatient(form: RegisterPatientForm): Promi
       arrival_mode: form.arrival_mode, arrival_time: new Date().toISOString(),
       chief_complaint: form.chief_complaint, injury_mechanism: form.injury_mechanism,
       police_case: false, status: 'ARRIVED',
+      assigned_ward: form.assigned_ward || auto.ward,
+      assigned_department: form.assigned_department || auto.department,
       created_at: new Date().toISOString(), updated_at: new Date().toISOString(),
       patient: {
         id: patientId, name: form.name, age: form.age, gender: form.gender,
@@ -234,6 +302,8 @@ export async function registerEmergencyPatient(form: RegisterPatientForm): Promi
       patient_id: patient.id, hospital_id: HOSPITAL_ID,
       arrival_mode: form.arrival_mode, chief_complaint: form.chief_complaint,
       injury_mechanism: form.injury_mechanism,
+      assigned_ward: form.assigned_ward || auto.ward,
+      assigned_department: form.assigned_department || auto.department,
     })
     .select()
     .single();

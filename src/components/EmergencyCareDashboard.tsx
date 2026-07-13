@@ -754,12 +754,12 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
     if (!resourcesData) {
       return [
         { name: 'O- Negative Blood', val: '12 Units', percent: 35, color: 'bg-rose-500' },
-        { name: 'High-Flow Ventilators', val: '4 / 12 available', percent: 33, color: 'bg-[#003f8a]' }
+        { name: 'High-Flow Ventilators', val: '4 / 12 available', percent: 33, color: 'bg-[#0A5BFF]' }
       ];
     }
     return resourcesData.map(res => {
       const percent = Math.round((res.available / res.total) * 100);
-      const color = res.id.includes('BLOOD') || res.available <= 5 ? 'bg-rose-500' : 'bg-[#003f8a]';
+      const color = res.id.includes('BLOOD') || res.available <= 5 ? 'bg-rose-500' : 'bg-[#0A5BFF]';
       const val = res.id.includes('BLOOD') ? `${res.available} Units` : `${res.available} / ${res.total} available`;
       return {
         name: res.name,
@@ -1816,12 +1816,12 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
         
         {/* Crest Brand Header */}
         <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 bg-[#003f8a] text-white rounded-xl flex items-center justify-center font-bold shadow-md shadow-blue-800/20">
+          <div className="w-10 h-10 bg-[#0A5BFF] text-white rounded-xl flex items-center justify-center font-bold shadow-md shadow-blue-800/20">
             <Building className="w-5 h-5" />
           </div>
           <div>
             <div className="flex items-center space-x-2">
-              <span className="text-xs font-bold tracking-widest text-[#003f8a] uppercase">MCGM DIGITAL HOSPITAL</span>
+              <span className="text-xs font-bold tracking-widest text-[#0A5BFF] uppercase">MCGM DIGITAL HOSPITAL</span>
               <span className="bg-red-500/10 text-red-600 text-[8px] font-black px-1.5 py-0.5 rounded-full animate-pulse border border-red-500/20">EMERGENCY OS</span>
             </div>
             <h1 className="text-lg font-black text-slate-900 leading-tight">Trauma Command Center</h1>
@@ -1850,7 +1850,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
             ) : (
               <button 
                 onClick={startSpeechRecognition}
-                className="bg-[#003f8a] text-white p-2 rounded-xl flex items-center justify-center hover:bg-blue-850 transition-colors"
+                className="bg-[#0A5BFF] text-white p-2 rounded-xl flex items-center justify-center hover:bg-blue-850 transition-colors"
                 title="Trigger Doctor Voice Command Scribe"
               >
                 <Mic className="w-3.5 h-3.5" />
@@ -1874,7 +1874,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
 
           <div className="bg-slate-50 border border-slate-100 px-3 py-1.5 rounded-xl text-left hidden lg:block">
             <span className="text-[8px] text-slate-400 font-bold uppercase block">Sion, Mumbai</span>
-            <span className="text-[10px] font-bold text-[#003f8a] flex items-center gap-1">
+            <span className="text-[10px] font-bold text-[#0A5BFF] flex items-center gap-1">
               <Sun className="w-3 h-3 text-amber-500" />
               <span>29°C • Heavy Rain</span>
             </span>
@@ -1910,7 +1910,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
       </header>
 
       {/* Scrolling Broadcast Ticker */}
-      <div className="bg-[#003f8a] text-white px-6 py-1.5 flex items-center justify-between text-[10px] font-semibold overflow-hidden shadow-inner">
+      <div className="bg-[#0A5BFF] text-white px-6 py-1.5 flex items-center justify-between text-[10px] font-semibold overflow-hidden shadow-inner">
         <div className="flex items-center space-x-2">
           <span className="bg-red-500 text-white text-[8px] font-black px-1.5 py-0.5 rounded font-mono">ALERT</span>
           <div className="animate-marquee whitespace-nowrap">
@@ -1959,12 +1959,12 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
                   }}
                   className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-left text-xs font-bold transition-all ${
                     isSelected 
-                      ? 'bg-blue-50 text-[#003f8a] border-l-4 border-[#003f8a]' 
+                      ? 'bg-blue-50 text-[#0A5BFF] border-l-4 border-[#0A5BFF]' 
                       : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
                   }`}
                 >
                   <div className="flex items-center space-x-3">
-                    <Icon className={`w-4 h-4 ${isSelected ? 'text-[#003f8a]' : 'text-slate-400'}`} />
+                    <Icon className={`w-4 h-4 ${isSelected ? 'text-[#0A5BFF]' : 'text-slate-400'}`} />
                     <span>{item.label}</span>
                   </div>
                   {item.badge && (
@@ -2016,7 +2016,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
                           triggerToast('KPI Interactive Click', `Displaying operational details for ${card.label}.`, 'info');
                         }
                       }}
-                      className="bg-white border border-slate-100 hover:border-[#003f8a] hover:shadow-md rounded-2xl p-4.5 text-left transition-all shadow-sm shadow-slate-100/50 flex flex-col justify-between h-28 relative group cursor-pointer"
+                      className="bg-white border border-slate-100 hover:border-[#0A5BFF] hover:shadow-md rounded-2xl p-4.5 text-left transition-all shadow-sm shadow-slate-100/50 flex flex-col justify-between h-28 relative group cursor-pointer"
                     >
                       <div className="flex justify-between items-center w-full">
                         <span className="text-[10px] font-bold text-slate-400 group-hover:text-slate-500 transition-colors uppercase tracking-wider">{card.label}</span>
@@ -2041,7 +2041,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
                   <div className="bg-white border border-slate-100 rounded-3xl p-5 shadow-sm shadow-slate-100/50 space-y-4">
                     <div className="flex justify-between items-center border-b border-slate-100 pb-3">
                       <div className="flex items-center space-x-2">
-                        <Map className="w-5 h-5 text-[#003f8a]" />
+                        <Map className="w-5 h-5 text-[#0A5BFF]" />
                         <h3 className="text-sm font-black text-slate-900 uppercase tracking-wider">Live GIS Emergency Operations Grid</h3>
                       </div>
                     </div>
@@ -2061,7 +2061,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
                       </svg>
 
                       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10">
-                        <div className="w-10 h-10 bg-[#003f8a] text-white rounded-full flex items-center justify-center shadow-lg animate-bounce border-2 border-white">
+                        <div className="w-10 h-10 bg-[#0A5BFF] text-white rounded-full flex items-center justify-center shadow-lg animate-bounce border-2 border-white">
                           <Building className="w-5 h-5" />
                         </div>
                         <span className="bg-slate-900 text-white font-bold text-[8px] px-2 py-0.5 rounded shadow mt-1">Sion Trauma Base</span>
@@ -2083,7 +2083,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
                           }}
                           className="absolute flex flex-col items-center group cursor-pointer"
                         >
-                          <div className="w-7 h-7 bg-[#003f8a] text-white rounded-full flex items-center justify-center border-2 border-white shadow-md hover:scale-110 transition-transform">
+                          <div className="w-7 h-7 bg-[#0A5BFF] text-white rounded-full flex items-center justify-center border-2 border-white shadow-md hover:scale-110 transition-transform">
                             <Ambulance className="w-3.5 h-3.5" />
                           </div>
                           
@@ -2110,7 +2110,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
                       {filteredPatients.map(p => (
                         <div
                           key={p.id}
-                          className={`bg-white border hover:border-[#003f8a] p-4.5 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4 transition-all hover:shadow-md shadow-sm shadow-slate-100/30 ${
+                          className={`bg-white border hover:border-[#0A5BFF] p-4.5 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4 transition-all hover:shadow-md shadow-sm shadow-slate-100/30 ${
                             p.triageCategory === 'RED' ? 'border-l-4 border-l-rose-500' : 
                             p.triageCategory === 'YELLOW' ? 'border-l-4 border-l-amber-500' :
                             p.triageCategory === 'GREEN' ? 'border-l-4 border-l-emerald-500' :
@@ -2147,7 +2147,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
                             </div>
                             <div>
                               <span className="text-slate-400 block text-[8px] font-bold">GCS</span>
-                              <span className="font-bold text-[#003f8a] block mt-0.5">{p.gcs}/15</span>
+                              <span className="font-bold text-[#0A5BFF] block mt-0.5">{p.gcs}/15</span>
                             </div>
                           </div>
 
@@ -2157,7 +2157,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
                                 setSelectedPatient(p);
                                 setActiveSection('triage');
                               }}
-                              className="bg-[#003f8a] hover:bg-blue-850 text-white text-[10px] font-bold px-3 py-2 rounded-xl"
+                              className="bg-[#0A5BFF] hover:bg-blue-850 text-white text-[10px] font-bold px-3 py-2 rounded-xl"
                             >
                               Triage Calc
                             </button>
@@ -2171,7 +2171,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
                   <div className="bg-white border border-slate-100 rounded-3xl p-5 shadow-sm shadow-slate-100/50 space-y-4">
                     <div className="flex justify-between items-center border-b border-slate-100 pb-3">
                       <div className="flex items-center space-x-2">
-                        <LayoutGrid className="w-5 h-5 text-[#003f8a]" />
+                        <LayoutGrid className="w-5 h-5 text-[#0A5BFF]" />
                         <h3 className="text-sm font-black text-slate-900 uppercase tracking-wider">Critical Trauma Resuscitation Bays</h3>
                       </div>
                     </div>
@@ -2181,7 +2181,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
                         <div
                           key={bay.num}
                           className={`bg-white border rounded-2xl p-4.5 space-y-3.5 relative flex flex-col justify-between shadow-sm ${
-                            bay.status === 'OCCUPIED' ? 'border-[#003f8a] bg-blue-50/10' :
+                            bay.status === 'OCCUPIED' ? 'border-[#0A5BFF] bg-blue-50/10' :
                             bay.status === 'CLEANING' ? 'border-amber-200 bg-amber-50/5' :
                             bay.status === 'MAINTENANCE' ? 'border-slate-200 bg-slate-50/35 opacity-60' :
                             'border-slate-100'
@@ -2238,7 +2238,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
                   {/* AI insights panel */}
                   <div className="bg-white border border-slate-100 rounded-3xl p-5 shadow-sm shadow-slate-100/50 space-y-4">
                     <div className="flex items-center space-x-2 border-b border-slate-100 pb-3">
-                      <Brain className="w-5 h-5 text-[#003f8a]" />
+                      <Brain className="w-5 h-5 text-[#0A5BFF]" />
                       <h3 className="text-sm font-black text-slate-900 uppercase tracking-wider">AI Emergency Intelligence</h3>
                     </div>
 
@@ -2258,7 +2258,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
                   {/* Resource registry panel */}
                   <div className="bg-white border border-slate-100 rounded-3xl p-5 shadow-sm shadow-slate-100/50 space-y-4">
                     <div className="flex items-center space-x-2 border-b border-slate-100 pb-3">
-                      <Database className="w-5 h-5 text-[#003f8a]" />
+                      <Database className="w-5 h-5 text-[#0A5BFF]" />
                       <h3 className="text-sm font-black text-slate-900 uppercase tracking-wider">Critical Resource Registry</h3>
                     </div>
 
@@ -2288,7 +2288,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
             <div className="space-y-6">
               <div className="flex items-center justify-between border-b border-slate-200 pb-4">
                 <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-blue-50 text-[#003f8a] border border-blue-150 rounded-2xl flex items-center justify-center">
+                  <div className="w-10 h-10 bg-blue-50 text-[#0A5BFF] border border-blue-150 rounded-2xl flex items-center justify-center">
                     <FlaskConical className="w-5 h-5" />
                   </div>
                   <div>
@@ -2310,7 +2310,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
                           key={spec.id}
                           onClick={() => setActiveSpecimen(spec)}
                           className={`p-3.5 rounded-2xl border transition-all cursor-pointer ${
-                            activeSpecimen.id === spec.id ? 'border-[#003f8a] bg-blue-50/10' : 'border-slate-100 hover:bg-slate-50'
+                            activeSpecimen.id === spec.id ? 'border-[#0A5BFF] bg-blue-50/10' : 'border-slate-100 hover:bg-slate-50'
                           }`}
                         >
                           <div className="flex justify-between items-start">
@@ -2333,7 +2333,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
                   <div className="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm space-y-6">
                     <div className="flex justify-between items-start border-b border-slate-100 pb-4">
                       <div>
-                        <span className="bg-blue-50 text-[#003f8a] text-[9px] font-black px-2 py-0.5 rounded">{activeSpecimen.type}</span>
+                        <span className="bg-blue-50 text-[#0A5BFF] text-[9px] font-black px-2 py-0.5 rounded">{activeSpecimen.type}</span>
                         <h3 className="text-base font-black text-slate-900 mt-2">{activeSpecimen.patient}</h3>
                         <p className="text-[10px] text-slate-500">ABHA Barcode: {activeSpecimen.barcode} • Logged at {activeSpecimen.time}</p>
                       </div>
@@ -2861,8 +2861,8 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
                 {/* Header Section */}
                 <div className="flex items-center justify-between border-b border-slate-200 pb-4">
                   <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-blue-50 text-[#003f8a] border border-blue-150 rounded-2xl flex items-center justify-center">
-                      {isDocView ? <Users className="w-5 h-5 text-[#003f8a]" /> : <ClipboardList className="w-5 h-5 text-[#003f8a]" />}
+                    <div className="w-10 h-10 bg-blue-50 text-[#0A5BFF] border border-blue-150 rounded-2xl flex items-center justify-center">
+                      {isDocView ? <Users className="w-5 h-5 text-[#0A5BFF]" /> : <ClipboardList className="w-5 h-5 text-[#0A5BFF]" />}
                     </div>
                     <div>
                       <h2 className="text-base font-black text-slate-900 uppercase tracking-wider">
@@ -2981,7 +2981,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
                               <div className="w-full md:w-auto flex flex-row md:flex-col items-center md:items-end justify-between md:justify-center gap-2 border-t md:border-t-0 border-slate-200/50 pt-2.5 md:pt-0">
                                 <div className="text-left md:text-right space-y-1">
                                   <div className="flex items-center space-x-1.5 justify-end">
-                                    <MapPin className="w-3 h-3 text-[#003f8a]" />
+                                    <MapPin className="w-3 h-3 text-[#0A5BFF]" />
                                     <span className="text-[9px] font-black text-slate-700 uppercase tracking-wider">{staff.telemetry.loc}</span>
                                   </div>
                                   
@@ -3088,7 +3088,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
                         <span className="text-xs font-black text-slate-800 uppercase tracking-wider">
                           Trauma Bay Drop Targets
                         </span>
-                        <span className="text-[9px] text-[#003f8a] font-black uppercase bg-blue-50 px-2 py-0.5 rounded">
+                        <span className="text-[9px] text-[#0A5BFF] font-black uppercase bg-blue-50 px-2 py-0.5 rounded">
                           Live Allocations
                         </span>
                       </div>
@@ -3175,7 +3175,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
                                 <div className="absolute inset-0 bg-blue-500/10 backdrop-blur-[0.5px] border-2 border-blue-500 flex items-center justify-center transition-all animate-fadeIn">
                                   <button
                                     onClick={() => handleAssignStaffToBay(draggedStaff.id, draggedStaff.type, bay.num)}
-                                    className="bg-[#003f8a] text-white font-black text-[9px] px-3.5 py-1.5 rounded-xl shadow-lg flex items-center space-x-1.5"
+                                    className="bg-[#0A5BFF] text-white font-black text-[9px] px-3.5 py-1.5 rounded-xl shadow-lg flex items-center space-x-1.5"
                                   >
                                     <Plus className="w-3.5 h-3.5" />
                                     <span>ASSIGN HERE</span>
@@ -3194,7 +3194,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
                 {/* Advanced Shift Scheduler & Coverage Gantt Timeline */}
                 <div className="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm space-y-4">
                   <h3 className="text-xs font-black uppercase text-slate-900 border-b border-slate-100 pb-2 flex items-center space-x-2">
-                    <Calendar className="w-4 h-4 text-[#003f8a]" />
+                    <Calendar className="w-4 h-4 text-[#0A5BFF]" />
                     <span>24-Hour Trauma Unit Shift Roster Gantt Chart</span>
                   </h3>
                   
@@ -3495,7 +3495,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
                         setBloodFormPIN('');
                         triggerToast('Release Protocol Active', `Emergency O-Neg release dispatch protocol started.`, 'success');
                       }}
-                      className="w-full bg-[#003f8a] hover:bg-blue-800 text-white font-black py-3 rounded-xl transition-all shadow-md cursor-pointer flex items-center justify-center space-x-2"
+                      className="w-full bg-[#0A5BFF] hover:bg-blue-800 text-white font-black py-3 rounded-xl transition-all shadow-md cursor-pointer flex items-center justify-center space-x-2"
                     >
                       <ShieldAlert className="w-4 h-4 text-rose-350" />
                       <span>DEPLOY DISPATCH PROTOCOL</span>
@@ -3520,7 +3520,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
             <div className="space-y-6 animate-fadeIn">
               <div className="flex items-center justify-between border-b border-slate-200 pb-4">
                 <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-blue-55 text-[#003f8a] border border-blue-150 rounded-2xl flex items-center justify-center">
+                  <div className="w-10 h-10 bg-blue-55 text-[#0A5BFF] border border-blue-150 rounded-2xl flex items-center justify-center">
                     <Pill className="w-5 h-5" />
                   </div>
                   <div>
@@ -3567,7 +3567,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
                                 }}
                                 className="opacity-0 group-hover:opacity-100 transition-opacity bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 text-[9px] px-2 py-1 rounded flex items-center space-x-1"
                               >
-                                <RefreshCw className="w-3 h-3 text-[#003f8a]" />
+                                <RefreshCw className="w-3 h-3 text-[#0A5BFF]" />
                                 <span>Refill</span>
                               </button>
                             </div>
@@ -3607,7 +3607,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
                 {/* Administer Medication Form */}
                 <div className="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm space-y-4">
                   <h3 className="text-xs font-black uppercase text-slate-900 border-b border-slate-100 pb-2 flex items-center space-x-2">
-                    <Pill className="w-4 h-4 text-[#003f8a]" />
+                    <Pill className="w-4 h-4 text-[#0A5BFF]" />
                     <span>Log Drug Administration</span>
                   </h3>
 
@@ -3688,7 +3688,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
                         setMedLogs(prev => [newLog, ...prev]);
                         triggerToast('Administration Logged', `${selectedMed.name} registered for Trauma Bay ${medFormBay}.`, 'success');
                       }}
-                      className="w-full bg-[#003f8a] hover:bg-blue-800 text-white font-black py-3 rounded-xl transition-all shadow-md cursor-pointer flex items-center justify-center space-x-2"
+                      className="w-full bg-[#0A5BFF] hover:bg-blue-800 text-white font-black py-3 rounded-xl transition-all shadow-md cursor-pointer flex items-center justify-center space-x-2"
                     >
                       <FileCheck className="w-4 h-4" />
                       <span>RECORD DRUG DISPENSAL</span>
@@ -3704,7 +3704,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
             <div className="space-y-6 animate-fadeIn">
               <div className="flex items-center justify-between border-b border-slate-200 pb-4">
                 <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-blue-50 text-[#003f8a] border border-blue-150 rounded-2xl flex items-center justify-center">
+                  <div className="w-10 h-10 bg-blue-50 text-[#0A5BFF] border border-blue-150 rounded-2xl flex items-center justify-center">
                     <Settings className="w-5 h-5" />
                   </div>
                   <div>
@@ -3763,7 +3763,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
 
                     <button
                       onClick={() => triggerToast('Configuration Saved', 'AI Alert limits saved to system runtime.', 'success')}
-                      className="w-full bg-[#003f8a] hover:bg-blue-800 text-white font-black py-3 rounded-xl transition-all shadow-sm cursor-pointer"
+                      className="w-full bg-[#0A5BFF] hover:bg-blue-800 text-white font-black py-3 rounded-xl transition-all shadow-sm cursor-pointer"
                     >
                       Save Configuration
                     </button>
@@ -3871,7 +3871,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
                       </div>
                       <div className="flex justify-between items-center py-1 border-b border-slate-50">
                         <span className="font-bold">Incident Broadcast</span>
-                        <span className="font-mono text-slate-500 bg-blue-50 text-[#003f8a] px-2 py-0.5 rounded">Enabled via webhook</span>
+                        <span className="font-mono text-slate-500 bg-blue-50 text-[#0A5BFF] px-2 py-0.5 rounded">Enabled via webhook</span>
                       </div>
                     </div>
                   </div>
@@ -3906,7 +3906,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
             <div className="space-y-6 animate-fadeIn">
               <div className="flex items-center justify-between border-b border-slate-200 pb-4">
                 <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-blue-50 text-[#003f8a] border border-blue-150 rounded-2xl flex items-center justify-center">
+                  <div className="w-10 h-10 bg-blue-50 text-[#0A5BFF] border border-blue-150 rounded-2xl flex items-center justify-center">
                     <Activity className="w-5 h-5" />
                   </div>
                   <div>
@@ -3937,7 +3937,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
                             });
                           }}
                           className={`p-3.5 rounded-2xl border transition-all cursor-pointer ${
-                            selectedPatient?.id === p.id ? 'border-[#003f8a] bg-blue-50/10' : 'border-slate-100 hover:bg-slate-50'
+                            selectedPatient?.id === p.id ? 'border-[#0A5BFF] bg-blue-50/10' : 'border-slate-100 hover:bg-slate-50'
                           }`}
                         >
                           <div className="flex justify-between items-start">
@@ -3963,7 +3963,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
                   {selectedPatient ? (
                     <div className="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm space-y-6">
                       <div className="border-b border-slate-100 pb-4">
-                        <span className="text-[8px] font-black uppercase bg-blue-50 text-[#003f8a] px-2 py-0.5 rounded-full">Intake Selected</span>
+                        <span className="text-[8px] font-black uppercase bg-blue-50 text-[#0A5BFF] px-2 py-0.5 rounded-full">Intake Selected</span>
                         <h3 className="text-base font-black text-slate-900 mt-2">{selectedPatient.name}</h3>
                         <p className="text-[10px] text-slate-500">Ailment: {selectedPatient.injuryMechanism || 'Trauma intake'}</p>
                       </div>
@@ -4036,7 +4036,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
                       <div className="bg-slate-50 p-4.5 rounded-2xl border border-slate-150 space-y-3 text-[10px] font-bold">
                         <div className="flex justify-between items-center text-xs">
                           <span>Trauma Score Calculations</span>
-                          <span className="text-[#003f8a]">AI Core Active</span>
+                          <span className="text-[#0A5BFF]">AI Core Active</span>
                         </div>
                         <div className="grid grid-cols-3 gap-3">
                           <div>
@@ -4077,7 +4077,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
                           const category = score <= 8 ? 'RED' : score <= 12 ? 'YELLOW' : 'GREEN';
                           handleConfirmTriage(selectedPatient.id, category);
                         }}
-                        className="bg-[#003f8a] hover:bg-blue-850 text-white font-bold py-3.5 rounded-2xl w-full text-xs shadow-sm cursor-pointer"
+                        className="bg-[#0A5BFF] hover:bg-blue-850 text-white font-bold py-3.5 rounded-2xl w-full text-xs shadow-sm cursor-pointer"
                       >
                         Confirm & Lock Triage Priority
                       </button>
@@ -4234,10 +4234,10 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
                 <div className="bg-white border border-slate-100 p-4 rounded-2xl shadow-sm flex items-center justify-between">
                   <div>
                     <span className="text-[9px] font-bold text-slate-400 block uppercase tracking-wider">Median Transit ETA</span>
-                    <span className="text-xl font-black text-[#003f8a] block mt-0.5">5.5 mins</span>
+                    <span className="text-xl font-black text-[#0A5BFF] block mt-0.5">5.5 mins</span>
                     <span className="text-[8px] text-emerald-600 block mt-0.5 font-bold">Green Corridor active</span>
                   </div>
-                  <div className="w-9 h-9 bg-blue-50 text-[#003f8a] rounded-xl flex items-center justify-center">
+                  <div className="w-9 h-9 bg-blue-50 text-[#0A5BFF] rounded-xl flex items-center justify-center">
                     <Clock className="w-4 h-4" />
                   </div>
                 </div>
@@ -4289,7 +4289,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
                               isTraumaActive
                                 ? 'bg-red-50/70 border-red-500 shadow-lg shadow-red-500/10 ring-2 ring-red-500/20'
                                 : isSelected 
-                                  ? 'bg-slate-50/50 border-[#003f8a] shadow-sm' 
+                                  ? 'bg-slate-50/50 border-[#0A5BFF] shadow-sm' 
                                   : 'bg-white border-slate-150 hover:border-slate-300'
                             }`}
                           >
@@ -4297,7 +4297,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
                             <div className="flex justify-between items-start">
                               <div className="flex items-center space-x-2.5">
                                 <div className={`w-8 h-8 rounded-xl flex items-center justify-center ${
-                                  amb.status === 'TRANSPORTING' ? 'bg-[#003f8a]/10 text-[#003f8a]' : 'bg-slate-100 text-slate-500'
+                                  amb.status === 'TRANSPORTING' ? 'bg-[#0A5BFF]/10 text-[#0A5BFF]' : 'bg-slate-100 text-slate-500'
                                 }`}>
                                   <Ambulance className="w-4 h-4" />
                                 </div>
@@ -4438,7 +4438,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
                                     {matchedReg.injury_mechanism}
                                   </p>
                                   {matchedReg.triage?.ai_reasoning && (
-                                    <div className="text-[8px] text-[#003f8a] bg-blue-50/50 p-1.5 rounded border border-blue-100/50 mt-1 font-bold">
+                                    <div className="text-[8px] text-[#0A5BFF] bg-blue-50/50 p-1.5 rounded border border-blue-100/50 mt-1 font-bold">
                                       AI Pre-Route: {matchedReg.triage.ai_reasoning}
                                     </div>
                                   )}
@@ -4606,7 +4606,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
                                 setActiveAmbulanceId('AMB-MCGM-03');
                               }}
                             >
-                              <circle cx="0" cy="0" r="11" fill={isFocused ? '#0ea5e9' : '#003f8a'} stroke="#ffffff" strokeWidth="1.5" className="shadow-md" />
+                              <circle cx="0" cy="0" r="11" fill={isFocused ? '#0ea5e9' : '#0A5BFF'} stroke="#ffffff" strokeWidth="1.5" className="shadow-md" />
                               <circle cx="0" cy="0" r="15" fill="none" stroke="#0ea5e9" strokeWidth="1" className="animate-ping" style={{ transformOrigin: 'center' }} />
                               <text x="0" y="2.5" textAnchor="middle" fontSize="6.5" fill="#ffffff" fontWeight="black" fontFamily="sans-serif">03</text>
                             </g>
@@ -4708,7 +4708,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
                           onClick={() => {
                             triggerToast('CT Scan Lock', 'Reserved emergency CT Trauma slot for en-route polytrauma.', 'success');
                           }}
-                          className="bg-indigo-50 hover:bg-indigo-100 text-[#003f8a] border border-indigo-150 px-2.5 py-1.5 rounded-lg text-[9px] font-bold flex items-center space-x-1 cursor-pointer"
+                          className="bg-indigo-50 hover:bg-indigo-100 text-[#0A5BFF] border border-indigo-150 px-2.5 py-1.5 rounded-lg text-[9px] font-bold flex items-center space-x-1 cursor-pointer"
                         >
                           <Tv className="w-3 h-3" />
                           <span>CLEAR CT SLOT</span>
@@ -4737,7 +4737,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
               {/* Header block */}
               <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-200 pb-4 gap-4">
                 <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-blue-50 text-[#003f8a] border border-blue-150 rounded-2xl flex items-center justify-center">
+                  <div className="w-10 h-10 bg-blue-50 text-[#0A5BFF] border border-blue-150 rounded-2xl flex items-center justify-center">
                     <User className="w-5 h-5" />
                   </div>
                   <div>
@@ -4775,13 +4775,13 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
                       className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 hover:border-blue-300 p-5 rounded-2xl text-left hover:shadow-md transition-all group flex flex-col justify-between min-h-[160px] cursor-pointer"
                     >
                       <div className="flex justify-between items-start w-full">
-                        <div className="w-12 h-12 bg-white text-[#003f8a] rounded-xl flex items-center justify-center shadow-sm">
+                        <div className="w-12 h-12 bg-white text-[#0A5BFF] rounded-xl flex items-center justify-center shadow-sm">
                           <Mic className="w-6 h-6 animate-pulse group-hover:scale-110 transition-transform" />
                         </div>
-                        <span className="bg-blue-100 text-[#003f8a] text-[8px] font-black px-2 py-0.5 rounded-full uppercase">Hands-free</span>
+                        <span className="bg-blue-100 text-[#0A5BFF] text-[8px] font-black px-2 py-0.5 rounded-full uppercase">Hands-free</span>
                       </div>
                       <div className="mt-4">
-                        <h3 className="text-xs font-black text-[#003f8a] uppercase tracking-wider">🎤 Voice-First Registration</h3>
+                        <h3 className="text-xs font-black text-[#0A5BFF] uppercase tracking-wider">🎤 Voice-First Registration</h3>
                         <p className="text-[10px] text-slate-500 mt-1">Speak details (Name, Age, Incident, Mode) for instant AI extraction in <span className="font-bold text-indigo-600">10 seconds</span>.</p>
                       </div>
                     </button>
@@ -4796,7 +4796,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
                           unknownPatient: false
                         }));
                       }}
-                      className="bg-white border border-slate-200 hover:border-[#003f8a] p-5 rounded-2xl text-left hover:shadow-md transition-all group flex flex-col justify-between min-h-[160px] cursor-pointer"
+                      className="bg-white border border-slate-200 hover:border-[#0A5BFF] p-5 rounded-2xl text-left hover:shadow-md transition-all group flex flex-col justify-between min-h-[160px] cursor-pointer"
                     >
                       <div className="flex justify-between items-start w-full">
                         <div className="w-12 h-12 bg-slate-50 text-slate-700 rounded-xl flex items-center justify-center shadow-sm">
@@ -5034,7 +5034,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
                     <h3 className="text-xs font-black text-slate-800 uppercase tracking-wider">🎙 AI Voice-First Registration Portal</h3>
                     <button
                       onClick={() => setRegistrationSubView('home')}
-                      className="text-[10px] font-bold text-[#003f8a] hover:underline cursor-pointer"
+                      className="text-[10px] font-bold text-[#0A5BFF] hover:underline cursor-pointer"
                     >
                       ← Back to Hub
                     </button>
@@ -5063,7 +5063,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
                             ? 'bg-red-500 text-white shadow-lg shadow-red-200 animate-pulse' 
                             : voiceInputStatus === 'PARSING' 
                             ? 'bg-amber-500 text-white shadow-lg shadow-amber-200 animate-spin animate-duration-3000'
-                            : 'bg-[#003f8a] text-white hover:bg-blue-800 shadow-md shadow-blue-200'
+                            : 'bg-[#0A5BFF] text-white hover:bg-blue-800 shadow-md shadow-blue-200'
                         }`}
                       >
                         {voiceInputStatus === 'LISTENING' ? (
@@ -5227,7 +5227,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
                     <button
                       type="button"
                       onClick={() => setRegistrationSubView('home')}
-                      className="text-[10px] font-bold text-[#003f8a] hover:underline cursor-pointer"
+                      className="text-[10px] font-bold text-[#0A5BFF] hover:underline cursor-pointer"
                     >
                       ← Back to Hub
                     </button>
@@ -5303,7 +5303,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
                                 onClick={() => setNewPatientInput({ ...newPatientInput, age: btn.val })}
                                 className={`flex-1 py-2.5 rounded-xl border text-[9px] font-black uppercase transition-all cursor-pointer ${
                                   Number(newPatientInput.age) === Number(btn.val)
-                                    ? 'bg-[#003f8a] text-white border-blue-800'
+                                    ? 'bg-[#0A5BFF] text-white border-blue-800'
                                     : 'bg-white hover:bg-slate-50 border-slate-200 text-slate-700'
                                 }`}
                               >
@@ -5342,7 +5342,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
                                 }}
                                 className={`py-2.5 rounded-xl border text-[9px] font-black uppercase transition-all cursor-pointer ${
                                   newPatientInput.gender === g
-                                    ? 'bg-[#003f8a] text-white border-blue-800'
+                                    ? 'bg-[#0A5BFF] text-white border-blue-800'
                                     : 'bg-white hover:bg-slate-50 border-slate-200 text-slate-700'
                                 }`}
                               >
@@ -5405,7 +5405,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
                                 onClick={() => setNewPatientInput({ ...newPatientInput, arrival_mode: item.val })}
                                 className={`py-2 rounded-lg border text-[8px] font-bold uppercase transition-all cursor-pointer ${
                                   newPatientInput.arrival_mode === item.val
-                                    ? 'bg-[#003f8a] text-white border-blue-800'
+                                    ? 'bg-[#0A5BFF] text-white border-blue-800'
                                     : 'bg-white hover:bg-slate-50 border-slate-200 text-slate-700'
                                 }`}
                               >
@@ -5460,7 +5460,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
                                 onClick={() => setNewPatientInput({ ...newPatientInput, conscious: v })}
                                 className={`py-2 rounded-lg border text-[9px] font-black uppercase transition-all cursor-pointer ${
                                   newPatientInput.conscious === v
-                                    ? 'bg-[#003f8a] text-white border-blue-800'
+                                    ? 'bg-[#0A5BFF] text-white border-blue-800'
                                     : 'bg-white hover:bg-slate-50 border-slate-200 text-slate-700'
                                 }`}
                               >
@@ -5552,7 +5552,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
                     {/* OCR SCANNER PANEL */}
                     <div id="registration-ocr-scanner-panel" className="bg-gradient-to-br from-indigo-50/50 to-blue-50/50 p-4 rounded-xl border border-blue-150 space-y-4">
                       <div className="flex justify-between items-center pb-2 border-b border-blue-205">
-                        <span className="text-[10px] font-black text-[#003f8a] uppercase tracking-wider flex items-center space-x-1.5">
+                        <span className="text-[10px] font-black text-[#0A5BFF] uppercase tracking-wider flex items-center space-x-1.5">
                           <QrCode className="w-4 h-4" />
                           <span>AI OCR Identity document Card Scanner</span>
                         </span>
@@ -5575,7 +5575,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
                                 onClick={() => setOcrCardImage(doc.id)}
                                 className={`py-2 rounded-lg border text-[8px] font-bold uppercase transition-all cursor-pointer ${
                                   ocrCardImage === doc.id
-                                    ? 'bg-[#003f8a] text-white border-blue-800'
+                                    ? 'bg-[#0A5BFF] text-white border-blue-800'
                                     : 'bg-white hover:bg-slate-50 border-slate-200 text-slate-700'
                                 }`}
                               >
@@ -5636,7 +5636,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
                                   }
                                 }, 300);
                               }}
-                              className="bg-[#003f8a] hover:bg-blue-800 text-white font-bold text-[9px] px-4 py-2.5 rounded-xl flex items-center space-x-1.5 transition-all cursor-pointer"
+                              className="bg-[#0A5BFF] hover:bg-blue-800 text-white font-bold text-[9px] px-4 py-2.5 rounded-xl flex items-center space-x-1.5 transition-all cursor-pointer"
                             >
                               <FileUp className="w-3.5 h-3.5" />
                               <span>{ocrScanning ? 'Scanning Card...' : 'Scan Mock Document'}</span>
@@ -5676,7 +5676,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
                     <div className="bg-slate-50/50 p-4 rounded-xl border border-slate-150 space-y-4">
                       <div className="flex justify-between items-center pb-2 border-b border-slate-205">
                         <span className="text-[10px] font-black text-slate-800 uppercase tracking-wider flex items-center space-x-1.5">
-                          <Fingerprint className="w-4 h-4 text-[#003f8a]" />
+                          <Fingerprint className="w-4 h-4 text-[#0A5BFF]" />
                           <span>Biometric Intake verification</span>
                         </span>
                         <span className="bg-slate-200 text-slate-600 text-[7px] font-black px-1.5 py-0.5 rounded uppercase">MCGM BioNet</span>
@@ -5737,7 +5737,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
                       <button
                         id="emergency-registration-submit-btn"
                         type="submit"
-                        className="bg-[#003f8a] hover:bg-blue-800 text-white font-bold px-6 py-3 rounded-xl text-xs shadow-sm transition-all cursor-pointer"
+                        className="bg-[#0A5BFF] hover:bg-blue-800 text-white font-bold px-6 py-3 rounded-xl text-xs shadow-sm transition-all cursor-pointer"
                       >
                         Register Intake & Start Treatment
                       </button>
@@ -5775,7 +5775,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
                           setActiveSection('triage');
                           triggerToast('Navigated to Triage', 'Finalize clinical scores on triage board.', 'info');
                         }}
-                        className="bg-[#003f8a] hover:bg-blue-800 text-white font-bold text-[10px] px-4 py-2 rounded-xl flex items-center space-x-1.5 cursor-pointer transition-all"
+                        className="bg-[#0A5BFF] hover:bg-blue-800 text-white font-bold text-[10px] px-4 py-2 rounded-xl flex items-center space-x-1.5 cursor-pointer transition-all"
                       >
                         <span>Go to AI Triage Board</span>
                         <ArrowRight className="w-3.5 h-3.5" />
@@ -5894,7 +5894,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
             <div className="space-y-6">
               <div className="flex items-center justify-between border-b border-slate-200 pb-4">
                 <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-indigo-50 text-[#003f8a] border border-blue-100 flex items-center justify-center">
+                  <div className="w-10 h-10 bg-indigo-50 text-[#0A5BFF] border border-blue-100 flex items-center justify-center">
                     <Brain className="w-5 h-5" />
                   </div>
                   <div>
@@ -5914,7 +5914,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
                     >
                       <div className={`p-4 rounded-2xl max-w-md leading-relaxed ${
                         chat.sender === 'User' 
-                          ? 'bg-[#003f8a] text-white rounded-br-none' 
+                          ? 'bg-[#0A5BFF] text-white rounded-br-none' 
                           : 'bg-slate-50 border border-slate-100 text-slate-800 rounded-bl-none'
                       }`}>
                         <span className="text-[8px] font-black uppercase block tracking-wider opacity-60 mb-1">{chat.sender}</span>
@@ -5935,7 +5935,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
                   />
                   <button
                     type="submit"
-                    className="bg-[#003f8a] hover:bg-blue-850 text-white font-bold px-5 py-3 rounded-2xl text-xs flex items-center justify-center cursor-pointer"
+                    className="bg-[#0A5BFF] hover:bg-blue-850 text-white font-bold px-5 py-3 rounded-2xl text-xs flex items-center justify-center cursor-pointer"
                   >
                     <Send className="w-4 h-4" />
                   </button>
@@ -5957,7 +5957,7 @@ export default function EmergencyCareDashboard({ isDarkMode, setIsDarkMode, onLo
         <div className="flex items-center space-x-2.5">
           <button
             onClick={() => setActiveSection('registration')}
-            className="bg-[#003f8a] hover:bg-blue-850 text-white font-bold text-[10px] px-4 py-2 rounded-full shadow-md shadow-blue-800/10 transition-all hover:scale-105 active:scale-95 cursor-pointer"
+            className="bg-[#0A5BFF] hover:bg-blue-850 text-white font-bold text-[10px] px-4 py-2 rounded-full shadow-md shadow-blue-800/10 transition-all hover:scale-105 active:scale-95 cursor-pointer"
           >
             + Quick Patient Intake
           </button>

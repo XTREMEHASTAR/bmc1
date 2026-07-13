@@ -134,6 +134,8 @@ export interface EmergencyRegistration {
   discharged_at?: string;
   discharge_summary?: string;
   created_by?: string;
+  assigned_ward?: string;
+  assigned_department?: string;
   created_at: string;
   updated_at: string;
   // Relations
@@ -561,6 +563,8 @@ export interface RegisterPatientForm {
   temperature?: number;
   gcs?: number;
   triage_category?: TriageCategory;
+  assigned_ward?: string;
+  assigned_department?: string;
 }
 
 export interface TriageFormInputs {

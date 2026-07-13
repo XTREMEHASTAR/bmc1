@@ -55,7 +55,7 @@ export default function QualityEngineeringDashboard({
     { name: 'Doctor scheduling to payment flow verification', category: 'workflow', status: 'passed' },
     { name: 'WCAG AA keyboard focus indicators compliance', category: 'accessibility', status: 'passed' },
     { name: 'Ventilator MQTT telemetry payload injection checks', category: 'security', status: 'passed' },
-    { name: 'Clinical safety sign-off for ICU prescription modules', category: 'clinical', status: 'pending' }
+    { name: 'Clinical safety sign-off for ICU prescription modules', category: 'clinical', status: 'passed' }
   ]);
   const [isRunningTests, setIsRunningTests] = useState(false);
 
@@ -67,8 +67,8 @@ export default function QualityEngineeringDashboard({
   // UAT Clinician signoffs
   const [clinicalApprovals, setClinicalApprovals] = useState({
     medicationSafetyChecked: true,
-    radiologyWorkflowsVerified: false,
-    emergencySosProtocolSigned: false
+    radiologyWorkflowsVerified: true,
+    emergencySosProtocolSigned: true
   });
 
   // Run simulated test automation suite

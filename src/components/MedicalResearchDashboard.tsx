@@ -268,7 +268,7 @@ export default function MedicalResearchDashboard({
           </div>
           <div className="bg-white dark:bg-[#111827] border border-gray-100 dark:border-gray-800 rounded-2xl p-4 shadow-sm flex flex-col justify-between">
             <span className="text-[9px] font-black uppercase tracking-wider text-gray-400">Research Grants</span>
-            <h3 className="text-xl font-black text-[#003F8A] mt-1">₹85.4 Lakhs</h3>
+            <h3 className="text-xl font-black text-[#0A5BFF] mt-1">₹85.4 Lakhs</h3>
             <p className="text-[10px] text-gray-400 font-bold mt-1">DBT / ICMR Funded</p>
           </div>
           <div className="col-span-2 md:col-span-1 bg-white dark:bg-[#111827] border border-gray-100 dark:border-gray-800 rounded-2xl p-4 shadow-sm flex flex-col justify-between">
@@ -603,7 +603,7 @@ export default function MedicalResearchDashboard({
                   <div className="bg-white dark:bg-[#111827] border border-gray-100 dark:border-gray-800 rounded-3xl p-5 shadow-sm space-y-4">
                     <h3 className="text-xs font-black uppercase tracking-wider">Participant Block Randomizer</h3>
                     <p className="text-xs text-gray-400">Secure de-identified randomization of next participant cohort matching protocol constraints.</p>
-                    <button className="w-full bg-[#003F8A] hover:bg-[#002f66] text-white py-3 rounded-xl text-xs font-black uppercase tracking-wider cursor-pointer">
+                    <button className="w-full bg-[#0A5BFF] hover:bg-[#002f66] text-white py-3 rounded-xl text-xs font-black uppercase tracking-wider cursor-pointer">
                       Generate Randomization ID
                     </button>
                   </div>
@@ -974,7 +974,7 @@ export default function MedicalResearchDashboard({
                     </p>
                   </div>
 
-                  <button className="w-full bg-[#003F8A] hover:bg-[#002f66] text-white py-3 rounded-xl text-xs font-black uppercase tracking-wider cursor-pointer">
+                  <button className="w-full bg-[#0A5BFF] hover:bg-[#002f66] text-white py-3 rounded-xl text-xs font-black uppercase tracking-wider cursor-pointer">
                     Copy Reference to Clipboard
                   </button>
                 </div>

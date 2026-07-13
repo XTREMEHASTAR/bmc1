@@ -192,7 +192,7 @@ export default function CommandCenterTab() {
             <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping" />
             <h1 className="text-xl md:text-2xl font-black uppercase tracking-tight flex items-center gap-2">
               MCGM Hospital Command Center
-              <span className="text-xs bg-[#003F8A] text-white px-2 py-0.5 rounded font-black tracking-normal">MISSION CONTROL</span>
+              <span className="text-xs bg-[#0A5BFF] text-white px-2 py-0.5 rounded font-black tracking-normal">MISSION CONTROL</span>
             </h1>
           </div>
           <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
@@ -288,7 +288,7 @@ export default function CommandCenterTab() {
               onClick={() => setActiveSubTab(tab.id as any)}
               className={`flex items-center space-x-2 px-4 py-2.5 text-[10px] font-black uppercase tracking-wider rounded-xl transition-all cursor-pointer ${
                 activeSubTab === tab.id
-                  ? 'bg-[#003F8A] text-white shadow-lg'
+                  ? 'bg-[#0A5BFF] text-white shadow-lg'
                   : 'text-gray-500 hover:text-slate-800 dark:hover:text-white'
               }`}
             >
@@ -337,7 +337,7 @@ export default function CommandCenterTab() {
                 <div className="lg:col-span-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-855 rounded-3xl p-5 space-y-4 shadow-sm">
                   <div className="flex justify-between items-center pb-3 border-b border-slate-100 dark:border-slate-800">
                     <h3 className="text-xs font-black uppercase tracking-wider flex items-center gap-1.5">
-                      <Building2 className="w-4.5 h-4.5 text-[#003F8A]" />
+                      <Building2 className="w-4.5 h-4.5 text-[#0A5BFF]" />
                       Live Digital Twin Corridor telemetry
                     </h3>
                     <span className="text-[9px] font-bold text-green-500 flex items-center">
@@ -350,7 +350,7 @@ export default function CommandCenterTab() {
                     {[
                       { name: 'Intensive Care Unit (ICU)', count: '18 / 20 Beds', status: 'CRITICAL STAGE', barColor: 'bg-red-500', bg: 'bg-red-500/5' },
                       { name: 'Pediatrics Ward', count: '45 / 50 Beds', status: 'Near Capacity', barColor: 'bg-orange-500', bg: 'bg-orange-500/5' },
-                      { name: 'General Medicine OPD', count: '114 / 150 Limit', status: 'Active OPD Desk', barColor: 'bg-[#003F8A]', bg: 'bg-blue-500/5' },
+                      { name: 'General Medicine OPD', count: '114 / 150 Limit', status: 'Active OPD Desk', barColor: 'bg-[#0A5BFF]', bg: 'bg-blue-500/5' },
                       { name: 'Radiology / X-Ray', count: '3 / 4 Scanner rooms', status: 'Turnaround: 14m', barColor: 'bg-emerald-500', bg: 'bg-emerald-500/5' }
                     ].map((dept, idx) => (
                       <div key={idx} className={`p-4 rounded-2xl border border-slate-100 dark:border-slate-855 ${dept.bg} flex flex-col justify-between`}>
@@ -407,10 +407,10 @@ export default function CommandCenterTab() {
                 <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-855 rounded-3xl p-5 space-y-4 shadow-sm">
                   <div className="flex justify-between items-center pb-3 border-b border-slate-100 dark:border-slate-800">
                     <h3 className="text-xs font-black uppercase tracking-wider flex items-center gap-1">
-                      <Truck className="w-4 h-4 text-[#003F8A]" />
+                      <Truck className="w-4 h-4 text-[#0A5BFF]" />
                       Emergency Fleet Transit
                     </h3>
-                    <span className="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-[#003F8A] dark:text-blue-305 text-[8px] font-black rounded">3 Dispatched</span>
+                    <span className="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-[#0A5BFF] dark:text-blue-305 text-[8px] font-black rounded">3 Dispatched</span>
                   </div>
 
                   <div className="space-y-4 max-h-[40vh] overflow-y-auto pr-1 no-scrollbar">
@@ -418,7 +418,7 @@ export default function CommandCenterTab() {
                       <div key={amb.id} className="p-3 bg-slate-50 dark:bg-slate-955/40 border border-slate-100 dark:border-slate-855 rounded-2xl space-y-2">
                         <div className="flex justify-between text-[10.5px]">
                           <span className="font-black text-slate-808 dark:text-slate-108">{amb.id}</span>
-                          <span className="font-black text-[#003F8A] dark:text-blue-400">{amb.eta}</span>
+                          <span className="font-black text-[#0A5BFF] dark:text-blue-400">{amb.eta}</span>
                         </div>
                         <p className="text-[9px] font-bold text-gray-505"> {amb.location} • Driver: {amb.driver}</p>
                         <div className="flex justify-between items-center text-[8.5px] font-black">
@@ -430,7 +430,7 @@ export default function CommandCenterTab() {
                         {/* Progress */}
                         <div className="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden mt-1">
                           <div 
-                            className="h-full bg-[#003F8A] rounded-full transition-all duration-1000" 
+                            className="h-full bg-[#0A5BFF] rounded-full transition-all duration-1000" 
                             style={{ width: `${amb.progress}%` }}
                           />
                         </div>
@@ -456,7 +456,7 @@ export default function CommandCenterTab() {
               <div className="lg:col-span-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-855 rounded-3xl p-5 shadow-sm space-y-4">
                 <div className="flex justify-between items-center pb-2 border-b border-slate-100 dark:border-slate-800">
                   <h3 className="text-xs font-black uppercase tracking-wider flex items-center gap-1.5">
-                    <Map className="w-4.5 h-4.5 text-[#003F8A]" />
+                    <Map className="w-4.5 h-4.5 text-[#0A5BFF]" />
                     Interactive floor plan & indoor routing map
                   </h3>
                   <span className="text-[9px] text-gray-400 font-extrabold">CLICK DEPARTMENT TO VIEW TELEMETRY</span>
@@ -534,7 +534,7 @@ export default function CommandCenterTab() {
                     <div className="flex justify-between items-start pb-3 border-b border-slate-100 dark:border-slate-855">
                       <div>
                         <span className="text-[8.5px] font-black uppercase text-gray-500">Selected Node Telemetry</span>
-                        <h4 className="text-sm font-black text-[#003F8A] mt-0.5">{DEPT_INFO[selectedDept].title}</h4>
+                        <h4 className="text-sm font-black text-[#0A5BFF] mt-0.5">{DEPT_INFO[selectedDept].title}</h4>
                       </div>
                       <button 
                         onClick={() => setSelectedDept(null)}
@@ -551,7 +551,7 @@ export default function CommandCenterTab() {
                       </div>
                       <div className="flex justify-between py-2 border-b border-slate-50 dark:border-slate-855">
                         <span className="text-gray-500">Expected Wait Time</span>
-                        <span className="text-[#003F8A] font-black">{DEPT_INFO[selectedDept].waitTime}</span>
+                        <span className="text-[#0A5BFF] font-black">{DEPT_INFO[selectedDept].waitTime}</span>
                       </div>
                       <div className="flex justify-between py-2 border-b border-slate-50 dark:border-slate-855">
                         <span className="text-gray-500">On-Duty Medical Staff</span>
@@ -565,7 +565,7 @@ export default function CommandCenterTab() {
 
                     {/* Operational controls */}
                     <div className="pt-4 space-y-2">
-                      <button className="w-full bg-[#003F8A] hover:bg-[#002f66] text-white py-3 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer">
+                      <button className="w-full bg-[#0A5BFF] hover:bg-[#002f66] text-white py-3 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer">
                         Reallocate Staff Buffer
                       </button>
                       <button className="w-full border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-900 py-3 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer">
@@ -623,7 +623,7 @@ export default function CommandCenterTab() {
                           <span className="text-gray-505">Allocated: </span>
                           <span className="font-black text-slate-805 dark:text-slate-205">{trm.bedsAllocated}</span>
                         </div>
-                        <p className="text-[9.5px] text-[#003F8A] font-bold">{trm.doctor}</p>
+                        <p className="text-[9.5px] text-[#0A5BFF] font-bold">{trm.doctor}</p>
                       </div>
                     </div>
                   ))}
@@ -633,7 +633,7 @@ export default function CommandCenterTab() {
               {/* Trauma Reserves telemetry */}
               <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-855 rounded-3xl p-5 space-y-4 shadow-sm">
                 <h3 className="text-xs font-black uppercase tracking-wider flex items-center gap-1.5">
-                  <Activity className="w-4.5 h-4.5 text-[#003F8A]" />
+                  <Activity className="w-4.5 h-4.5 text-[#0A5BFF]" />
                   Emergency Trauma Reserves
                 </h3>
 
@@ -673,7 +673,7 @@ export default function CommandCenterTab() {
               <div className="lg:col-span-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-855 rounded-3xl p-5 space-y-4 shadow-sm">
                 <div className="flex justify-between items-center pb-2 border-b border-slate-100 dark:border-slate-800">
                   <h3 className="text-xs font-black uppercase tracking-wider flex items-center gap-1.5">
-                    <Sparkles className="w-4.5 h-4.5 text-[#003F8A]" />
+                    <Sparkles className="w-4.5 h-4.5 text-[#0A5BFF]" />
                     Conversational Operational Copilot
                   </h3>
                   <span className="text-[9px] text-gray-500 font-extrabold uppercase">MCGM-Predictive V2</span>
@@ -684,7 +684,7 @@ export default function CommandCenterTab() {
                   {chatHistory.map((item, idx) => (
                     <div key={idx} className="space-y-2">
                       <div className="flex justify-end">
-                        <div className="bg-[#003F8A] text-white p-3 rounded-2xl text-xs font-black max-w-sm">
+                        <div className="bg-[#0A5BFF] text-white p-3 rounded-2xl text-xs font-black max-w-sm">
                           {item.query}
                         </div>
                       </div>
@@ -708,7 +708,7 @@ export default function CommandCenterTab() {
                                   { h: '16:00', v: 65 }
                                 ].map((bar, bIdx) => (
                                   <div key={bIdx} className="flex flex-col items-center flex-1 space-y-1">
-                                    <div style={{ height: `${(bar.v / 120) * 36}px` }} className={`w-3.5 rounded-t-sm ${bar.v > 100 ? 'bg-orange-500' : 'bg-[#003F8A]'}`} />
+                                    <div style={{ height: `${(bar.v / 120) * 36}px` }} className={`w-3.5 rounded-t-sm ${bar.v > 100 ? 'bg-orange-500' : 'bg-[#0A5BFF]'}`} />
                                     <span className="text-[8px] font-black text-gray-400">{bar.h}</span>
                                   </div>
                                 ))}
@@ -729,11 +729,11 @@ export default function CommandCenterTab() {
                     value={nlpQuery}
                     onChange={(e) => setNlpQuery(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && handleNlpSearch(nlpQuery)}
-                    className="flex-1 px-4 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-855 rounded-2xl text-xs font-semibold outline-none focus:ring-1 focus:ring-[#003F8A]"
+                    className="flex-1 px-4 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-855 rounded-2xl text-xs font-semibold outline-none focus:ring-1 focus:ring-[#0A5BFF]"
                   />
                   <button 
                     onClick={() => handleNlpSearch(nlpQuery)}
-                    className="bg-[#003F8A] hover:bg-[#002f66] text-white px-5 rounded-2xl text-xs font-black uppercase tracking-wider cursor-pointer"
+                    className="bg-[#0A5BFF] hover:bg-[#002f66] text-white px-5 rounded-2xl text-xs font-black uppercase tracking-wider cursor-pointer"
                   >
                     {isNlpRunning ? 'Running...' : <Send className="w-4 h-4" />}
                   </button>
@@ -774,7 +774,7 @@ export default function CommandCenterTab() {
               {/* Critical Stocks lists */}
               <div className="lg:col-span-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-855 rounded-3xl p-5 space-y-4 shadow-sm">
                 <h3 className="text-xs font-black uppercase tracking-wider flex items-center gap-1">
-                  <Sliders className="w-4 h-4 text-[#003F8A]" />
+                  <Sliders className="w-4 h-4 text-[#0A5BFF]" />
                   Central Inventory and Stock reserves
                 </h3>
 
@@ -805,7 +805,7 @@ export default function CommandCenterTab() {
               {/* On-Duty Shifts Allocation */}
               <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-855 rounded-3xl p-5 space-y-4 shadow-sm">
                 <h3 className="text-xs font-black uppercase tracking-wider flex items-center gap-1">
-                  <Users className="w-4.5 h-4.5 text-[#003F8A]" />
+                  <Users className="w-4.5 h-4.5 text-[#0A5BFF]" />
                   Active Shifts Roster
                 </h3>
 
@@ -840,7 +840,7 @@ export default function CommandCenterTab() {
               {/* Daily revenue metrics */}
               <div className="lg:col-span-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-855 rounded-3xl p-5 space-y-4 shadow-sm">
                 <h3 className="text-xs font-black uppercase tracking-wider flex items-center gap-1">
-                  <DollarSign className="w-4.5 h-4.5 text-[#003F8A]" />
+                  <DollarSign className="w-4.5 h-4.5 text-[#0A5BFF]" />
                   OPD & Scheme Revenue Summary
                 </h3>
 
@@ -873,7 +873,7 @@ export default function CommandCenterTab() {
                         <p className="text-[9px] text-gray-500 mt-0.5">{claim.desc}</p>
                       </div>
                       <div className="text-right">
-                        <span className="font-black text-[#003F8A]">{claim.amt}</span>
+                        <span className="font-black text-[#0A5BFF]">{claim.amt}</span>
                         <span className="block text-[8px] text-orange-550 font-black mt-0.5 uppercase">{claim.status}</span>
                       </div>
                     </div>
@@ -893,7 +893,7 @@ export default function CommandCenterTab() {
               className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-855 rounded-3xl p-5 space-y-4 shadow-sm max-w-3xl"
             >
               <h3 className="text-xs font-black uppercase tracking-wider flex items-center gap-1.5">
-                <FileText className="w-4.5 h-4.5 text-[#003F8A]" />
+                <FileText className="w-4.5 h-4.5 text-[#0A5BFF]" />
                 Daily/Weekly operational summary generator
               </h3>
               <p className="text-xs text-gray-500 dark:text-gray-400">
@@ -924,7 +924,7 @@ export default function CommandCenterTab() {
                 <button 
                   onClick={() => handleExport('PDF')}
                   disabled={isExporting}
-                  className="px-5 py-3 bg-[#003F8A] hover:bg-[#002f66] disabled:opacity-50 text-white text-xs font-black uppercase tracking-wider rounded-xl cursor-pointer flex items-center space-x-1.5"
+                  className="px-5 py-3 bg-[#0A5BFF] hover:bg-[#002f66] disabled:opacity-50 text-white text-xs font-black uppercase tracking-wider rounded-xl cursor-pointer flex items-center space-x-1.5"
                 >
                   <Download className="w-4 h-4" />
                   <span>{isExporting ? 'Generating PDF...' : 'Download PDF Report'}</span>
@@ -964,7 +964,7 @@ export default function CommandCenterTab() {
               </div>
               
               <div className="flex items-center space-x-4">
-                <span className="font-mono text-sm tracking-widest text-[#003F8A] dark:text-blue-400">10:28:12 AM</span>
+                <span className="font-mono text-sm tracking-widest text-[#0A5BFF] dark:text-blue-400">10:28:12 AM</span>
                 <button 
                   onClick={() => setIsWallMode(false)}
                   className="px-4 py-2 bg-slate-900 border border-slate-800 text-xs font-black uppercase rounded-lg hover:bg-slate-805 transition-colors cursor-pointer"
@@ -1020,7 +1020,7 @@ export default function CommandCenterTab() {
                           <span className="font-black text-slate-100">{amb.id}</span>
                           <p className="text-[9px] text-slate-405 mt-0.5">{amb.location}</p>
                         </div>
-                        <span className="font-black text-[#003F8A]">{amb.eta}</span>
+                        <span className="font-black text-[#0A5BFF]">{amb.eta}</span>
                       </div>
                     ))}
                   </div>

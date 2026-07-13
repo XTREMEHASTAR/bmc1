@@ -44,6 +44,10 @@ export default function VoiceAssistantOverlay({ currentPortal, isDarkMode }: Voi
     originalText?: string;
     feedbackType?: 'info' | 'success' | 'warning' | 'error';
     timestamp: string;
+    agent?: string;
+    intent?: string;
+    confidence?: number;
+    status?: string;
   };
   const [chatHistory, setChatHistory] = useState<ChatEntry[]>([
     { id: 'init', role: 'system', text: 'How can I help you, Doctor?', feedbackType: 'info', timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }
@@ -69,11 +73,19 @@ export default function VoiceAssistantOverlay({ currentPortal, isDarkMode }: Voi
   const animationFrameRef = useRef<number | null>(null);
   const speechRecognizerRef = useRef<any>(null);
   const isExplicitlyStopped = useRef<boolean>(false);
+  const isListeningRef = useRef<boolean>(false);
+  const isStartingRef = useRef<boolean>(false);
   const [pausedForScribing, setPausedForScribing] = useState(false);
   // Refs to avoid stale closures inside SpeechRecognition callbacks
   const isOpenRef = useRef<boolean>(false);
   const wakeWordRef = useRef<string>('Hey Arogya');
   const currentPortalRef = useRef<string>(currentPortal);
+  const startSpeechRecognitionRef = useRef<() => void>(() => {});
+
+  // Sync isListening state to ref to avoid stale closures in event handlers
+  useEffect(() => {
+    isListeningRef.current = isListening;
+  }, [isListening]);
 
   // Speak voice output helper
   const speakResponse = (text: string) => {
@@ -128,7 +140,9 @@ export default function VoiceAssistantOverlay({ currentPortal, isDarkMode }: Voi
       const active = (e as CustomEvent).detail as boolean;
       if (active) {
         isExplicitlyStopped.current = true;
-        speechRecognizerRef.current?.stop();
+        if (speechRecognizerRef.current) {
+          try { speechRecognizerRef.current.stop(); } catch (_) {}
+        }
         setPausedForScribing(true);
         setIsListening(false);
         const msg = '⏸ Paused — Ambient scribing is active. Voice OS resumes when scribing stops.';
@@ -140,7 +154,7 @@ export default function VoiceAssistantOverlay({ currentPortal, isDarkMode }: Voi
         setPausedForScribing(false);
         isExplicitlyStopped.current = false;
         setTimeout(() => {
-          try { speechRecognizerRef.current?.start(); } catch (e) { /* ignore */ }
+          try { startSpeechRecognitionRef.current(); } catch (e) { /* ignore */ }
         }, 600);
         const msg = '▶ Voice OS resumed. Listening for commands...';
         setResponseMessage(msg);
@@ -153,102 +167,217 @@ export default function VoiceAssistantOverlay({ currentPortal, isDarkMode }: Voi
     return () => window.removeEventListener('mcgm-scribe-active', handleScribeActive);
   }, []);
 
-  // Speech Recognition setup
+  // Check Speech Recognition support once on mount
   useEffect(() => {
     const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     if (!SpeechRecognition) {
       setMicPermission('denied');
       const st = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
       setChatHistory(prev => [...prev, { id: 'sys-nosupport', role: 'system', text: 'Speech recognition is not supported in this browser. Please use Chrome or Edge.', feedbackType: 'error', timestamp: st }]);
+    }
+  }, []);
+
+  // Dynamically initialize SpeechRecognition on every start
+  const startSpeechRecognition = () => {
+    if ((isListeningRef.current || isStartingRef.current) && speechRecognizerRef.current) {
       return;
     }
+    
+    isStartingRef.current = true;
+    
+    if (speechRecognizerRef.current) {
+      try {
+        speechRecognizerRef.current.stop();
+      } catch (e) {}
+    }
 
-    const recognizer = new SpeechRecognition();
-    recognizer.continuous = true;
-    recognizer.interimResults = true;
-    recognizer.maxAlternatives = 1;
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SpeechRecognition) return;
 
-    if (language === 'hi') recognizer.lang = 'hi-IN';
-    else if (language === 'mr') recognizer.lang = 'mr-IN';
-    else recognizer.lang = 'en-IN';
+    try {
+      const recognizer = new SpeechRecognition();
+      recognizer.continuous = true;
+      recognizer.interimResults = true;
+      recognizer.maxAlternatives = 1;
 
-    recognizer.onstart = () => {
-      setIsListening(true);
-      setMicPermission('granted');
-      setFeedbackType('info');
-      startWaveformSimulation();
-    };
+      if (language === 'hi') recognizer.lang = 'hi-IN';
+      else if (language === 'mr') recognizer.lang = 'mr-IN';
+      else recognizer.lang = 'en-IN';
 
-    recognizer.onresult = (event: any) => {
-      let finalTrans = '';
-      let interimTrans = '';
-      for (let i = event.resultIndex; i < event.results.length; ++i) {
-        if (event.results[i].isFinal) finalTrans += event.results[i][0].transcript;
-        else interimTrans += event.results[i][0].transcript;
-      }
-      if (finalTrans) {
-        setTranscript(finalTrans);
-        setInterimTranscript('');
-        processCommandWithRefs(finalTrans, isOpenRef.current, wakeWordRef.current, currentPortalRef.current);
-      }
-      if (interimTrans) setInterimTranscript(interimTrans);
-    };
+      recognizer.onstart = () => {
+        if (speechRecognizerRef.current !== recognizer) return;
+        isStartingRef.current = false;
+        setIsListening(true);
+        setMicPermission('granted');
+        setFeedbackType('info');
+        startWaveformSimulation();
+      };
 
-    recognizer.onerror = (e: any) => {
-      console.error('[VoiceOS] SpeechRecognition error:', e.error);
-      if (e.error === 'not-allowed' || e.error === 'permission-denied') {
-        setMicPermission('denied');
-        isExplicitlyStopped.current = true;
-        const st = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        const msg = '🚫 Microphone access denied. Click the mic icon in your browser address bar to allow access, then click the orb again.';
-        setChatHistory(prev => [...prev, { id: 'sys-denied-' + Date.now(), role: 'system', text: msg, feedbackType: 'error', timestamp: st }]);
-        setResponseMessage(msg);
-        setFeedbackType('error');
-      } else if (e.error === 'audio-capture') {
-        const st = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        const msg = '🎤 No microphone found. Please connect a microphone and try again.';
-        setChatHistory(prev => [...prev, { id: 'sys-nomic-' + Date.now(), role: 'system', text: msg, feedbackType: 'error', timestamp: st }]);
-        isExplicitlyStopped.current = true;
-      } else if (e.error === 'network') {
-        // network errors: just retry
-        console.warn('[VoiceOS] Network error, will retry...');
-      }
-      // no-speech is normal — do NOT set isExplicitlyStopped
-    };
+      recognizer.onresult = (event: any) => {
+        if (speechRecognizerRef.current !== recognizer) return;
+        let finalTrans = '';
+        let interimTrans = '';
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+          if (event.results[i].isFinal) finalTrans += event.results[i][0].transcript;
+          else interimTrans += event.results[i][0].transcript;
+        }
+        if (finalTrans) {
+          setTranscript(finalTrans);
+          setInterimTranscript('');
+          processCommandWithRefs(finalTrans, isOpenRef.current, wakeWordRef.current, currentPortalRef.current);
+        }
+        if (interimTrans) setInterimTranscript(interimTrans);
+      };
 
-    recognizer.onend = () => {
-      setIsListening(false);
-      setInterimTranscript('');
-      stopWaveformSimulation();
-      if (!isExplicitlyStopped.current) {
-        setTimeout(() => {
-          if (!isExplicitlyStopped.current) {
-            try { recognizer.start(); } catch (_) { /* already starting */ }
+      recognizer.onerror = (e: any) => {
+        if (speechRecognizerRef.current !== recognizer) return;
+        isStartingRef.current = false;
+        console.error('[VoiceOS] SpeechRecognition error:', e.error);
+        if (e.error === 'not-allowed' || e.error === 'permission-denied') {
+          if (document.hidden) {
+            console.warn('[VoiceOS] Speech recognition stopped due to backgrounding. Will resume on focus.');
+            return;
           }
-        }, 400);
+          if (micPermission !== 'granted') {
+            setMicPermission('denied');
+            isExplicitlyStopped.current = true;
+            const st = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const msg = '🚫 Microphone access denied. Click the lock icon in your browser address bar to allow access, then click the orb again.';
+            setChatHistory(prev => [...prev, { id: 'sys-denied-' + Date.now(), role: 'system', text: msg, feedbackType: 'error', timestamp: st }]);
+            setResponseMessage(msg);
+            setFeedbackType('error');
+          } else {
+            console.warn('[VoiceOS] Speech recognition start blocked by browser (gesture restriction). Waiting for user focus/interaction.');
+          }
+        } else if (e.error === 'audio-capture') {
+          const st = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+          const msg = '🎤 No microphone found. Please connect a microphone and try again.';
+          setChatHistory(prev => [...prev, { id: 'sys-nomic-' + Date.now(), role: 'system', text: msg, feedbackType: 'error', timestamp: st }]);
+          isExplicitlyStopped.current = true;
+        } else if (e.error === 'network') {
+          console.warn('[VoiceOS] Network error, will retry...');
+        }
+      };
+
+      recognizer.onend = () => {
+        if (speechRecognizerRef.current !== recognizer) return;
+        isStartingRef.current = false;
+        setIsListening(false);
+        setInterimTranscript('');
+        stopWaveformSimulation();
+        if (!isExplicitlyStopped.current && !document.hidden) {
+          setTimeout(() => {
+            if (!isExplicitlyStopped.current && !document.hidden) {
+              startSpeechRecognition();
+            }
+          }, 400);
+        }
+      };
+
+      speechRecognizerRef.current = recognizer;
+      recognizer.start();
+    } catch (err) {
+      isStartingRef.current = false;
+      console.error('[VoiceOS] Failed to start recognition:', err);
+    }
+  };
+
+  useEffect(() => {
+    startSpeechRecognitionRef.current = startSpeechRecognition;
+  }, [language, isListening]);
+
+  // Self-healing watchdog: automatically restart recognition if it stops unexpectedly
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (
+        isOpen &&
+        !isListeningRef.current &&
+        !isStartingRef.current &&
+        !isExplicitlyStopped.current &&
+        !pausedForScribing &&
+        !document.hidden &&
+        micPermission === 'granted'
+      ) {
+        console.log('[VoiceOS] Watchdog: Speech recognition stopped unexpectedly. Restarting...');
+        try {
+          startSpeechRecognition();
+        } catch (e) {
+          console.error('[VoiceOS] Watchdog restart failed:', e);
+        }
+      }
+    }, 2000); // Check every 2 seconds for aggressive self-healing
+
+    return () => clearInterval(interval);
+  }, [isOpen, pausedForScribing, micPermission]);
+
+  // Auto-resume speech recognition when the tab regains focus or becomes visible
+  useEffect(() => {
+    const handleFocus = () => {
+      if (
+        isOpen &&
+        !isListeningRef.current &&
+        !isStartingRef.current &&
+        !isExplicitlyStopped.current &&
+        !pausedForScribing &&
+        micPermission === 'granted'
+      ) {
+        console.log('[VoiceOS] Window focused. Resuming speech recognition...');
+        startSpeechRecognition();
       }
     };
 
-    speechRecognizerRef.current = recognizer;
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        if (
+          isOpen &&
+          !isListeningRef.current &&
+          !isStartingRef.current &&
+          !isExplicitlyStopped.current &&
+          !pausedForScribing &&
+          micPermission === 'granted'
+        ) {
+          console.log('[VoiceOS] Document visible. Resuming speech recognition...');
+          startSpeechRecognition();
+        }
+      } else {
+        // Document is hidden, stop recognition to prevent background retry loops
+        if (speechRecognizerRef.current) {
+          try {
+            speechRecognizerRef.current.stop();
+          } catch (e) {}
+        }
+      }
+    };
 
+    window.addEventListener('focus', handleFocus);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => {
+      window.removeEventListener('focus', handleFocus);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [isOpen, pausedForScribing, micPermission]);
+
+  // Clean up on component unmount
+  useEffect(() => {
     return () => {
       isExplicitlyStopped.current = true;
-      try { recognizer.stop(); } catch (_) {}
+      if (speechRecognizerRef.current) {
+        try { speechRecognizerRef.current.stop(); } catch (_) {}
+      }
       stopWaveformSimulation();
     };
-  }, [language]);
+  }, []);
 
   // Helper: request mic permission via getUserMedia then start recognizer
   const requestMicAndStart = async () => {
     if (isListening) return; // already running
-    if (!speechRecognizerRef.current) return;
     try {
       // getUserMedia triggers the browser permission prompt (required user gesture)
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       stream.getTracks().forEach(t => t.stop()); // release stream; recognizer manages its own
       setMicPermission('granted');
       isExplicitlyStopped.current = false;
-      try { speechRecognizerRef.current.start(); } catch (_) { /* already starting */ }
+      startSpeechRecognition();
     } catch (err: any) {
       console.error('[VoiceOS] getUserMedia denied:', err);
       setMicPermission('denied');
@@ -356,7 +485,11 @@ export default function VoiceAssistantOverlay({ currentPortal, isDarkMode }: Voi
       text: effectiveText,
       corrected: wasChanged,
       originalText: wasChanged ? text : undefined,
-      timestamp: ts
+      timestamp: ts,
+      agent: response.agent,
+      intent: response.intent,
+      confidence: response.confidence,
+      status: response.success ? (response.action === 'confirm' ? 'Awaiting Confirmation' : 'Executed') : 'Failed/Unrecognized'
     }]);
     const raw = effectiveText.toLowerCase().trim();
     const currentWakeWord = wakeWordNow.toLowerCase();
@@ -457,16 +590,14 @@ export default function VoiceAssistantOverlay({ currentPortal, isDarkMode }: Voi
   const toggleListening = () => {
     if (isListening) {
       isExplicitlyStopped.current = true;
-      speechRecognizerRef.current?.stop();
+      if (speechRecognizerRef.current) {
+        try { speechRecognizerRef.current.stop(); } catch (_) {}
+      }
     } else {
       setTranscript('');
       setInterimTranscript('');
       isExplicitlyStopped.current = false;
-      try {
-        speechRecognizerRef.current?.start();
-      } catch (err) {
-        console.warn("Failed to start speech recognition:", err);
-      }
+      startSpeechRecognition();
     }
   };
 
@@ -508,10 +639,8 @@ export default function VoiceAssistantOverlay({ currentPortal, isDarkMode }: Voi
           setTranscript('');
           setInterimTranscript('');
           isExplicitlyStopped.current = false;
-          if (speechRecognizerRef.current) {
-            try {
-              speechRecognizerRef.current.start();
-            } catch (_) {}
+          if (micPermission === 'granted') {
+            startSpeechRecognition();
           } else {
             requestMicAndStart();
           }
@@ -555,7 +684,7 @@ export default function VoiceAssistantOverlay({ currentPortal, isDarkMode }: Voi
               className={`w-96 rounded-3xl border shadow-2xl p-5 flex flex-col space-y-4 z-55 ${
                 isDarkMode 
                   ? 'bg-slate-950/95 border-slate-800 text-white backdrop-blur-md' 
-                  : 'bg-white/95 border-gray-250 text-[#002068] backdrop-blur-md shadow-slate-200'
+                  : 'bg-white/95 border-gray-250 text-[#0A5BFF] backdrop-blur-md shadow-slate-200'
               }`}
             >
               {/* Header */}
@@ -653,17 +782,55 @@ export default function VoiceAssistantOverlay({ currentPortal, isDarkMode }: Voi
                     className={`flex ${entry.role === 'user' ? 'justify-end' : 'justify-start'}`}
                   >
                     {entry.role === 'user' ? (
-                      <div className="max-w-[78%] flex flex-col items-end gap-0.5">
+                      <div className="max-w-[85%] flex flex-col items-end gap-1">
                         {entry.corrected && (
-                          <span className="text-[8px] text-amber-400 font-bold flex items-center gap-1 mr-1">
-                            <span className="w-1.5 h-1.5 rounded-full bg-amber-400 inline-block" />
+                          <span className="text-[8px] text-amber-500 dark:text-amber-400 font-bold flex items-center gap-1 mr-1">
+                            <span className="w-1.5 h-1.5 rounded-full bg-amber-400 inline-block animate-pulse" />
                             Auto-corrected from: &ldquo;{entry.originalText}&rdquo;
                           </span>
                         )}
-                        <div className="bg-indigo-600/90 text-white rounded-2xl rounded-tr-sm px-3 py-2 text-[11px] font-medium shadow-lg shadow-indigo-900/30">
+                        <div className="bg-indigo-650 dark:bg-indigo-600/90 text-white rounded-2xl rounded-tr-sm px-3.5 py-2 text-[11px] font-medium shadow-md shadow-indigo-900/10">
                           {entry.text}
                         </div>
-                        <span className="text-[8px] text-slate-500 mr-1">{entry.timestamp}</span>
+                        
+                        {/* Command Recognition & Execution Metadata Badges */}
+                        {(entry.agent || entry.intent || entry.confidence !== undefined || entry.status) && (
+                          <div className="flex flex-wrap gap-1 justify-end px-1 max-w-full">
+                            {entry.agent && (
+                              <span className="text-[7.5px] font-mono px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-900/60 dark:text-slate-400 text-slate-600 border border-slate-200/50 dark:border-slate-800/40">
+                                🤖 {entry.agent.replace('_', ' ')}
+                              </span>
+                            )}
+                            {entry.intent && entry.intent !== 'UNRECOGNIZED' && entry.intent !== 'EMPTY' && (
+                              <span className="text-[7.5px] font-mono px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-900/60 dark:text-slate-400 text-slate-600 border border-slate-200/50 dark:border-slate-800/40">
+                                🎯 {entry.intent}
+                              </span>
+                            )}
+                            {entry.confidence !== undefined && entry.confidence > 0 && (
+                              <span className={`text-[7.5px] font-mono font-bold px-1.5 py-0.5 rounded border ${
+                                entry.confidence >= 90 
+                                  ? 'bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/25'
+                                  : entry.confidence >= 70
+                                  ? 'bg-amber-500/10 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400 border-amber-500/25'
+                                  : 'bg-rose-500/10 dark:bg-rose-500/20 text-rose-600 dark:text-rose-400 border-rose-500/25'
+                              }`}>
+                                📊 {entry.confidence}% Conf
+                              </span>
+                            )}
+                            {entry.status && (
+                              <span className={`text-[7.5px] font-bold px-1.5 py-0.5 rounded border ${
+                                entry.status === 'Executed'
+                                  ? 'bg-blue-500/10 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 border-blue-500/25'
+                                  : entry.status === 'Awaiting Confirmation'
+                                  ? 'bg-yellow-500/10 dark:bg-yellow-500/20 text-yellow-600 dark:text-yellow-400 border-yellow-500/25'
+                                  : 'bg-gray-500/10 dark:bg-gray-500/20 text-gray-600 dark:text-gray-400 border-gray-500/25'
+                              }`}>
+                                ⚡ {entry.status}
+                              </span>
+                            )}
+                          </div>
+                        )}
+                        <span className="text-[8px] text-slate-400 dark:text-slate-500 mr-1">{entry.timestamp}</span>
                       </div>
                     ) : (
                       <div className="max-w-[78%] flex flex-col items-start gap-0.5">
@@ -905,10 +1072,15 @@ export default function VoiceAssistantOverlay({ currentPortal, isDarkMode }: Voi
         )}
         <button
           onClick={async () => {
-            setIsOpen(!isOpen);
-            if (!isOpen) speakResponse('Arogya voice system ready. Speak a command.');
-            // Always request mic permission and start on click (user gesture required by browser)
-            await requestMicAndStart();
+            if (isOpen) {
+              setIsOpen(false);
+              isExplicitlyStopped.current = true;
+              try { speechRecognizerRef.current?.stop(); } catch (_) {}
+            } else {
+              setIsOpen(true);
+              speakResponse('Arogya voice system ready. Speak a command.');
+              await requestMicAndStart();
+            }
           }}
           className={`w-14 h-14 rounded-full shadow-2xl flex items-center justify-center relative overflow-hidden transition-all hover:scale-105 active:scale-95 border-2 border-white/20 cursor-pointer ${
             pausedForScribing

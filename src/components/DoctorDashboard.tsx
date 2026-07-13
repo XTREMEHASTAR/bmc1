@@ -716,26 +716,200 @@ export default function DoctorDashboard({
   const waitingCount = patients.filter(p => p.status === 'Waiting').length;
   const completedCount = patients.filter(p => p.status === 'Completed').length;
 
-  // Allergy warning checking logic
-  const checkDrugSafety = (drugName: string): { safe: boolean; reason?: string } => {
+
+  // Allergy, Drug-Drug, Hepatic & Renal warning checking logic
+  const checkDrugSafety = (drugName: string): { safe: boolean; reason?: string; severity?: 'warning' | 'critical' } => {
     const details = PATIENT_DETAILS_MAP[currentConsultingPatient.id];
     if (!details) return { safe: true };
 
     const lowerDrug = drugName.toLowerCase();
-    const hasSulfaAllergy = details.allergies.some(a => a.toLowerCase().includes('sulfa'));
-    const hasPenicillinAllergy = details.allergies.some(a => a.toLowerCase().includes('penicillin'));
-    const hasNsaidAllergy = details.allergies.some(a => a.toLowerCase().includes('ibuprofen') || a.toLowerCase().includes('aspirin'));
+    
+    // 1. Drug-Allergy Warnings
+    const allergies = details.allergies || [];
+    for (const allergy of allergies) {
+      const lowerAllergy = allergy.toLowerCase();
+      if (lowerAllergy.includes('penicillin') && (lowerDrug.includes('amoxicillin') || lowerDrug.includes('penicillin') || lowerDrug.includes('ampicillin') || lowerDrug.includes('cloxacillin'))) {
+        return { safe: false, severity: 'critical', reason: `CRITICAL ALLERGY: Patient has a recorded Penicillin allergy. ${drugName} is highly contraindicated!` };
+      }
+      if ((lowerAllergy.includes('sulfa') || lowerAllergy.includes('sulfonamide')) && (lowerDrug.includes('sulfamethoxazole') || lowerDrug.includes('pantoprazole') || lowerDrug.includes('celecoxib') || lowerDrug.includes('acetazolamide'))) {
+        return { safe: false, severity: 'warning', reason: `ALLERGY WARNING: Patient has a Sulfa drug allergy. Exercise caution with ${drugName}.` };
+      }
+      if ((lowerAllergy.includes('ibuprofen') || lowerAllergy.includes('aspirin') || lowerAllergy.includes('nsaid')) && (lowerDrug.includes('aceclofenac') || lowerDrug.includes('ibuprofen') || lowerDrug.includes('diclofenac') || lowerDrug.includes('aspirin') || lowerDrug.includes('naproxen') || lowerDrug.includes('indomethacin'))) {
+        return { safe: false, severity: 'critical', reason: `CRITICAL ALLERGY: Patient has an NSAID / Ibuprofen allergy. ${drugName} is highly contraindicated!` };
+      }
+    }
 
-    if (lowerDrug.includes('aceclofenac') && hasNsaidAllergy) {
-      return { safe: false, reason: 'Patient is allergic to Ibuprofen / NSAIDs. Aceclofenac is highly contraindicated!' };
+    // 2. Drug-Drug Interactions
+    const activeMeds = rxMeds.map(m => m.name.toLowerCase());
+    const pastMedsStr = details.pastVisits?.map(v => v.meds.toLowerCase()).join(' ') || '';
+
+    // NSAID + Aspirin interaction
+    if ((lowerDrug.includes('aceclofenac') || lowerDrug.includes('ibuprofen') || lowerDrug.includes('diclofenac') || lowerDrug.includes('naproxen')) && 
+        (activeMeds.some(m => m.includes('aspirin')) || pastMedsStr.includes('aspirin') || details.allergies.some(a => a.toLowerCase().includes('aspirin')))) {
+      return { safe: false, severity: 'warning', reason: `DRUG-DRUG INTERACTION: Concomitant use of NSAIDs and Aspirin increases gastrointestinal bleeding and ulceration risk.` };
     }
-    if (lowerDrug.includes('amoxicillin') && hasPenicillinAllergy) {
-      return { safe: false, reason: 'Patient has a Penicillin allergy. Amoxicillin is highly contraindicated!' };
+    
+    // NSAID + Methotrexate interaction
+    if ((lowerDrug.includes('aceclofenac') || lowerDrug.includes('ibuprofen') || lowerDrug.includes('diclofenac')) && 
+        (activeMeds.some(m => m.includes('methotrexate')) || pastMedsStr.includes('methotrexate'))) {
+      return { safe: false, severity: 'critical', reason: `CRITICAL INTERACTION: NSAIDs reduce methotrexate clearance, leading to potentially fatal hematological and GI toxicity.` };
     }
-    if (lowerDrug.includes('pantoprazole') && hasSulfaAllergy) {
-      return { safe: false, reason: 'Patient is allergic to Sulfa drugs. Use caution with Pantoprazole.' };
+
+    // 3. Hepatic & Renal Impairment Warnings
+    // Patient 4: Renal Impairment
+    if (currentConsultingPatient.id === '4') {
+      if (lowerDrug.includes('aceclofenac') || lowerDrug.includes('ibuprofen') || lowerDrug.includes('diclofenac')) {
+        return { safe: false, severity: 'warning', reason: `RENAL WARNING: Patient has a history of stage 3 CKD / Renal impairment. NSAIDs can worsen renal blood flow.` };
+      }
+      if (lowerDrug.includes('amoxicillin')) {
+        return { safe: false, severity: 'warning', reason: `RENAL DOSE ADJUSTMENT: Renal function impaired (e.g. GFR < 30). Reduce dosage of Amoxicillin.` };
+      }
     }
+
+    // Patient 5: Hepatic Impairment / Methotrexate therapy
+    if (currentConsultingPatient.id === '5') {
+      if (lowerDrug.includes('paracetamol') || lowerDrug.includes('pcm')) {
+        return { safe: false, severity: 'warning', reason: `HEPATIC WARNING: Patient has a history of hepatic flaring. Limit Paracetamol to max 2g/day.` };
+      }
+      if (lowerDrug.includes('methotrexate')) {
+        return { safe: false, severity: 'critical', reason: `CRITICAL HEPATOTOXICITY: Patient is on Weekly Methotrexate. Monitor liver function enzymes closely.` };
+      }
+    }
+
     return { safe: true };
+  };
+
+  // Dynamic NLP Client-side Clinical Text Parser
+  const parseClinicalText = (text: string) => {
+    if (!text.trim()) return;
+
+    const lower = text.toLowerCase();
+    
+    // 1. Extract Vitals
+    let bp = consultVitals.bp;
+    let pulse = consultVitals.pulse;
+    let temp = consultVitals.temp;
+    let spo2 = consultVitals.spo2;
+
+    const bpRegex = /(?:bp|blood\s+pressure)\s*(?:is)?\s*(\d{2,3}\/\d{2,3})/i;
+    const bpMatch = text.match(bpRegex);
+    if (bpMatch) {
+      bp = bpMatch[1];
+    } else {
+      const bpOverRegex = /(\d{2,3})\s*(?:over)\s*(\d{2,3})/i;
+      const bpOverMatch = text.match(bpOverRegex);
+      if (bpOverMatch) {
+        bp = `${bpOverMatch[1]}/${bpOverMatch[2]}`;
+      }
+    }
+
+    const pulseRegex = /(?:pulse|heart\s*rate)\s*(?:rate|is)?\s*(\d{2,3})/i;
+    const pulseMatch = text.match(pulseRegex);
+    if (pulseMatch) {
+      pulse = pulseMatch[1];
+    }
+
+    const tempRegex = /(?:temp|temperature)\s*(?:is)?\s*(\d{2,3}(?:\.\d)?)/i;
+    const tempMatch = text.match(tempRegex);
+    if (tempMatch) {
+      temp = tempMatch[1];
+    }
+
+    const spo2Regex = /(?:spo2|oxygen|o2)\s*(?:level|is)?\s*(\d{2,3})\s*%?/i;
+    const spo2Match = text.match(spo2Regex);
+    if (spo2Match) {
+      spo2 = spo2Match[1];
+    }
+
+    setConsultVitals({ bp, pulse, temp, spo2 });
+
+    // 2. Extract Diagnosis & ICD-10 mapping
+    let parsedDiagnosis = provisionalDiagnosis;
+    const diagnosesList = [
+      { name: 'Knee Osteoarthritis (M17.1)', keywords: ['knee osteoarthritis', 'osteoarthritis', 'knee pain', 'joint wear'] },
+      { name: 'Low Back Pain / Muscle Spasm (M54.5)', keywords: ['back pain', 'backache', 'lumbar strain', 'back spasm', 'muscle spasm'] },
+      { name: 'Vitamin D Deficiency (E55.9)', keywords: ['vitamin d deficiency', 'vit d deficiency', 'low vitamin d', 'deficiency'] },
+      { name: 'Hypertension (I10)', keywords: ['hypertension', 'high bp', 'high blood pressure'] },
+      { name: 'Diabetes Mellitus (E11.9)', keywords: ['diabetes', 'sugar level', 'high sugar', 'hba1c'] }
+    ];
+
+    for (const d of diagnosesList) {
+      if (d.keywords.some(kw => lower.includes(kw))) {
+        parsedDiagnosis = d.name;
+        break;
+      }
+    }
+    setProvisionalDiagnosis(parsedDiagnosis);
+
+    // 3. Extract Medications
+    const medsList = [
+      { name: 'Tab. Paracetamol 650mg', keywords: ['paracetamol', 'pcm', 'crocin'], dose: '1-0-1', timing: 'After Food', duration: '5 Days' },
+      { name: 'Tab. Aceclofenac 100mg', keywords: ['aceclofenac', 'hifenac'], dose: '1-0-1', timing: 'After Food', duration: '5 Days' },
+      { name: 'Tab. Pantoprazole 40mg', keywords: ['pantoprazole', 'pantocid', 'panto'], dose: '1-0-0', timing: 'Before Food', duration: '5 Days' },
+      { name: 'Cap. Amoxicillin 500mg', keywords: ['amoxicillin', 'mox'], dose: '1-1-1', timing: 'After Food', duration: '7 Days' },
+      { name: 'Tab. Aspirin 75mg', keywords: ['aspirin', 'ecosprin'], dose: '0-0-1', timing: 'After Food', duration: '1 Month' }
+    ];
+
+    const detectedMeds: typeof rxMeds = [];
+    medsList.forEach(m => {
+      if (m.keywords.some(kw => lower.includes(kw))) {
+        if (!rxMeds.some(existing => existing.name.toLowerCase().includes(m.keywords[0]))) {
+          detectedMeds.push({ name: m.name, dose: m.dose, timing: m.timing, duration: m.duration });
+        }
+      }
+    });
+
+    if (detectedMeds.length > 0) {
+      setRxMeds(prev => {
+        const filtered = detectedMeds.filter(dm => !prev.some(p => p.name.toLowerCase().includes(dm.name.split(' ')[1].toLowerCase())));
+        return [...prev, ...filtered];
+      });
+    }
+
+    // 4. Extract Labs/Radiology
+    const labTests = [
+      { id: 'cbc', name: 'Complete Blood Count (CBC)' },
+      { id: 'lft', name: 'Liver Function Test (LFT)' },
+      { id: 'rft', name: 'Renal Function Test (RFT)' },
+      { id: 'hba1c', name: 'Glycated Haemoglobin (HbA1c)' }
+    ];
+    const detectedLabs: string[] = [];
+    labTests.forEach(l => {
+      if (lower.includes(l.id) || lower.includes(l.name.toLowerCase())) {
+        detectedLabs.push(l.name);
+      }
+    });
+    if (detectedLabs.length > 0) {
+      setSelectedLabTests(prev => Array.from(new Set([...prev, ...detectedLabs])));
+      setToast({ id: `t-lab-${Date.now()}`, title: 'Lab Tests Selected', message: `Suggested lab tests detected: ${detectedLabs.join(', ')}`, type: 'info' });
+    }
+
+    const radioTests = [
+      { id: 'x-ray', name: 'Knee AP & Lateral X-Ray' },
+      { id: 'xray', name: 'Knee AP & Lateral X-Ray' },
+      { id: 'mri', name: 'L-S Spine MRI' }
+    ];
+    const detectedRadio: string[] = [];
+    radioTests.forEach(r => {
+      if (lower.includes(r.id) || lower.includes(r.name.toLowerCase())) {
+        detectedRadio.push(r.name);
+      }
+    });
+    if (detectedRadio.length > 0) {
+      setSelectedRadiologyTests(prev => Array.from(new Set([...prev, ...detectedRadio])));
+      setToast({ id: `t-radio-${Date.now()}`, title: 'Radiology Selected', message: `Suggested radiology scans detected: ${detectedRadio.join(', ')}`, type: 'info' });
+    }
+
+    // 5. Build SOAP Notes
+    const subjective = text.length > 120 ? text : `Patient reports: "${text}"`;
+    const objective = `Vitals verified: BP ${bp}, Pulse ${pulse} bpm, Temp ${temp}°F, SpO2 ${spo2}%. Joint and physical examination performed.`;
+    const assessment = `${parsedDiagnosis} based on clinical voice scribing and diagnostic algorithms.`;
+    const allMeds = [...rxMeds, ...detectedMeds];
+    const medNames = allMeds.map(m => m.name.split(' ').slice(1).join(' ')).join(', ');
+    const investigations = [...detectedLabs, ...detectedRadio].join(' & ');
+    const plan = `Prescribe: ${medNames || 'None'}. Labs/Radio: ${investigations || 'Routine follow-up'}. Follow up in 2 weeks.`;
+
+    setSoapNotes({ subjective, objective, assessment, plan });
   };
 
   // Voice Command parser and executor
@@ -839,14 +1013,9 @@ export default function DoctorDashboard({
       setIsScribing(false);
       // Notify Voice OS: scribing stopped → it can resume
       window.dispatchEvent(new CustomEvent('mcgm-scribe-active', { detail: false }));
-      // Auto compile SOAP notes from transcript
+      // Auto compile SOAP notes from transcript using NLP parser
       if (scribingText.trim()) {
-        setSoapNotes({
-          subjective: `Patient reports: "${scribingText.trim().substring(0, 100)}..."`,
-          objective: `Vitals verified: BP ${consultVitals.bp}, Pulse ${consultVitals.pulse} bpm. Joint flexion tested.`,
-          assessment: `Osteoarthritis based on clinical voice notes and local diagnostic mapping.`,
-          plan: `Prescribed medications: ${rxMeds.map(m => m.name).join(', ')}. Scheduled follow-up.`
-        });
+        parseClinicalText(scribingText.trim());
       }
     } else {
       setScribingText('');
@@ -868,7 +1037,6 @@ export default function DoctorDashboard({
       }
     }
   };
-
   useEffect(() => {
     executeVoiceCommandRef.current = executeVoiceCommand;
   }, [executeVoiceCommand]);
@@ -913,6 +1081,9 @@ export default function DoctorDashboard({
 
     setTimeout(() => {
       setIsScribing(false);
+      // Run NLP Parser on the full accumulated text
+      const compiledText = mockDialogs.map(d => d.text).join(' ');
+      parseClinicalText(compiledText);
       setToast({ id: `t-${Date.now()}`, title: 'Voice Scribing Complete', message: 'Scribed audio compiled into SOAP notes.', type: 'success' });
     }, 15000);
   };
@@ -2156,24 +2327,17 @@ export default function DoctorDashboard({
               </button>
             </div>
 
-            {/* Transcribed logs with Speaker Labels */}
-            <div className="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl border border-slate-800/5 max-h-40 overflow-y-auto space-y-2 no-scrollbar">
-              {scribingLogs.map((log, idx) => (
-                <div key={idx} className="text-[11px] leading-relaxed">
-                  <span className={`font-black uppercase tracking-wider text-[9px] mr-1.5 ${
-                    log.speaker === 'Doctor' ? 'text-[#003F8A] dark:text-blue-400' : 'text-orange-500'
-                  }`}>
-                    [{log.speaker}]:
-                  </span>
-                  <span className="text-slate-700 dark:text-slate-300 font-semibold">"{log.text}"</span>
-                </div>
-              ))}
-              {scribingLogs.length === 0 && (
-                <p className="text-center text-[10px] text-gray-400 font-bold py-6">
-                  Click the button above to begin voice transcription simulation or live mic dictation.
-                </p>
-              )}
-              <div ref={scribingEndRef} />
+            {/* Continuous Clinical documentation editor workspace */}
+            <div className="space-y-1">
+              <label className="text-[9px] font-black uppercase text-gray-500 block">Continuous Clinical Note Editor</label>
+              <textarea
+                value={scribingText}
+                onChange={(e) => setScribingText(e.target.value)}
+                placeholder="Doctor's continuous medical notes transcribe here. You can also type directly in this workspace..."
+                className={`w-full h-40 p-4 rounded-2xl border text-xs font-semibold leading-relaxed outline-none focus:ring-1 focus:ring-[#003F8A] resize-none ${
+                  isDarkMode ? 'bg-[#090d16] border-slate-850 text-white' : 'bg-slate-50 border-slate-200 text-slate-800'
+                }`}
+              />
             </div>
 
             {/* Multi-drug Prescriber pad */}
@@ -2328,16 +2492,42 @@ export default function DoctorDashboard({
               </div>
 
               {/* Interaction Warning Panel */}
-              <div className="p-3 bg-red-500/5 border border-red-500/15 rounded-xl space-y-1">
-                <h5 className="font-extrabold text-red-500 flex items-center space-x-1">
-                  <ShieldAlert className="w-3.5 h-3.5" />
-                  <span>Interaction Safety Warnings</span>
+              <div className="p-3 bg-slate-50 dark:bg-slate-900 rounded-xl space-y-1.5 border border-slate-800/5">
+                <h5 className="font-extrabold text-slate-800 dark:text-white flex items-center space-x-1.5 text-xs">
+                  <ShieldAlert className="w-4 h-4 text-orange-500" />
+                  <span>Clinical Safety & Interaction Audit</span>
                 </h5>
-                <p className="text-[10px] text-gray-555 leading-relaxed font-semibold">
-                  Checking {rxMeds.length} pad drugs against patient {details?.allergies.length} allergies... Safe. Ensure Aceclofenac is taken post-meals to avoid gastric irritation.
-                </p>
-              </div>
-            </div>
+                {(() => {
+                  const warnings = rxMeds
+                    .map(m => checkDrugSafety(m.name))
+                    .filter(w => !w.safe);
+                  
+                  if (warnings.length === 0) {
+                    return (
+                      <p className="text-[10px] text-green-600 dark:text-green-400 font-semibold leading-relaxed">
+                        ✓ No active contraindications, interactions, or allergy warnings detected for the prescribed {rxMeds.length} medication(s).
+                      </p>
+                    );
+                  }
+
+                  return (
+                    <div className="space-y-1.5">
+                      {warnings.map((w, idx) => (
+                        <div
+                          key={idx}
+                          className={`p-2 rounded-lg text-[10px] leading-relaxed font-bold border ${
+                            w.severity === 'critical'
+                              ? 'bg-red-500/10 border-red-500/20 text-red-650 dark:text-red-400'
+                              : 'bg-amber-500/10 border-amber-500/20 text-amber-650 dark:text-amber-400'
+                          }`}
+                        >
+                          ⚠️ {w.reason}
+                        </div>
+                      ))}
+                    </div>
+                  );
+                })()}
+              </div>            </div>
           </div>
 
           {/* E-Sign Block with signature canvas */}

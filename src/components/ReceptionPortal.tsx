@@ -351,7 +351,7 @@ export default function ReceptionPortal({
   };
 
   return (
-    <div className={`min-h-screen font-sans flex transition-colors duration-300 ${isDarkMode ? 'bg-[#090d16] text-white' : 'bg-[#f4f7fc] text-[#002068]'}`}>
+    <div className={`min-h-screen font-sans flex transition-colors duration-300 ${isDarkMode ? 'bg-[#090d16] text-white' : 'bg-[#f4f7fc] text-[#0A5BFF]'}`}>
       
       {/* Sidebar Controls */}
       <aside className={`w-72 flex flex-col justify-between border-r ${isDarkMode ? 'bg-[#0f1524] border-slate-800' : 'bg-white border-gray-100'} p-4`}>
@@ -1389,7 +1389,7 @@ export default function ReceptionPortal({
             animate={{ y: 0, opacity: 1, scale: 1 }}
             exit={{ y: -10, opacity: 0, scale: 0.95 }}
             className={`fixed top-6 left-1/2 -translate-x-1/2 z-[99999] max-w-sm w-[90%] border rounded-2xl shadow-2xl p-4 flex items-start space-x-3 ${
-              isDarkMode ? 'bg-[#0f1524] border-slate-800 text-white' : 'bg-white border-gray-200 text-[#002068]'
+              isDarkMode ? 'bg-[#0f1524] border-slate-800 text-white' : 'bg-white border-gray-200 text-[#0A5BFF]'
             }`}
           >
             <div className={`p-2 rounded-xl ${

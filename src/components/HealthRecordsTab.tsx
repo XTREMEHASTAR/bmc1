@@ -111,7 +111,7 @@ export default function HealthRecordsTab({ records, onAddRecord }: HealthRecords
                 placeholder="Search prescriptions, reports..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-12 pr-4 py-3.5 rounded-xl border border-gray-200 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-[#002068] text-sm"
+                className="w-full pl-12 pr-4 py-3.5 rounded-xl border border-gray-200 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-[#0A5BFF] text-sm"
               />
             </div>
 
@@ -128,7 +128,7 @@ export default function HealthRecordsTab({ records, onAddRecord }: HealthRecords
                   onClick={() => setActiveFilter(pill.code as any)}
                   className={`px-5 py-2.5 rounded-full font-bold text-xs tracking-wide transition-all duration-200 whitespace-nowrap shadow-sm ${
                     activeFilter === pill.code
-                      ? 'bg-[#002068] text-white'
+                      ? 'bg-[#0A5BFF] text-white'
                       : 'bg-white border border-gray-200 text-gray-500 hover:text-gray-800'
                   }`}
                 >
@@ -178,7 +178,7 @@ export default function HealthRecordsTab({ records, onAddRecord }: HealthRecords
             {/* Floating Action Button */}
             <button
               onClick={() => setShowAddModal(true)}
-              className="fixed bottom-24 right-6 w-14 h-14 bg-[#002068] text-white rounded-full flex items-center justify-center shadow-xl hover:bg-[#00164e] active:scale-95 transition-all z-40 cursor-pointer border-2 border-white"
+              className="fixed bottom-24 right-6 w-14 h-14 bg-[#0A5BFF] text-white rounded-full flex items-center justify-center shadow-xl hover:bg-[#00164e] active:scale-95 transition-all z-40 cursor-pointer border-2 border-white"
             >
               <Plus className="w-6 h-6 stroke-[3]" />
             </button>
@@ -264,7 +264,7 @@ export default function HealthRecordsTab({ records, onAddRecord }: HealthRecords
             )}
 
             {/* Actions Panel */}
-            <div className="bg-[#002068] text-white rounded-3xl p-5 shadow-lg space-y-3">
+            <div className="bg-[#0A5BFF] text-white rounded-3xl p-5 shadow-lg space-y-3">
               <h4 className="font-bold text-xs tracking-wider uppercase text-blue-200">Report Actions</h4>
               <div className="grid grid-cols-2 gap-3">
                 <button
@@ -273,7 +273,7 @@ export default function HealthRecordsTab({ records, onAddRecord }: HealthRecords
                     message: 'PDF statement successfully buffered to device downloads.',
                     type: 'success'
                   })}
-                  className="bg-white text-[#002068] py-3.5 px-4 rounded-xl font-bold hover:bg-gray-50 transition-all flex items-center justify-center space-x-2 text-xs"
+                  className="bg-white text-[#0A5BFF] py-3.5 px-4 rounded-xl font-bold hover:bg-gray-50 transition-all flex items-center justify-center space-x-2 text-xs"
                 >
                   <Download className="w-4 h-4" />
                   <span>Download PDF</span>
@@ -464,7 +464,7 @@ export default function HealthRecordsTab({ records, onAddRecord }: HealthRecords
                     placeholder="e.g. Tooth Extraction Prescription"
                     value={newTitle}
                     onChange={(e) => setNewTitle(e.target.value)}
-                    className="w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-[#f7fafd] text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#002068]"
+                    className="w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-[#F8FAFD] text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#0A5BFF]"
                     required
                   />
                 </div>
@@ -478,7 +478,7 @@ export default function HealthRecordsTab({ records, onAddRecord }: HealthRecords
                     placeholder="e.g. Sion Dental Clinic"
                     value={newSource}
                     onChange={(e) => setNewSource(e.target.value)}
-                    className="w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-[#f7fafd] text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#002068]"
+                    className="w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-[#F8FAFD] text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#0A5BFF]"
                     required
                   />
                 </div>
@@ -495,7 +495,7 @@ export default function HealthRecordsTab({ records, onAddRecord }: HealthRecords
                         onClick={() => setNewType(type)}
                         className={`py-3 rounded-xl border text-xs font-bold tracking-wider uppercase transition-all ${
                           newType === type
-                            ? 'bg-[#002068] border-[#002068] text-white'
+                            ? 'bg-[#0A5BFF] border-[#0A5BFF] text-white'
                             : 'bg-white border-gray-200 text-gray-600 hover:border-gray-300'
                         }`}
                       >
@@ -505,14 +505,14 @@ export default function HealthRecordsTab({ records, onAddRecord }: HealthRecords
                   </div>
                 </div>
 
-                <div className="border-2 border-dashed border-gray-200 rounded-2xl p-6 text-center cursor-pointer hover:border-[#002068] transition-all">
-                  <p className="text-xs font-bold text-[#002068]">Drag and drop file here</p>
+                <div className="border-2 border-dashed border-gray-200 rounded-2xl p-6 text-center cursor-pointer hover:border-[#0A5BFF] transition-all">
+                  <p className="text-xs font-bold text-[#0A5BFF]">Drag and drop file here</p>
                   <p className="text-[10px] text-gray-400 mt-1">Supports PDF, JPG, PNG up to 10MB</p>
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full bg-[#002068] text-white py-4 rounded-xl font-bold hover:bg-[#00164e] transition-all shadow-md flex items-center justify-center space-x-2"
+                  className="w-full bg-[#0A5BFF] text-white py-4 rounded-xl font-bold hover:bg-[#00164e] transition-all shadow-md flex items-center justify-center space-x-2"
                 >
                   <span>Link Document to ABHA Record</span>
                 </button>
