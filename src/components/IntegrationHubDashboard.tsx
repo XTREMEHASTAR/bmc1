@@ -140,7 +140,7 @@ export default function IntegrationHubDashboard({
   };
 
   return (
-    <div className={`min-h-screen font-sans ${isDarkMode ? 'bg-[#0b0f19] text-gray-150' : 'bg-slate-50 text-slate-800'} transition-all`}>
+    <div className={`min-h-screen font-sans ${isDarkMode ? 'bg-[#0b0f19] text-gray-200' : 'bg-slate-50 text-slate-800'} transition-all`}>
       {/* Top Header Bar */}
       <header className="sticky top-0 z-40 border-b p-4 backdrop-blur-md flex items-center justify-between transition-colors bg-white/95 border-gray-100 dark:bg-[#0f172a]/95 dark:border-gray-800">
         <div className="flex items-center space-x-3">
@@ -164,7 +164,7 @@ export default function IntegrationHubDashboard({
         <div className="flex items-center space-x-2.5">
           <button 
             onClick={() => setIsDarkMode(!isDarkMode)}
-            className="p-2.5 rounded-xl border border-gray-200 hover:bg-slate-100 dark:border-gray-800 dark:hover:bg-slate-900 text-gray-450 cursor-pointer"
+            className="p-2.5 rounded-xl border border-gray-200 hover:bg-slate-100 dark:border-gray-800 dark:hover:bg-slate-900 text-gray-400 cursor-pointer"
           >
             {isDarkMode ? (
               <span className="text-yellow-400 font-bold text-xs">Light Mode</span>
@@ -232,7 +232,7 @@ export default function IntegrationHubDashboard({
                 className={`flex items-center space-x-2 px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${
                   activeTab === tab.id
                     ? 'bg-indigo-600 text-white shadow-md'
-                    : 'text-gray-450 hover:text-slate-800 dark:hover:text-gray-200 hover:bg-slate-100 dark:hover:bg-slate-900/60'
+                    : 'text-gray-400 hover:text-slate-800 dark:hover:text-gray-200 hover:bg-slate-100 dark:hover:bg-slate-900/60'
                 }`}
               >
                 <Icon className="w-4 h-4" />
@@ -287,13 +287,13 @@ export default function IntegrationHubDashboard({
                 {/* API Key management */}
                 <div className="bg-white dark:bg-[#111827] border border-gray-100 dark:border-gray-800 rounded-3xl p-5 shadow-sm space-y-4">
                   <h3 className="text-xs font-black uppercase tracking-wider">Credential Workspace</h3>
-                  <p className="text-xs text-gray-450 leading-relaxed font-semibold">
+                  <p className="text-xs text-gray-400 leading-relaxed font-semibold">
                     Generate and manage credentials for custom app/hospital integrations.
                   </p>
 
                   <div className="space-y-2">
                     {apiKeys.map((key, idx) => (
-                      <div key={idx} className="p-3 bg-slate-50 dark:bg-slate-900 border border-gray-150 dark:border-gray-800 rounded-xl flex justify-between items-center">
+                      <div key={idx} className="p-3 bg-slate-50 dark:bg-slate-900 border border-gray-200 dark:border-gray-800 rounded-xl flex justify-between items-center">
                         <span className="font-mono text-xs">{key}</span>
                         <span className="px-2 py-0.5 bg-indigo-100 dark:bg-indigo-950 text-indigo-500 text-[8.5px] font-black rounded uppercase">ACTIVE</span>
                       </div>
@@ -331,7 +331,7 @@ export default function IntegrationHubDashboard({
                         className={`w-full text-left p-3.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${
                           selectedFhirResource === res
                             ? 'bg-indigo-600 text-white shadow'
-                            : 'bg-slate-50 dark:bg-slate-900 border border-gray-100 dark:border-gray-800 text-gray-450 hover:bg-slate-100'
+                            : 'bg-slate-50 dark:bg-slate-900 border border-gray-100 dark:border-gray-800 text-gray-400 hover:bg-slate-100'
                         }`}
                       >
                         {res} Schema (R4)
@@ -414,10 +414,10 @@ export default function IntegrationHubDashboard({
                       </thead>
                       <tbody>
                         {events.map(ev => (
-                          <tr key={ev.id} className="border-b border-gray-50 dark:border-gray-850 hover:bg-slate-100/50 dark:hover:bg-slate-900/10">
+                          <tr key={ev.id} className="border-b border-gray-50 dark:border-gray-800 hover:bg-slate-100/50 dark:hover:bg-slate-900/10">
                             <td className="py-3 font-mono">{ev.id}</td>
                             <td className="py-3 font-bold text-slate-800 dark:text-slate-100">{ev.type}</td>
-                            <td className="py-3 text-gray-450">{ev.source}</td>
+                            <td className="py-3 text-gray-400">{ev.source}</td>
                             <td className="py-3 font-mono">{ev.time}</td>
                             <td className="py-3 text-right">
                               <span className="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-950 text-emerald-600 text-[8.5px] font-black rounded uppercase">
@@ -441,7 +441,7 @@ export default function IntegrationHubDashboard({
                       <select
                         value={customEventType}
                         onChange={(e) => setCustomEventType(e.target.value)}
-                        className="w-full px-3 py-3 bg-slate-50 dark:bg-slate-900 border border-gray-150 dark:border-gray-800 rounded-xl text-xs outline-none"
+                        className="w-full px-3 py-3 bg-slate-50 dark:bg-slate-900 border border-gray-200 dark:border-gray-800 rounded-xl text-xs outline-none"
                       >
                         <option value="Patient Created">Patient Created</option>
                         <option value="Lab Completed">Lab Completed</option>
@@ -496,22 +496,22 @@ export default function IntegrationHubDashboard({
 
                   <form onSubmit={registerWebhook} className="space-y-4">
                     <div className="space-y-1">
-                      <label className="text-xs text-gray-450 font-bold uppercase">Destination Endpoint URL</label>
+                      <label className="text-xs text-gray-400 font-bold uppercase">Destination Endpoint URL</label>
                       <input
                         type="url"
                         placeholder="https://yourdomain.com/webhooks"
                         value={webhookUrl}
                         onChange={(e) => setWebhookUrl(e.target.value)}
-                        className="w-full px-3 py-3 bg-slate-50 dark:bg-slate-900 border border-gray-150 dark:border-gray-800 rounded-xl text-xs outline-none"
+                        className="w-full px-3 py-3 bg-slate-50 dark:bg-slate-900 border border-gray-200 dark:border-gray-800 rounded-xl text-xs outline-none"
                       />
                     </div>
 
                     <div className="space-y-1">
-                      <label className="text-xs text-gray-450 font-bold uppercase">Trigger Event</label>
+                      <label className="text-xs text-gray-400 font-bold uppercase">Trigger Event</label>
                       <select
                         value={webhookEvent}
                         onChange={(e) => setWebhookEvent(e.target.value)}
-                        className="w-full px-3 py-3 bg-slate-50 dark:bg-slate-900 border border-gray-150 dark:border-gray-800 rounded-xl text-xs outline-none"
+                        className="w-full px-3 py-3 bg-slate-50 dark:bg-slate-900 border border-gray-200 dark:border-gray-800 rounded-xl text-xs outline-none"
                       >
                         <option value="Lab Completed">Lab Completed</option>
                         <option value="Patient Created">Patient Created</option>
@@ -629,7 +629,7 @@ export default function IntegrationHubDashboard({
                 <div className="bg-white dark:bg-[#111827] border border-gray-100 dark:border-gray-800 rounded-3xl p-5 shadow-sm space-y-4">
                   <h3 className="text-xs font-black uppercase tracking-wider">Model Usage Cost Analytics</h3>
                   <div className="space-y-3 text-xs font-semibold">
-                    <div className="flex justify-between py-2 border-b border-gray-50 dark:border-gray-850">
+                    <div className="flex justify-between py-2 border-b border-gray-50 dark:border-gray-800">
                       <span className="text-gray-400">Total Tokens Processed</span>
                       <span className="font-mono">1.8M tokens</span>
                     </div>

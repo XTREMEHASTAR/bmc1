@@ -177,7 +177,7 @@ export default function GovernmentHealthIntelligence({
       {/* Platform Header */}
       <header className="sticky top-0 z-40 border-b p-4 backdrop-blur-md flex items-center justify-between transition-colors duration-200 bg-white/95 border-gray-100 dark:bg-[#0b0f19]/95 dark:border-blue-900/20">
         <div className="flex items-center space-x-3">
-          <div className="p-2 bg-[#003F8A] rounded-xl text-white shadow-md">
+          <div className="p-2 bg-[#0A5BFF] rounded-xl text-white shadow-md">
             <Shield className="w-6 h-6 animate-pulse" />
           </div>
           <div>
@@ -209,7 +209,7 @@ export default function GovernmentHealthIntelligence({
           
           <button 
             onClick={() => setIsDarkMode(!isDarkMode)}
-            className="p-2.5 rounded-xl border border-gray-200 hover:bg-slate-100 dark:border-blue-900/30 dark:hover:bg-slate-900/60 text-gray-450 cursor-pointer"
+            className="p-2.5 rounded-xl border border-gray-200 hover:bg-slate-100 dark:border-blue-900/30 dark:hover:bg-slate-900/60 text-gray-400 cursor-pointer"
           >
             {isDarkMode ? <Sun className="w-4.5 h-4.5 text-yellow-400" /> : <Moon className="w-4.5 h-4.5 text-slate-700" />}
           </button>
@@ -230,7 +230,7 @@ export default function GovernmentHealthIntelligence({
         <div className="grid grid-cols-2 md:grid-cols-5 gap-3.5">
           <div className="bg-white dark:bg-[#111827] border border-gray-100 dark:border-blue-900/10 rounded-2xl p-4 shadow-sm flex flex-col justify-between">
             <span className="text-[9px] font-black uppercase tracking-wider text-gray-400">Total Wards Tracked</span>
-            <h3 className="text-xl font-black text-[#003F8A] dark:text-blue-400 mt-1">24 Municipal</h3>
+            <h3 className="text-xl font-black text-[#0A5BFF] dark:text-blue-400 mt-1">24 Municipal</h3>
             <p className="text-[10px] text-green-500 font-bold mt-1">✓ Live Sync Verified</p>
           </div>
           <div className="bg-white dark:bg-[#111827] border border-gray-100 dark:border-blue-900/10 rounded-2xl p-4 shadow-sm flex flex-col justify-between">
@@ -274,8 +274,8 @@ export default function GovernmentHealthIntelligence({
                 onClick={() => setActiveTab(tab.id as any)}
                 className={`flex items-center space-x-2 px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${
                   activeTab === tab.id
-                    ? 'bg-[#003F8A] text-white shadow-md'
-                    : 'text-gray-400 hover:text-slate-800 dark:hover:text-gray-250 hover:bg-slate-100 dark:hover:bg-slate-900'
+                    ? 'bg-[#0A5BFF] text-white shadow-md'
+                    : 'text-gray-400 hover:text-slate-800 dark:hover:text-gray-200 hover:bg-slate-100 dark:hover:bg-slate-900'
                 }`}
               >
                 <Icon className="w-4 h-4" />
@@ -304,7 +304,7 @@ export default function GovernmentHealthIntelligence({
                   <div className="lg:col-span-2 bg-white dark:bg-[#111827] border border-gray-100 dark:border-blue-900/10 rounded-3xl p-5 shadow-sm space-y-4">
                     <div className="flex justify-between items-center pb-3 border-b border-gray-105 dark:border-blue-900/10">
                       <div>
-                        <h3 className="text-xs font-black uppercase tracking-wider text-[#003F8A] dark:text-blue-400">MCGM Healthcare Network Facility Grid</h3>
+                        <h3 className="text-xs font-black uppercase tracking-wider text-[#0A5BFF] dark:text-blue-400">MCGM Healthcare Network Facility Grid</h3>
                         <p className="text-[10px] text-gray-400 font-bold mt-0.5">Live reporting status across facility categories</p>
                       </div>
                       <span className="px-2 py-0.5 bg-green-100 dark:bg-green-950/30 text-green-500 text-[9px] font-black rounded uppercase">All Systems Normal</span>
@@ -322,7 +322,7 @@ export default function GovernmentHealthIntelligence({
                         <div key={idx} className={`p-4 rounded-2xl border ${facility.color} flex flex-col justify-between space-y-3`}>
                           <div>
                             <h4 className="text-xs font-black text-slate-800 dark:text-gray-205">{facility.title}</h4>
-                            <p className="text-xs font-black text-[#003F8A] dark:text-blue-400 mt-1">{facility.count}</p>
+                            <p className="text-xs font-black text-[#0A5BFF] dark:text-blue-400 mt-1">{facility.count}</p>
                           </div>
                           <span className="text-[10px] text-gray-500 font-extrabold uppercase">{facility.stat}</span>
                         </div>
@@ -362,7 +362,7 @@ export default function GovernmentHealthIntelligence({
                                 <td className="py-3 text-right">
                                   <button 
                                     onClick={() => { setSelectedWard(w.id); setActiveTab('gis'); }}
-                                    className="text-xs text-[#003F8A] dark:text-blue-400 hover:underline font-black cursor-pointer"
+                                    className="text-xs text-[#0A5BFF] dark:text-blue-400 hover:underline font-black cursor-pointer"
                                   >
                                     View Ward GIS →
                                   </button>
@@ -381,7 +381,7 @@ export default function GovernmentHealthIntelligence({
                     {/* Environmental Grid Sensor Hub */}
                     <div className="bg-white dark:bg-[#111827] border border-gray-100 dark:border-blue-900/10 rounded-3xl p-5 shadow-sm space-y-4">
                       <div className="flex justify-between items-center pb-2 border-b border-gray-105 dark:border-blue-900/10">
-                        <h3 className="text-xs font-black uppercase tracking-wider text-[#003F8A] dark:text-blue-400">Environment & Vector Sensoring</h3>
+                        <h3 className="text-xs font-black uppercase tracking-wider text-[#0A5BFF] dark:text-blue-400">Environment & Vector Sensoring</h3>
                         <span className="text-[8px] font-black bg-blue-100 dark:bg-blue-950 text-blue-500 px-1.5 py-0.5 rounded uppercase">Smart City Live</span>
                       </div>
 
@@ -406,7 +406,7 @@ export default function GovernmentHealthIntelligence({
                     </div>
 
                     {/* Smart City Heat Alert Panel */}
-                    <div className="bg-gradient-to-br from-[#0c1020] to-[#002068] text-white rounded-3xl p-5 shadow-lg relative overflow-hidden">
+                    <div className="bg-gradient-to-br from-[#0c1020] to-[#0A5BFF] text-white rounded-3xl p-5 shadow-lg relative overflow-hidden">
                       <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full translate-x-8 -translate-y-8" />
                       <div className="space-y-3 relative z-10">
                         <span className="inline-block text-[9px] font-extrabold bg-blue-500/30 text-blue-100 px-2 py-0.5 rounded-full uppercase tracking-wider">
@@ -419,7 +419,7 @@ export default function GovernmentHealthIntelligence({
                         <div className="pt-2">
                           <button 
                             onClick={() => setActiveTab('twin')}
-                            className="bg-white text-[#002068] hover:bg-gray-100 px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer flex items-center space-x-1.5"
+                            className="bg-white text-[#0A5BFF] hover:bg-gray-100 px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer flex items-center space-x-1.5"
                           >
                             <span>Launch Twin Simulator</span>
                             <ArrowRight className="w-3.5 h-3.5" />
@@ -445,7 +445,7 @@ export default function GovernmentHealthIntelligence({
                 {/* Layer Control Panel */}
                 <div className="bg-white dark:bg-[#111827] border border-gray-100 dark:border-blue-900/10 rounded-3xl p-5 shadow-sm space-y-4">
                   <div className="flex items-center space-x-2 pb-2 border-b border-gray-105 dark:border-blue-900/10">
-                    <Layers className="w-4.5 h-4.5 text-[#003F8A] dark:text-blue-400" />
+                    <Layers className="w-4.5 h-4.5 text-[#0A5BFF] dark:text-blue-400" />
                     <h3 className="text-xs font-black uppercase tracking-wider">Map Layer Filters</h3>
                   </div>
 
@@ -456,7 +456,7 @@ export default function GovernmentHealthIntelligence({
                           type="checkbox"
                           checked={(mapLayers as any)[layer]}
                           onChange={(e) => setMapLayers(prev => ({ ...prev, [layer]: e.target.checked }))}
-                          className="rounded text-[#003F8A] focus:ring-blue-500 w-4 h-4"
+                          className="rounded text-[#0A5BFF] focus:ring-blue-500 w-4 h-4"
                         />
                         <span className="text-xs font-black uppercase text-gray-500 tracking-wider">
                           {layer.replace(/([A-Z])/g, ' $1')}
@@ -475,7 +475,7 @@ export default function GovernmentHealthIntelligence({
                           onClick={() => setSelectedWard(w.id)}
                           className={`w-full text-left p-2.5 rounded-xl text-xs font-black transition-all ${
                             selectedWard === w.id
-                              ? 'bg-blue-50 dark:bg-blue-950/40 text-[#003F8A] dark:text-blue-400 border border-blue-100 dark:border-blue-900/30'
+                              ? 'bg-blue-50 dark:bg-blue-950/40 text-[#0A5BFF] dark:text-blue-400 border border-blue-100 dark:border-blue-900/30'
                               : 'text-gray-500 hover:bg-slate-100 dark:hover:bg-slate-900'
                           }`}
                         >
@@ -490,7 +490,7 @@ export default function GovernmentHealthIntelligence({
                 <div className="lg:col-span-3 bg-white dark:bg-[#111827] border border-gray-100 dark:border-blue-900/10 rounded-3xl p-5 shadow-sm flex flex-col justify-between min-h-[500px]">
                   <div className="flex justify-between items-center pb-3 border-b border-gray-105 dark:border-blue-900/10">
                     <div>
-                      <h3 className="text-xs font-black uppercase tracking-wider text-[#003F8A] dark:text-blue-400">Smart City Live GIS Interface</h3>
+                      <h3 className="text-xs font-black uppercase tracking-wider text-[#0A5BFF] dark:text-blue-400">Smart City Live GIS Interface</h3>
                       <p className="text-[10px] text-gray-400 font-bold mt-0.5">Active Ward Zoom: {selectedWard}</p>
                     </div>
                     <div className="flex items-center space-x-2 text-[9px] font-black text-gray-400">
@@ -507,26 +507,26 @@ export default function GovernmentHealthIntelligence({
                       <g className="transition-all duration-300">
                         {/* Wards Map paths */}
                         <path d="M 50 50 L 150 20 L 250 80 L 120 180 Z" className={`transition-all stroke-2 cursor-pointer ${selectedWard === 'F-North' ? 'fill-red-500/20 stroke-red-500' : 'fill-slate-500/5 stroke-slate-400 hover:fill-slate-500/10'}`} onClick={() => setSelectedWard('F-North')} />
-                        <text x="130" y="80" className="text-[10px] font-extrabold fill-slate-700 dark:fill-slate-350 select-none">F-North</text>
+                        <text x="130" y="80" className="text-[10px] font-extrabold fill-slate-700 dark:fill-slate-400 select-none">F-North</text>
 
                         <path d="M 250 80 L 380 40 L 450 150 L 320 220 Z" className={`transition-all stroke-2 cursor-pointer ${selectedWard === 'K-West' ? 'fill-orange-500/20 stroke-orange-500' : 'fill-slate-500/5 stroke-slate-400 hover:fill-slate-500/10'}`} onClick={() => setSelectedWard('K-West')} />
-                        <text x="330" y="120" className="text-[10px] font-extrabold fill-slate-700 dark:fill-slate-350 select-none">K-West</text>
+                        <text x="330" y="120" className="text-[10px] font-extrabold fill-slate-700 dark:fill-slate-400 select-none">K-West</text>
 
                         <path d="M 120 180 L 320 220 L 250 350 L 80 320 Z" className={`transition-all stroke-2 cursor-pointer ${selectedWard === 'G-South' ? 'fill-orange-500/20 stroke-orange-500' : 'fill-slate-500/5 stroke-slate-400 hover:fill-slate-500/10'}`} onClick={() => setSelectedWard('G-South')} />
-                        <text x="180" y="270" className="text-[10px] font-extrabold fill-slate-700 dark:fill-slate-350 select-none">G-South</text>
+                        <text x="180" y="270" className="text-[10px] font-extrabold fill-slate-700 dark:fill-slate-400 select-none">G-South</text>
 
                         <path d="M 320 220 L 450 150 L 550 280 L 410 350 Z" className={`transition-all stroke-2 cursor-pointer ${selectedWard === 'S-Ward' ? 'fill-yellow-500/20 stroke-yellow-500' : 'fill-slate-500/5 stroke-slate-400 hover:fill-slate-500/10'}`} onClick={() => setSelectedWard('S-Ward')} />
-                        <text x="440" y="250" className="text-[10px] font-extrabold fill-slate-700 dark:fill-slate-350 select-none">S-Ward</text>
+                        <text x="440" y="250" className="text-[10px] font-extrabold fill-slate-700 dark:fill-slate-400 select-none">S-Ward</text>
                       </g>
 
                       {/* Overlays */}
                       {mapLayers.hospitals && (
                         <g>
-                          <circle cx="120" cy="110" r="8" fill="#003F8A" stroke="white" strokeWidth="1.5" className="animate-pulse" />
-                          <text x="132" y="114" fill="#003F8A" className="text-[8px] font-black dark:fill-blue-400">Sion Hospital</text>
+                          <circle cx="120" cy="110" r="8" fill="#0A5BFF" stroke="white" strokeWidth="1.5" className="animate-pulse" />
+                          <text x="132" y="114" fill="#0A5BFF" className="text-[8px] font-black dark:fill-blue-400">Sion Hospital</text>
                           
-                          <circle cx="210" cy="240" r="8" fill="#003F8A" stroke="white" strokeWidth="1.5" />
-                          <text x="222" y="244" fill="#003F8A" className="text-[8px] font-black dark:fill-blue-400">KEM Hospital</text>
+                          <circle cx="210" cy="240" r="8" fill="#0A5BFF" stroke="white" strokeWidth="1.5" />
+                          <text x="222" y="244" fill="#0A5BFF" className="text-[8px] font-black dark:fill-blue-400">KEM Hospital</text>
                         </g>
                       )}
 
@@ -550,7 +550,7 @@ export default function GovernmentHealthIntelligence({
                     </div>
                     <button 
                       onClick={() => setMapLayers(prev => ({ ...prev, vectorRisk: true }))}
-                      className="bg-[#003F8A] hover:bg-[#002f66] text-white px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer"
+                      className="bg-[#0A5BFF] hover:bg-[#002f66] text-white px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer"
                     >
                       Overlay Vector Forecast Layer
                     </button>
@@ -572,7 +572,7 @@ export default function GovernmentHealthIntelligence({
                   
                   {/* Left Column: Outbreak Trend Watchlist */}
                   <div className="lg:col-span-2 bg-white dark:bg-[#111827] border border-gray-100 dark:border-blue-900/10 rounded-3xl p-5 shadow-sm space-y-4">
-                    <h3 className="text-xs font-black uppercase tracking-wider text-[#003F8A] dark:text-blue-400">Epidemic Disease Surveillance Monitor</h3>
+                    <h3 className="text-xs font-black uppercase tracking-wider text-[#0A5BFF] dark:text-blue-400">Epidemic Disease Surveillance Monitor</h3>
                     
                     <div className="space-y-3">
                       {[
@@ -598,7 +598,7 @@ export default function GovernmentHealthIntelligence({
                   {/* Right Column: AI Disease Prediction Parameters */}
                   <div className="bg-white dark:bg-[#111827] border border-gray-100 dark:border-blue-900/10 rounded-3xl p-5 shadow-sm space-y-4">
                     <div className="flex items-center space-x-2 pb-2 border-b border-gray-105 dark:border-blue-900/10">
-                      <Sparkles className="w-4.5 h-4.5 text-[#003F8A] dark:text-blue-400" />
+                      <Sparkles className="w-4.5 h-4.5 text-[#0A5BFF] dark:text-blue-400" />
                       <h3 className="text-xs font-black uppercase tracking-wider">AI Predictive Outbreak Models</h3>
                     </div>
 
@@ -613,14 +613,14 @@ export default function GovernmentHealthIntelligence({
                             step="0.1"
                             value={vectorRiskMultiplier}
                             onChange={(e) => setVectorRiskMultiplier(parseFloat(e.target.value))}
-                            className="flex-1 accent-[#003F8A]"
+                            className="flex-1 accent-[#0A5BFF]"
                           />
                           <span className="text-xs font-black">{vectorRiskMultiplier.toFixed(1)}x</span>
                         </div>
                       </div>
 
                       <div className="space-y-3 font-semibold text-xs pt-2">
-                        <h4 className="text-[10px] font-black uppercase text-gray-450">Correlative Insights:</h4>
+                        <h4 className="text-[10px] font-black uppercase text-gray-400">Correlative Insights:</h4>
                         <p className="text-[11.5px] text-gray-500 dark:text-gray-400 leading-relaxed">
                           At **{vectorRiskMultiplier}x vector index**, the projected Dengue incubation timeline drops from 12 days to **7 days**, signaling a potential doubling of cases by next Friday.
                         </p>
@@ -646,17 +646,17 @@ export default function GovernmentHealthIntelligence({
               >
                 <div className="flex justify-between items-center pb-3 border-b border-gray-105 dark:border-blue-900/10">
                   <div>
-                    <h3 className="text-xs font-black uppercase tracking-wider text-[#003F8A] dark:text-blue-400">Municipal Hospital Benchmarking (Non-Punitive)</h3>
+                    <h3 className="text-xs font-black uppercase tracking-wider text-[#0A5BFF] dark:text-blue-400">Municipal Hospital Benchmarking (Non-Punitive)</h3>
                     <p className="text-[10px] text-gray-400 font-bold mt-0.5">Benchmarking criteria are designed for resource planning and infrastructure support rather than ranking.</p>
                   </div>
-                  <button className="flex items-center space-x-1 text-xs text-[#003F8A] dark:text-blue-400 font-black">
+                  <button className="flex items-center space-x-1 text-xs text-[#0A5BFF] dark:text-blue-400 font-black">
                     <Download className="w-4 h-4" />
                     <span>Export Analytics</span>
                   </button>
                 </div>
 
                 <div className="overflow-x-auto">
-                  <table className="w-full text-left text-xs text-slate-600 dark:text-slate-350">
+                  <table className="w-full text-left text-xs text-slate-600 dark:text-slate-400">
                     <thead>
                       <tr className="border-b border-gray-105 dark:border-blue-900/15 text-gray-400 font-extrabold">
                         <th className="py-2.5">Facility Name</th>
@@ -685,7 +685,7 @@ export default function GovernmentHealthIntelligence({
                           <td className="py-3.5 text-gray-500 font-mono">{h.readmitRate}%</td>
                           <td className="py-3.5 text-slate-800 dark:text-slate-300 font-bold">{h.beds} Beds</td>
                           <td className="py-3.5 text-right">
-                            <span className="px-2 py-1 bg-blue-105 dark:bg-blue-950 text-[#003F8A] dark:text-blue-400 font-black rounded">
+                            <span className="px-2 py-1 bg-blue-105 dark:bg-blue-950 text-[#0A5BFF] dark:text-blue-400 font-black rounded">
                               {h.score} / 100
                             </span>
                           </td>
@@ -708,7 +708,7 @@ export default function GovernmentHealthIntelligence({
               >
                 {/* Medicine Shortages list */}
                 <div className="lg:col-span-2 bg-white dark:bg-[#111827] border border-gray-100 dark:border-blue-900/10 rounded-3xl p-5 shadow-sm space-y-4">
-                  <h3 className="text-xs font-black uppercase tracking-wider text-[#003F8A] dark:text-blue-400">City-Wide Essential Drug Stock</h3>
+                  <h3 className="text-xs font-black uppercase tracking-wider text-[#0A5BFF] dark:text-blue-400">City-Wide Essential Drug Stock</h3>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {[
@@ -733,7 +733,7 @@ export default function GovernmentHealthIntelligence({
                 {/* AI Logistics Forecasts */}
                 <div className="bg-white dark:bg-[#111827] border border-gray-100 dark:border-blue-900/10 rounded-3xl p-5 shadow-sm space-y-4">
                   <h3 className="text-xs font-black uppercase tracking-wider flex items-center gap-1">
-                    <Sparkles className="w-4 h-4 text-[#003F8A]" />
+                    <Sparkles className="w-4 h-4 text-[#0A5BFF]" />
                     AI Procurement Recommendations
                   </h3>
 
@@ -741,10 +741,10 @@ export default function GovernmentHealthIntelligence({
                     <p className="text-gray-500 dark:text-gray-400">
                       Based on current monsoon rainfall projections, seasonal dengue cases are forecasted to raise paracetamol consumption by **210%** starting next week.
                     </p>
-                    <div className="p-3 bg-blue-50 dark:bg-blue-950/20 border border-blue-100 dark:border-blue-900/30 rounded-xl text-[#003F8A] dark:text-blue-400 text-[10.5px] font-bold">
+                    <div className="p-3 bg-blue-50 dark:bg-blue-950/20 border border-blue-100 dark:border-blue-900/30 rounded-xl text-[#0A5BFF] dark:text-blue-400 text-[10.5px] font-bold">
                       💡 Recommendation: Trigger automatic transfer of 20,000 paracetamol tabs from Ward D peripheral reserve to Ward F-North clinics.
                     </div>
-                    <button className="w-full bg-[#003F8A] hover:bg-[#002f66] text-white py-3 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer">
+                    <button className="w-full bg-[#0A5BFF] hover:bg-[#002f66] text-white py-3 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer">
                       Execute Buffer Redistribution
                     </button>
                   </div>
@@ -765,7 +765,7 @@ export default function GovernmentHealthIntelligence({
                 {/* Simulation Control Sliders */}
                 <div className="bg-white dark:bg-[#111827] border border-gray-100 dark:border-blue-900/10 rounded-3xl p-5 shadow-sm space-y-4">
                   <div className="flex items-center space-x-2 pb-2 border-b border-gray-105 dark:border-blue-900/10">
-                    <Sliders className="w-4.5 h-4.5 text-[#003F8A] dark:text-blue-400" />
+                    <Sliders className="w-4.5 h-4.5 text-[#0A5BFF] dark:text-blue-400" />
                     <h3 className="text-xs font-black uppercase tracking-wider">Simulation Variables</h3>
                   </div>
 
@@ -780,7 +780,7 @@ export default function GovernmentHealthIntelligence({
                           step="10"
                           value={simDengueSurge}
                           onChange={(e) => setSimDengueSurge(parseInt(e.target.value))}
-                          className="flex-1 accent-[#003F8A]"
+                          className="flex-1 accent-[#0A5BFF]"
                         />
                         <span className="text-xs font-black text-red-500">+{simDengueSurge}%</span>
                       </div>
@@ -794,7 +794,7 @@ export default function GovernmentHealthIntelligence({
 
                 {/* Simulation results representation */}
                 <div className="lg:col-span-2 bg-white dark:bg-[#111827] border border-gray-100 dark:border-blue-900/10 rounded-3xl p-5 shadow-sm space-y-4">
-                  <h3 className="text-xs font-black uppercase tracking-wider text-[#003F8A] dark:text-blue-400">Projected System Load Forecasts</h3>
+                  <h3 className="text-xs font-black uppercase tracking-wider text-[#0A5BFF] dark:text-blue-400">Projected System Load Forecasts</h3>
                   
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="p-4 bg-red-500/5 border border-red-500/10 rounded-2xl">
@@ -812,7 +812,7 @@ export default function GovernmentHealthIntelligence({
                   </div>
 
                   <div className="p-4 bg-slate-50 dark:bg-slate-900/60 border border-gray-100 dark:border-blue-900/5 rounded-2xl space-y-2">
-                    <h4 className="text-xs font-black uppercase text-[#003F8A] dark:text-blue-400">AI Mitigation Strategy</h4>
+                    <h4 className="text-xs font-black uppercase text-[#0A5BFF] dark:text-blue-400">AI Mitigation Strategy</h4>
                     <p className="text-xs font-semibold leading-relaxed text-gray-500 dark:text-gray-400">{simResults.recommendation}</p>
                   </div>
                 </div>
@@ -832,18 +832,18 @@ export default function GovernmentHealthIntelligence({
                 {/* Chat Console */}
                 <div className="lg:col-span-2 bg-white dark:bg-[#111827] border border-gray-100 dark:border-blue-900/10 rounded-3xl p-5 shadow-sm space-y-4">
                   <div className="flex justify-between items-center pb-2 border-b border-gray-105 dark:border-blue-900/10">
-                    <h3 className="text-xs font-black uppercase tracking-wider text-[#003F8A] dark:text-blue-400 flex items-center gap-1">
+                    <h3 className="text-xs font-black uppercase tracking-wider text-[#0A5BFF] dark:text-blue-400 flex items-center gap-1">
                       <Sparkles className="w-4.5 h-4.5 animate-pulse" />
                       Government Policy Intelligence Advisor
                     </h3>
-                    <span className="text-[9px] text-gray-450 font-black">ACTIVE AGENT</span>
+                    <span className="text-[9px] text-gray-400 font-black">ACTIVE AGENT</span>
                   </div>
 
                   <div className="space-y-4 max-h-[300px] overflow-y-auto pr-1 no-scrollbar flex flex-col-reverse">
                     {copilotChats.map((chat, idx) => (
                       <div key={idx} className="space-y-2">
                         <div className="flex justify-end">
-                          <div className="bg-[#003F8A] text-white p-3 rounded-2xl text-xs font-black max-w-sm">
+                          <div className="bg-[#0A5BFF] text-white p-3 rounded-2xl text-xs font-black max-w-sm">
                             {chat.q}
                           </div>
                         </div>
@@ -868,11 +868,11 @@ export default function GovernmentHealthIntelligence({
                       value={copilotQuery}
                       onChange={(e) => setCopilotQuery(e.target.value)}
                       onKeyDown={(e) => e.key === 'Enter' && handleCopilotSubmit(copilotQuery)}
-                      className="flex-1 px-4 py-3 bg-slate-50 dark:bg-slate-950 border border-gray-150 dark:border-blue-900/10 rounded-2xl text-xs font-semibold outline-none focus:ring-1 focus:ring-[#003F8A]"
+                      className="flex-1 px-4 py-3 bg-slate-50 dark:bg-slate-950 border border-gray-200 dark:border-blue-900/10 rounded-2xl text-xs font-semibold outline-none focus:ring-1 focus:ring-[#0A5BFF]"
                     />
                     <button
                       onClick={() => handleCopilotSubmit(copilotQuery)}
-                      className="bg-[#003F8A] hover:bg-[#002f66] text-white px-5 rounded-2xl text-xs font-black uppercase tracking-wider cursor-pointer"
+                      className="bg-[#0A5BFF] hover:bg-[#002f66] text-white px-5 rounded-2xl text-xs font-black uppercase tracking-wider cursor-pointer"
                     >
                       {isCopilotThinking ? 'Analyzing...' : <Send className="w-4 h-4" />}
                     </button>
@@ -891,7 +891,7 @@ export default function GovernmentHealthIntelligence({
                       <button
                         key={idx}
                         onClick={() => handleCopilotSubmit(query)}
-                        className="text-left p-3 bg-slate-50 dark:bg-[#1f2937]/50 hover:bg-slate-100 dark:hover:bg-slate-900 rounded-xl text-xs font-black text-slate-700 dark:text-slate-350 transition-all cursor-pointer border border-gray-100 dark:border-blue-900/10"
+                        className="text-left p-3 bg-slate-50 dark:bg-[#1f2937]/50 hover:bg-slate-100 dark:hover:bg-slate-900 rounded-xl text-xs font-black text-slate-700 dark:text-slate-400 transition-all cursor-pointer border border-gray-100 dark:border-blue-900/10"
                       >
                         {query}
                       </button>
@@ -912,7 +912,7 @@ export default function GovernmentHealthIntelligence({
               >
                 {/* Reports generator panel */}
                 <div className="lg:col-span-2 bg-white dark:bg-[#111827] border border-gray-100 dark:border-blue-900/10 rounded-3xl p-5 shadow-sm space-y-4">
-                  <h3 className="text-xs font-black uppercase tracking-wider text-[#003F8A] dark:text-blue-400">Executive Policy Reporting Desk</h3>
+                  <h3 className="text-xs font-black uppercase tracking-wider text-[#0A5BFF] dark:text-blue-400">Executive Policy Reporting Desk</h3>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {[
@@ -925,7 +925,7 @@ export default function GovernmentHealthIntelligence({
                           <h4 className="text-xs font-black text-slate-800 dark:text-slate-205">{rep.name}</h4>
                           <p className="text-[10px] text-gray-400 font-bold">{rep.date} • {rep.size}</p>
                         </div>
-                        <button className="p-2 bg-[#003F8A] text-white hover:bg-[#002f66] rounded-xl cursor-pointer">
+                        <button className="p-2 bg-[#0A5BFF] text-white hover:bg-[#002f66] rounded-xl cursor-pointer">
                           <Download className="w-4 h-4" />
                         </button>
                       </div>
@@ -936,7 +936,7 @@ export default function GovernmentHealthIntelligence({
                 {/* Research Open Data compliance info */}
                 <div className="bg-white dark:bg-[#111827] border border-gray-100 dark:border-blue-900/10 rounded-3xl p-5 shadow-sm space-y-4">
                   <div className="flex items-center space-x-2 pb-2 border-b border-gray-105 dark:border-blue-900/10">
-                    <Database className="w-4.5 h-4.5 text-[#003F8A] dark:text-blue-400" />
+                    <Database className="w-4.5 h-4.5 text-[#0A5BFF] dark:text-blue-400" />
                     <h3 className="text-xs font-black uppercase tracking-wider">De-Identified Research Data</h3>
                   </div>
 

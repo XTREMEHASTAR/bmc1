@@ -104,7 +104,7 @@ export default function EmergencySOSTab() {
 
         {/* Info card */}
         <div className="flex items-start space-x-4">
-          <div className="w-16 h-16 rounded-2xl overflow-hidden border border-gray-100 dark:border-slate-800 bg-gray-50 dark:bg-slate-850 flex-shrink-0">
+          <div className="w-16 h-16 rounded-2xl overflow-hidden border border-gray-100 dark:border-slate-800 bg-gray-50 dark:bg-slate-800 flex-shrink-0">
             <img
               src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=150&h=150"
               alt="Sion Hospital ER"
@@ -125,7 +125,7 @@ export default function EmergencySOSTab() {
                   message: 'Simulating Google Maps Navigation directions to Sion Hospital Emergency...',
                   type: 'info'
                 })}
-                className="bg-[#002068] dark:bg-[#0050cc] text-white py-2 px-4 rounded-lg font-bold flex items-center space-x-1.5 hover:bg-[#00164e] dark:hover:bg-blue-700 transition-all"
+                className="bg-[#0A5BFF] dark:bg-[#0050cc] text-white py-2 px-4 rounded-lg font-bold flex items-center space-x-1.5 hover:bg-[#00164e] dark:hover:bg-blue-700 transition-all"
               >
                 <Navigation className="w-3.5 h-3.5" />
                 <span>Get Directions</span>
@@ -136,7 +136,7 @@ export default function EmergencySOSTab() {
                   message: 'Dialing LTMG Sion Emergency ER Desk: 022-24071234',
                   type: 'success'
                 })}
-                className="bg-gray-100 dark:bg-slate-800 text-[#002068] dark:text-blue-400 p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-700 transition-all flex items-center justify-center"
+                className="bg-gray-100 dark:bg-slate-800 text-[#0A5BFF] dark:text-blue-400 p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-700 transition-all flex items-center justify-center"
               >
                 <PhoneCall className="w-4 h-4" />
               </button>
@@ -210,7 +210,7 @@ export default function EmergencySOSTab() {
           </div>
           <div>
             <h4 className="font-bold text-gray-900 dark:text-white text-sm">Fire</h4>
-            <p className="text-[11px] text-gray-550 dark:text-gray-400">Call (101)</p>
+            <p className="text-[11px] text-gray-500 dark:text-gray-400">Call (101)</p>
           </div>
         </button>
       </div>
@@ -236,7 +236,7 @@ export default function EmergencySOSTab() {
                 </div>
                 <div>
                   <h4 className="font-bold text-gray-900 dark:text-white text-xs">{c.name}</h4>
-                  <p className="text-[10px] text-gray-450 dark:text-gray-500 mt-0.5">{c.relation} • {c.phone}</p>
+                  <p className="text-[10px] text-gray-400 dark:text-gray-500 mt-0.5">{c.relation} • {c.phone}</p>
                 </div>
               </div>
 
@@ -280,7 +280,7 @@ export default function EmergencySOSTab() {
                     placeholder="Name"
                     value={newName}
                     onChange={(e) => setNewName(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-200 dark:border-slate-850 rounded-lg bg-white dark:bg-slate-950 text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-[#002068] dark:focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-gray-200 dark:border-slate-800 rounded-lg bg-white dark:bg-slate-950 text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-[#0A5BFF] dark:focus:ring-blue-500"
                     required
                   />
                   <input
@@ -288,7 +288,7 @@ export default function EmergencySOSTab() {
                     placeholder="Relation (e.g. Wife)"
                     value={newRelation}
                     onChange={(e) => setNewRelation(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-200 dark:border-slate-850 rounded-lg bg-white dark:bg-slate-950 text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-[#002068] dark:focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-gray-200 dark:border-slate-800 rounded-lg bg-white dark:bg-slate-950 text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-[#0A5BFF] dark:focus:ring-blue-500"
                   />
                 </div>
                 <div className="flex space-x-2">
@@ -297,12 +297,12 @@ export default function EmergencySOSTab() {
                     placeholder="Phone (+91 XXXXX XXXXX)"
                     value={newPhone}
                     onChange={(e) => setNewPhone(e.target.value)}
-                    className="flex-1 text-xs px-3 py-2 border border-gray-200 dark:border-slate-850 rounded-lg bg-white dark:bg-slate-950 text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-[#002068] dark:focus:ring-blue-500"
+                    className="flex-1 text-xs px-3 py-2 border border-gray-200 dark:border-slate-800 rounded-lg bg-white dark:bg-slate-950 text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-[#0A5BFF] dark:focus:ring-blue-500"
                     required
                   />
                   <button
                     type="submit"
-                    className="bg-[#002068] dark:bg-blue-600 text-white px-4 rounded-lg text-xs font-bold hover:bg-[#00164e] dark:hover:bg-blue-700 transition-all flex items-center space-x-1"
+                    className="bg-[#0A5BFF] dark:bg-blue-600 text-white px-4 rounded-lg text-xs font-bold hover:bg-[#00164e] dark:hover:bg-blue-700 transition-all flex items-center space-x-1"
                   >
                     <Plus className="w-3.5 h-3.5" />
                     <span>Add</span>

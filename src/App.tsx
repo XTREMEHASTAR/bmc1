@@ -47,7 +47,7 @@ import {
 import Onboarding from './components/Onboarding';
 import WalletTab from './components/WalletTab';
 import HealthRecordsTab from './components/HealthRecordsTab';
-import EmergencySOSTab from './components/EmergencySOSTab';
+import EmergencySOSTab from './components/emergency-sos/EmergencySOSTab';
 import BookAppointmentFlow from './components/BookAppointmentFlow';
 import LiveQueueStatus from './components/LiveQueueStatus';
 import DoctorDashboard from './components/DoctorDashboard';
@@ -90,6 +90,8 @@ export default function App() {
   // Navigation & Core States
   const [portal, setPortal] = useState<'doctor' | 'patient' | 'nurse' | 'reception' | 'command' | 'ai' | 'laboratory' | 'radiology' | 'pharmacy' | 'emergency' | 'surgery' | 'icu' | 'gov' | 'research' | 'security' | 'integration' | 'devops' | 'quality' | 'vision' | 'pmo'>('doctor');
   const [toast, setToast] = useState<{ title: string; message: string; type: 'success' | 'warning' | 'info' } | null>(null);
+  const [isSwitcherExpanded, setIsSwitcherExpanded] = useState(false);
+  const [isDesktopSwitcherCollapsed, setIsDesktopSwitcherCollapsed] = useState(true);
 
   useEffect(() => {
     if (toast) {
@@ -126,13 +128,61 @@ export default function App() {
     return () => window.removeEventListener('mcgm-logout', handleLogout);
   }, []);
 
+  // Listen for global system notifications (SOS and Relative Pre-Registration)
+  useEffect(() => {
+    const handleSystemNotification = (e: Event) => {
+      const customEvent = e as CustomEvent;
+      if (customEvent.detail) {
+        const { title, message, type } = customEvent.detail;
+
+        // Play premium clinical double-chirp sound
+        try {
+          const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
+          const playNote = (freq: number, start: number, duration: number) => {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(freq, audioCtx.currentTime + start);
+            gain.gain.setValueAtTime(0.08, audioCtx.currentTime + start);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + start + duration);
+            osc.start(audioCtx.currentTime + start);
+            osc.stop(audioCtx.currentTime + start + duration);
+          };
+          playNote(987.77, 0, 0.12); // B5 note
+          playNote(1318.51, 0.10, 0.15); // E6 note (nice ascending clinical chime)
+        } catch (err) {
+          console.warn('AudioContext chime failed:', err);
+        }
+
+        // Add to global notification stream
+        const newNotif: NotificationItem = {
+          id: 'sys_' + Date.now(),
+          type: type === 'warning' ? 'report' : 'appointment',
+          title: title,
+          desc: message,
+          timeAgo: 'Just now',
+          isRead: false
+        };
+        setNotifications(prev => [newNotif, ...prev]);
+
+        // Trigger toast state
+        setToast({ title, message, type: type || 'info' });
+      }
+    };
+
+    window.addEventListener('mcgm-system-notification', handleSystemNotification);
+    return () => window.removeEventListener('mcgm-system-notification', handleSystemNotification);
+  }, []);
+
   const [isAppLoading, setIsAppLoading] = useState(true);
   const [isDarkMode, setIsDarkMode] = useState(() => {
     const saved = localStorage.getItem('theme');
     return saved === 'dark';
   });
   const [isFirstLaunch, setIsFirstLaunch] = useState(true);
-  const [activeTab, setActiveTab] = useState<'home' | 'records' | 'wallet' | 'sos' | 'profile'>('home');
+  const [activeTab, setActiveTab] = useState<'home' | 'records' | 'wallet' | 'sos' | 'emergency' | 'profile'>('home');
   const [isBookingFlow, setIsBookingFlow] = useState(false);
   
   // User Profile States
@@ -413,8 +463,8 @@ export default function App() {
 
   const renderPortalSwitcher = (current: string) => {
     const portals = [
-      { id: 'patient', label: 'Patient Portal', icon: User, className: 'bg-[#FF9933] hover:bg-orange-600' },
-      { id: 'doctor', label: 'Doctor Portal', icon: Activity, className: 'bg-[#003F8A] hover:bg-blue-800' },
+      { id: 'patient', label: 'Patient Portal', icon: User, className: 'bg-[#0A5BFF] hover:bg-blue-900' },
+      { id: 'doctor', label: 'Doctor Portal', icon: Activity, className: 'bg-[#0A5BFF] hover:bg-blue-800' },
       { id: 'nurse', label: 'Nurse Portal', icon: ClipboardList, className: 'bg-emerald-600 hover:bg-emerald-700' },
       { id: 'reception', label: 'Reception Desk', icon: Building, className: 'bg-purple-600 hover:bg-purple-700' },
       { id: 'command', label: 'Command Center', icon: Activity, className: 'bg-[#0f172a] hover:bg-slate-900', isPulse: true, iconClass: 'text-rose-500 animate-pulse' },
@@ -437,26 +487,112 @@ export default function App() {
 
     return (
       <>
-        <div className="fixed bottom-4 left-0 right-0 z-50 px-4">
-          <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none"
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-          {portals
-            .filter(p => p.id !== current)
-            .map(p => {
-              const Icon = p.icon;
-              return (
-                <button
-                  key={p.id}
-                  onClick={() => setPortal(p.id as any)}
-                  title={p.label}
-                  className={`${p.className} text-white font-bold text-[10px] px-3 py-2 rounded-full shadow-lg flex items-center gap-1.5 transition-all hover:scale-105 active:scale-95 border border-white/30 cursor-pointer flex-shrink-0`}
+        {/* Desktop View: Collapsible trigger and slide-out portal panel at the bottom-left to avoid sidebar overlap */}
+        <div className="fixed bottom-6 left-6 z-[9999] hidden lg:flex items-end gap-3">
+          {/* Collapse/Expand Toggle Button */}
+          <button
+            onClick={() => setIsDesktopSwitcherCollapsed(prev => !prev)}
+            className="w-12 h-12 bg-[#0A5BFF] hover:bg-blue-700 text-white rounded-full flex items-center justify-center shadow-2xl border border-white/20 active:scale-95 transition-all cursor-pointer relative"
+          >
+            {isDesktopSwitcherCollapsed ? <Layers className="w-5 h-5" /> : <X className="w-5 h-5" />}
+          </button>
+
+          {/* Slide-out Portal Switcher panel */}
+          {!isDesktopSwitcherCollapsed && (
+            <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md p-3 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-2xl max-h-[70vh] overflow-y-auto w-48 flex flex-col gap-2 scrollbar-none animate-in slide-in-from-left-4 duration-200">
+              <div className="text-[9px] font-black text-gray-400 dark:text-slate-500 uppercase tracking-widest px-1.5 mb-1 text-center">
+                MCGM Portals
+              </div>
+              {portals.map(p => {
+                const Icon = p.icon;
+                const isActive = current === p.id;
+                return (
+                  <button
+                    key={p.id}
+                    onClick={() => {
+                      setPortal(p.id as any);
+                      setIsDesktopSwitcherCollapsed(true); // Auto-collapse on select to avoid occupying screen space
+                    }}
+                    className={`w-full text-left font-bold text-[10px] px-2.5 py-2 rounded-xl flex items-center gap-2 transition-all border cursor-pointer hover:scale-[1.02] active:scale-95 ${
+                      isActive 
+                        ? 'bg-blue-50 border-blue-200 text-[#0A5BFF] dark:bg-blue-950/30 dark:border-blue-900/50 dark:text-blue-400 font-extrabold shadow-sm'
+                        : 'bg-transparent border-transparent text-gray-600 dark:text-slate-400 hover:bg-gray-50 dark:hover:bg-slate-800/50'
+                    }`}
+                  >
+                    <div className={`w-5 h-5 rounded-lg flex items-center justify-center text-white ${p.className}`}>
+                      <Icon className={`w-3 h-3 ${p.iconClass || ''} ${p.isPulse ? 'animate-pulse' : ''}`} />
+                    </div>
+                    <span className="truncate">{p.label.replace(' Portal', '').replace(' Desk', '').replace(' Center', '')}</span>
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
+        {/* Mobile View: Toggleable floating drawer that collapses to avoid overlapping bottom navigation */}
+        <div className="fixed bottom-24 left-4 z-[9999] lg:hidden">
+          {/* Floating trigger button */}
+          <button
+            onClick={() => setIsSwitcherExpanded(prev => !prev)}
+            className="w-11 h-11 bg-[#0A5BFF] text-white rounded-full flex items-center justify-center shadow-lg border border-white/20 active:scale-95 hover:scale-105 transition-all cursor-pointer relative"
+          >
+            {isSwitcherExpanded ? <X className="w-5 h-5" /> : <Layers className="w-5 h-5" />}
+            {!isSwitcherExpanded && (
+              <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-red-500 text-[8px] font-black text-white items-center justify-center">!</span>
+              </span>
+            )}
+          </button>
+
+          {/* Floating Drawer Card */}
+          <AnimatePresence>
+            {isSwitcherExpanded && (
+              <>
+                {/* Click-outside backdrop */}
+                <div 
+                  className="fixed inset-0 z-40 bg-black/20 backdrop-blur-[1px]" 
+                  onClick={() => setIsSwitcherExpanded(false)} 
+                />
+                
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9, y: 15 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.9, y: 10 }}
+                  className="absolute bottom-14 left-0 z-50 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-3xl p-4 shadow-2xl w-[260px] max-h-[50vh] overflow-y-auto flex flex-col gap-1.5"
                 >
-                  <Icon className={`w-3.5 h-3.5 ${p.iconClass || ''} ${p.isPulse ? 'animate-pulse' : ''}`} />
-                  <span className="whitespace-nowrap">{p.label}</span>
-                </button>
-              );
-            })}
-          </div>
+                  <div className="flex justify-between items-center border-b border-gray-100 dark:border-slate-800 pb-2 mb-1.5">
+                    <span className="text-[10px] font-black text-gray-400 dark:text-slate-500 uppercase tracking-widest">Select Portal</span>
+                    <span className="text-[8px] font-bold text-[#0A5BFF] bg-blue-50 dark:bg-blue-950/40 px-2 py-0.5 rounded-full">Dev Console</span>
+                  </div>
+                  {portals.map(p => {
+                    const Icon = p.icon;
+                    const isActive = current === p.id;
+                    return (
+                      <button
+                        key={p.id}
+                        onClick={() => {
+                          setPortal(p.id as any);
+                          setIsSwitcherExpanded(false);
+                        }}
+                        className={`w-full text-left font-bold text-[10px] px-2.5 py-2.5 rounded-2xl flex items-center gap-3 transition-all cursor-pointer ${
+                          isActive 
+                            ? 'bg-blue-50 dark:bg-blue-950/30 text-[#0A5BFF] dark:text-blue-400 font-extrabold shadow-sm border border-blue-100 dark:border-blue-900/40' 
+                            : 'hover:bg-gray-50 dark:hover:bg-slate-800/50 text-gray-700 dark:text-slate-400 border border-transparent'
+                        }`}
+                      >
+                        <div className={`w-6 h-6 rounded-xl flex items-center justify-center text-white ${p.className}`}>
+                          <Icon className={`w-3.5 h-3.5 ${p.iconClass || ''} animate-pulse`} />
+                        </div>
+                        <span>{p.label}</span>
+                      </button>
+                    );
+                  })}
+                </motion.div>
+              </>
+            )}
+          </AnimatePresence>
         </div>
       </>
     );
@@ -465,7 +601,7 @@ export default function App() {
   if (isAppLoading) {
     return (
       <div className={`min-h-screen flex items-center justify-center p-4 transition-colors duration-300 ${
-        isDarkMode ? 'bg-[#0b0f19] text-white' : 'bg-[#f7fafd] text-[#002068]'
+        isDarkMode ? 'bg-[#0b0f19] text-white' : 'bg-[#F8FAFD] text-[#0A5BFF]'
       }`}>
         <div className="w-full max-w-md text-center space-y-6 flex flex-col items-center">
           <motion.div
@@ -473,7 +609,7 @@ export default function App() {
             animate={{ scale: [0.8, 1.1, 1], opacity: 1 }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
             className={`w-20 h-20 rounded-2xl flex items-center justify-center shadow-lg relative ${
-              isDarkMode ? 'bg-[#111827] border border-blue-900/30 text-blue-400' : 'bg-white text-[#002068]'
+              isDarkMode ? 'bg-[#111827] border border-blue-900/30 text-blue-400' : 'bg-white text-[#0A5BFF]'
             }`}
           >
             {/* Pulsing glow ring */}
@@ -685,6 +821,29 @@ export default function App() {
 
         {/* Global Voice Assistant Overlay */}
         <VoiceAssistantOverlay currentPortal={portal} isDarkMode={isDarkMode} />
+
+        {/* Global Toast Banner */}
+        <AnimatePresence>
+          {toast && (
+            <motion.div
+              initial={{ opacity: 0, y: -20, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -10, scale: 0.95 }}
+              className="fixed top-6 left-1/2 -translate-x-1/2 z-[9999] max-w-sm w-[90%] bg-white border border-gray-200 rounded-2xl shadow-2xl p-4 flex items-start space-x-3 pointer-events-auto"
+            >
+              <div className={`p-2 rounded-xl ${toast.type === 'warning' ? 'bg-red-500/10 text-red-500' : toast.type === 'success' ? 'bg-green-500/10 text-green-500' : 'bg-blue-500/10 text-blue-500'}`}>
+                {toast.type === 'warning' ? <AlertTriangle className="w-5 h-5" /> : toast.type === 'success' ? <Check className="w-5 h-5" /> : <Bell className="w-5 h-5" />}
+              </div>
+              <div className="flex-1 min-w-0">
+                <h5 className="text-xs font-black text-gray-900">{toast.title}</h5>
+                <p className="text-[11px] text-gray-500 leading-normal mt-0.5">{toast.message}</p>
+              </div>
+              <button onClick={() => setToast(null)} className="text-gray-400 hover:text-gray-600 transition-colors">
+                <X className="w-4 h-4" />
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     );
   }
@@ -701,17 +860,17 @@ export default function App() {
   const unreadNotifCount = notifications.filter(n => !n.isRead).length;
 
   return (
-    <div className={`min-h-screen bg-[#f7fafd] flex justify-center text-gray-800 antialiased font-sans ${isDarkMode ? 'dark' : ''}`}>
-      <div className="w-full max-w-md bg-white min-h-screen shadow-xl border-x border-gray-100 flex flex-col justify-between relative">
+    <div className={`min-h-screen bg-[#F8FAFD] dark:bg-slate-950 flex justify-center text-gray-800 dark:text-slate-100 antialiased font-sans ${isDarkMode ? 'dark' : ''}`}>
+      <div className="w-full max-w-md bg-white dark:bg-slate-900 min-h-screen shadow-xl border-x border-gray-100 dark:border-slate-800 flex flex-col justify-between relative">
         
         {/* Core Header Navigation Bar */}
-        <header className="sticky top-0 bg-white/95 backdrop-blur-md z-40 border-b border-gray-100 p-4 py-3.5 flex items-center justify-between">
+        <header className="sticky top-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md z-40 border-b border-gray-100 dark:border-slate-800 p-4 py-3.5 flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 rounded-lg bg-[#002068] flex items-center justify-center text-white">
+            <div className="w-8 h-8 rounded-lg bg-[#0A5BFF] flex items-center justify-center text-white">
               <span className="font-extrabold text-sm tracking-tighter">MC</span>
             </div>
             <div>
-              <h1 className="text-xs font-black tracking-widest text-[#002068] uppercase">
+              <h1 className="text-xs font-black tracking-widest text-[#0A5BFF] uppercase">
                 MCGM Digital
               </h1>
               <p className="text-[9px] text-gray-400 font-bold uppercase tracking-wider">Dadar Central Hub</p>
@@ -722,9 +881,9 @@ export default function App() {
             {/* Notification Bell Badge */}
             <button
               onClick={() => setShowNotificationsView(true)}
-              className="p-2 hover:bg-gray-50 rounded-xl relative transition-all"
+              className="p-2 hover:bg-gray-50 dark:hover:bg-slate-800 rounded-xl relative transition-all"
             >
-              <Bell className="w-5 h-5 text-gray-700" />
+              <Bell className="w-5 h-5 text-gray-700 dark:text-slate-350" />
               {unreadNotifCount > 0 && (
                 <span className="absolute top-1 right-1 w-4 h-4 bg-[#ba1a1a] text-white text-[9px] font-bold rounded-full flex items-center justify-center animate-bounce">
                   {unreadNotifCount}
@@ -735,7 +894,7 @@ export default function App() {
             {/* Profile trigger */}
             <button
               onClick={() => setActiveTab('profile')}
-              className="w-8 h-8 rounded-full overflow-hidden border border-gray-200"
+              className="w-8 h-8 rounded-full overflow-hidden border border-gray-200 dark:border-slate-700"
             >
               <img
                 src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150&h=150"
@@ -789,11 +948,11 @@ export default function App() {
                   <div className="space-y-6">
                     {/* Welcome Banner */}
                     <div>
-                      <h2 className="text-2xl font-black text-gray-900 tracking-tight flex items-center">
+                      <h2 className="text-2xl font-black text-gray-900 dark:text-white tracking-tight flex items-center">
                         <span>Namaskar, {userName.split(' ')[0]}</span>
                         <span className="ml-2 animate-bounce origin-bottom-right">👋</span>
                       </h2>
-                      <p className="text-gray-400 text-[11px] font-semibold uppercase tracking-wider mt-1">
+                      <p className="text-gray-400 dark:text-slate-450 text-[11px] font-semibold uppercase tracking-wider mt-1">
                         Ayushman Bharat Digital Health (ABHA) Portal
                       </p>
                     </div>
@@ -801,7 +960,7 @@ export default function App() {
                     {/* ABHA Patient Digital Identity Card */}
                     <div 
                       onClick={() => setShowABHADialog(true)}
-                      className="bg-gradient-to-br from-[#002068] via-[#003399] to-[#0050cc] text-white rounded-3xl p-5 shadow-lg relative overflow-hidden cursor-pointer hover:shadow-xl transition-all border border-blue-400/20 active:scale-99"
+                      className="bg-gradient-to-br from-[#0A5BFF] via-[#003399] to-[#0050cc] text-white rounded-3xl p-5 shadow-lg relative overflow-hidden cursor-pointer hover:shadow-xl transition-all border border-blue-400/20 active:scale-99"
                     >
                       <div className="absolute top-0 right-0 w-28 h-28 bg-white/5 rounded-full translate-x-8 -translate-y-8" />
                       
@@ -836,47 +995,47 @@ export default function App() {
                     <div className="grid grid-cols-4 gap-3">
                       <button
                         onClick={() => setIsBookingFlow(true)}
-                        className="bg-white border border-gray-100 rounded-2xl p-3 flex flex-col items-center text-center justify-between hover:border-gray-200 transition-all shadow-sm active:scale-95"
+                        className="bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-2xl p-3 flex flex-col items-center text-center justify-between hover:border-gray-200 dark:hover:border-slate-600 transition-all shadow-sm active:scale-95"
                       >
-                        <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center text-[#002068] mb-2">
+                        <div className="w-10 h-10 bg-blue-50 dark:bg-blue-900/20 rounded-xl flex items-center justify-center text-[#0A5BFF] dark:text-blue-400 mb-2">
                           <Calendar className="w-5 h-5" />
                         </div>
-                        <span className="text-[10px] font-extrabold text-gray-800 leading-tight">Book OPD</span>
+                        <span className="text-[10px] font-extrabold text-gray-800 dark:text-slate-200 leading-tight">Book OPD</span>
                       </button>
 
                       <button
                         onClick={() => setActiveTab('records')}
-                        className="bg-white border border-gray-100 rounded-2xl p-3 flex flex-col items-center text-center justify-between hover:border-gray-200 transition-all shadow-sm active:scale-95"
+                        className="bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-2xl p-3 flex flex-col items-center text-center justify-between hover:border-gray-200 dark:hover:border-slate-600 transition-all shadow-sm active:scale-95"
                       >
-                        <div className="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center text-green-600 mb-2">
+                        <div className="w-10 h-10 bg-green-50 dark:bg-green-900/20 rounded-xl flex items-center justify-center text-green-600 dark:text-green-400 mb-2">
                           <FileText className="w-5 h-5" />
                         </div>
-                        <span className="text-[10px] font-extrabold text-gray-800 leading-tight">My Records</span>
+                        <span className="text-[10px] font-extrabold text-gray-800 dark:text-slate-200 leading-tight">My Records</span>
                       </button>
 
                       <button
                         onClick={() => setActiveTab('wallet')}
-                        className="bg-white border border-gray-100 rounded-2xl p-3 flex flex-col items-center text-center justify-between hover:border-gray-200 transition-all shadow-sm active:scale-95"
+                        className="bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-2xl p-3 flex flex-col items-center text-center justify-between hover:border-gray-200 dark:hover:border-slate-600 transition-all shadow-sm active:scale-95"
                       >
-                        <div className="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center text-amber-600 mb-2">
+                        <div className="w-10 h-10 bg-amber-50 dark:bg-amber-900/20 rounded-xl flex items-center justify-center text-amber-600 dark:text-amber-400 mb-2">
                           <Wallet className="w-5 h-5" />
                         </div>
-                        <span className="text-[10px] font-extrabold text-gray-800 leading-tight">My Wallet</span>
+                        <span className="text-[10px] font-extrabold text-gray-800 dark:text-slate-200 leading-tight">My Wallet</span>
                       </button>
 
                       <button
-                        onClick={() => setActiveTab('sos')}
-                        className="bg-white border border-gray-100 rounded-2xl p-3 flex flex-col items-center text-center justify-between hover:border-gray-200 transition-all shadow-sm active:scale-95"
+                        onClick={() => setActiveTab('emergency')}
+                        className="bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-2xl p-3 flex flex-col items-center text-center justify-between hover:border-gray-200 dark:hover:border-slate-600 transition-all shadow-sm active:scale-95"
                       >
-                        <div className="w-10 h-10 bg-red-50 rounded-xl flex items-center justify-center text-[#ba1a1a] mb-2">
+                        <div className="w-10 h-10 bg-red-50 dark:bg-red-900/20 rounded-xl flex items-center justify-center text-[#ba1a1a] dark:text-red-400 mb-2">
                           <HeartPulse className="w-5 h-5" />
                         </div>
-                        <span className="text-[10px] font-extrabold text-gray-800 leading-tight">ER Dispatch</span>
+                        <span className="text-[10px] font-extrabold text-gray-800 dark:text-slate-200 leading-tight">ER Dispatch</span>
                       </button>
                     </div>
 
                     {/* Live Teleconsultation / TeleHealth Banner */}
-                    <div className="bg-gradient-to-r from-indigo-900 to-[#002068] text-white rounded-3xl p-5 shadow-lg relative overflow-hidden border border-blue-500/20">
+                    <div className="bg-gradient-to-r from-indigo-900 to-[#0A5BFF] text-white rounded-3xl p-5 shadow-lg relative overflow-hidden border border-blue-500/20">
                       <div className="absolute top-0 right-0 w-24 h-24 bg-white/5 rounded-full translate-x-6 -translate-y-6" />
                       <div className="flex justify-between items-start">
                         <div>
@@ -909,7 +1068,7 @@ export default function App() {
                             }, 3000);
                           }, 2500);
                         }}
-                        className="w-full bg-white text-[#002068] py-3.5 rounded-xl font-bold mt-4 hover:bg-indigo-50 active:scale-95 transition-all text-xs flex items-center justify-center space-x-2 shadow-sm cursor-pointer"
+                        className="w-full bg-white text-[#0A5BFF] py-3.5 rounded-xl font-bold mt-4 hover:bg-indigo-50 active:scale-95 transition-all text-xs flex items-center justify-center space-x-2 shadow-sm cursor-pointer"
                       >
                         <Video className="w-4 h-4" />
                         <span>Start Video Consultation</span>
@@ -920,40 +1079,40 @@ export default function App() {
                     {appointments.length > 0 && (
                       <div className="space-y-3">
                         <div className="flex justify-between items-center px-1">
-                          <h3 className="font-extrabold text-gray-900 text-sm tracking-wider uppercase">Active Appointments</h3>
-                          <span className="text-xs font-bold text-gray-400">{appointments.length} active</span>
+                          <h3 className="font-extrabold text-gray-900 dark:text-white text-sm tracking-wider uppercase">Active Appointments</h3>
+                          <span className="text-xs font-bold text-gray-400 dark:text-slate-500">{appointments.length} active</span>
                         </div>
 
                         {appointments.map((appt) => (
                           <div
                             key={appt.id}
-                            className="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm space-y-4"
+                            className="bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-2xl p-4 shadow-sm space-y-4"
                           >
                             <div className="flex justify-between items-start">
                               <div className="flex items-start space-x-3">
-                                <div className="p-2 bg-blue-50 text-[#0050cc] rounded-xl font-bold text-center min-w-[48px]">
+                                <div className="p-2 bg-blue-50 dark:bg-blue-900/20 text-[#0050cc] dark:text-blue-400 rounded-xl font-bold text-center min-w-[48px]">
                                   <p className="text-[10px] uppercase font-extrabold">{appt.dateStr.split(' ')[0].slice(0,3)}</p>
                                   <p className="text-sm font-black mt-0.5">{appt.dateStr.split(' ').pop()}</p>
                                 </div>
                                 <div>
-                                  <h4 className="font-bold text-gray-900 text-xs">{appt.department.name} Consultation</h4>
-                                  <p className="text-[10px] text-gray-400 mt-0.5">{appt.hospital.name} • {appt.doctor.name}</p>
+                                  <h4 className="font-bold text-gray-900 dark:text-white text-xs">{appt.department.name} Consultation</h4>
+                                  <p className="text-[10px] text-gray-400 dark:text-slate-400 mt-0.5">{appt.hospital.name} • {appt.doctor.name}</p>
                                 </div>
                               </div>
-                              <span className="text-[10px] font-bold bg-green-50 text-green-700 px-2.5 py-0.5 rounded-full">
+                              <span className="text-[10px] font-bold bg-green-50 dark:bg-green-950/20 text-green-700 dark:text-green-400 px-2.5 py-0.5 rounded-full">
                                 {appt.status}
                               </span>
                             </div>
 
                             {/* Queue overview widget */}
-                            <div className="p-3.5 bg-gray-50/50 rounded-xl border border-gray-100 flex items-center justify-between text-xs">
+                            <div className="p-3.5 bg-gray-50/50 dark:bg-slate-900/40 rounded-xl border border-gray-100 dark:border-slate-700 flex items-center justify-between text-xs">
                               <div className="flex items-center space-x-2">
                                 <span className="w-2 h-2 bg-green-500 rounded-full animate-ping" />
-                                <span className="font-bold text-gray-700">Token {appt.tokenNo}</span>
+                                <span className="font-bold text-gray-700 dark:text-slate-200">Token {appt.tokenNo}</span>
                               </div>
                               <button
                                 onClick={() => setActiveLiveQueueAppt(appt)}
-                                className="text-[#0050cc] font-extrabold text-[11px] flex items-center hover:underline"
+                                className="text-[#0050cc] dark:text-blue-400 font-extrabold text-[11px] flex items-center hover:underline"
                               >
                                 <span>Track Queue Position</span>
                                 <ArrowRight className="w-3.5 h-3.5 ml-1" />
@@ -966,29 +1125,29 @@ export default function App() {
 
                     {/* Medical Insights Area */}
                     <div className="space-y-3">
-                      <h3 className="font-extrabold text-gray-900 text-sm tracking-wider uppercase">Health Metrics</h3>
+                      <h3 className="font-extrabold text-gray-900 dark:text-white text-sm tracking-wider uppercase">Health Metrics</h3>
                       
                       <div className="grid grid-cols-2 gap-3.5">
-                        <div className="bg-white border border-gray-100 rounded-2xl p-4 flex flex-col justify-between shadow-sm relative overflow-hidden">
-                          <p className="text-[10px] font-bold text-gray-400 uppercase">Heart Rate</p>
+                        <div className="bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-2xl p-4 flex flex-col justify-between shadow-sm relative overflow-hidden">
+                          <p className="text-[10px] font-bold text-gray-400 dark:text-slate-450 uppercase">Heart Rate</p>
                           <div className="flex items-end space-x-1.5 mt-3">
-                            <span className="text-3xl font-black text-gray-900">{heartRate}</span>
-                            <span className="text-[10px] text-gray-400 font-bold uppercase mb-1">BPM</span>
+                            <span className="text-3xl font-black text-gray-900 dark:text-white">{heartRate}</span>
+                            <span className="text-[10px] text-gray-400 dark:text-slate-450 font-bold uppercase mb-1">BPM</span>
                           </div>
                           
                           {/* Animated heartbeat wave */}
                           <div className={`absolute right-4 bottom-4 transition-all duration-300 ${
-                            heartbeatActive ? 'scale-125 text-red-500' : 'text-[#ba1a1a]/40'
+                            heartbeatActive ? 'scale-125 text-red-500' : 'text-[#ba1a1a]/40 dark:text-red-400/40'
                           }`}>
                             <Activity className="w-6 h-6" />
                           </div>
                         </div>
 
-                        <div className="bg-white border border-gray-100 rounded-2xl p-4 flex flex-col justify-between shadow-sm">
-                          <p className="text-[10px] font-bold text-gray-400 uppercase">Blood Group</p>
+                        <div className="bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-2xl p-4 flex flex-col justify-between shadow-sm">
+                          <p className="text-[10px] font-bold text-gray-400 dark:text-slate-450 uppercase">Blood Group</p>
                           <div className="flex items-end space-x-1 mt-3">
-                            <span className="text-2xl font-black text-[#ba1a1a]">{userBloodGroup.split(' ')[0]}</span>
-                            <span className="text-xs font-bold text-gray-500 mb-0.5">Rh+</span>
+                            <span className="text-2xl font-black text-[#ba1a1a] dark:text-red-450">{userBloodGroup.split(' ')[0]}</span>
+                            <span className="text-xs font-bold text-gray-500 dark:text-slate-400 mb-0.5">Rh+</span>
                           </div>
                         </div>
                       </div>
@@ -1011,7 +1170,12 @@ export default function App() {
                   />
                 )}
 
-                {/* Tab SOS View */}
+                {/* Tab Emergency SOS View */}
+                {activeTab === 'emergency' && (
+                  <EmergencySOSTab />
+                )}
+
+                {/* Legacy SOS redirect */}
                 {activeTab === 'sos' && (
                   <EmergencySOSTab />
                 )}
@@ -1020,9 +1184,9 @@ export default function App() {
                 {activeTab === 'profile' && (
                   <div className="space-y-6">
                     {/* Header profile display */}
-                    <div className="flex flex-col items-center text-center py-4 border-b border-gray-100">
+                    <div className="flex flex-col items-center text-center py-4 border-b border-gray-100 dark:border-slate-800">
                       <div className="relative">
-                        <div className="w-20 h-20 rounded-full overflow-hidden border-4 border-white shadow-md bg-gray-100">
+                        <div className="w-20 h-20 rounded-full overflow-hidden border-4 border-white dark:border-slate-850 shadow-md bg-gray-100 dark:bg-slate-800">
                           <img
                             src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150&h=150"
                             alt="Rahul Patil Avatar"
@@ -1031,58 +1195,58 @@ export default function App() {
                           />
                         </div>
                         {isAadhaarLinked && (
-                          <div className="absolute bottom-0 right-0 w-6 h-6 bg-[#002068] text-white rounded-full flex items-center justify-center border-2 border-white shadow-sm">
+                          <div className="absolute bottom-0 right-0 w-6 h-6 bg-[#0A5BFF] text-white rounded-full flex items-center justify-center border-2 border-white dark:border-slate-850 shadow-sm">
                             <Check className="w-3.5 h-3.5 stroke-[3]" />
                           </div>
                         )}
                       </div>
-                      <h3 className="font-extrabold text-gray-900 text-lg mt-3">{userName}</h3>
-                      <p className="text-xs text-gray-400">ID: MCGM-88219-R • Mumbai, MH</p>
+                      <h3 className="font-extrabold text-gray-900 dark:text-white text-lg mt-3">{userName}</h3>
+                      <p className="text-xs text-gray-400 dark:text-slate-450">ID: MCGM-88219-R • Mumbai, MH</p>
                     </div>
 
                     {/* ABHA card widget */}
                     <div 
                       onClick={() => setShowABHADialog(true)}
-                      className="p-4 border border-blue-100 bg-blue-50/30 rounded-2xl flex items-center justify-between cursor-pointer hover:bg-blue-50/50 transition-all"
+                      className="p-4 border border-blue-100 dark:border-blue-900/40 bg-blue-50/30 dark:bg-blue-950/10 rounded-2xl flex items-center justify-between cursor-pointer hover:bg-blue-50/50 dark:hover:bg-blue-950/20 transition-all"
                     >
                       <div className="flex items-center space-x-3">
-                        <Smartphone className="w-5 h-5 text-[#002068]" />
+                        <Smartphone className="w-5 h-5 text-[#0A5BFF] dark:text-blue-400" />
                         <div>
-                          <h4 className="font-bold text-gray-900 text-xs">Ayushman Bharat Digital ID</h4>
-                          <p className="text-[10px] text-gray-500 mt-0.5">Show barcode & card details</p>
+                          <h4 className="font-bold text-gray-900 dark:text-white text-xs">Ayushman Bharat Digital ID</h4>
+                          <p className="text-[10px] text-gray-500 dark:text-slate-450 mt-0.5">Show barcode & card details</p>
                         </div>
                       </div>
-                      <ChevronRight className="w-4 h-4 text-[#0050cc]" />
+                      <ChevronRight className="w-4 h-4 text-[#0050cc] dark:text-blue-400" />
                     </div>
 
                     {/* Settings Menu lists */}
                     <div className="space-y-3">
-                      <h4 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-1">Preferences</h4>
+                      <h4 className="text-[10px] font-bold text-gray-400 dark:text-slate-500 uppercase tracking-widest px-1">Preferences</h4>
                       
-                      <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm divide-y divide-gray-100 text-xs">
+                      <div className="bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-2xl overflow-hidden shadow-sm divide-y divide-gray-100 dark:divide-slate-700 text-xs">
                         <div className="p-4 flex items-center justify-between">
                           <div>
-                            <p className="font-bold text-gray-800">App Language</p>
-                            <p className="text-[10px] text-gray-400 mt-0.5">Set language environment</p>
+                            <p className="font-bold text-gray-800 dark:text-slate-200">App Language</p>
+                            <p className="text-[10px] text-gray-400 dark:text-slate-450 mt-0.5">Set language environment</p>
                           </div>
-                          <span className="text-[11px] font-black uppercase text-[#002068] bg-[#002068]/5 px-2.5 py-1 rounded-full">
+                          <span className="text-[11px] font-black uppercase text-[#0A5BFF] bg-[#0A5BFF]/5 px-2.5 py-1 rounded-full">
                             {language === 'mr' ? 'Marathi' : language === 'hi' ? 'Hindi' : 'English'}
                           </span>
                         </div>
 
                         <div className="p-4 flex items-center justify-between">
                           <div>
-                            <p className="font-bold text-gray-800">Aadhaar Linked Identity</p>
-                            <p className="text-[10px] text-gray-400 mt-0.5">National identity verification</p>
+                            <p className="font-bold text-gray-800 dark:text-slate-200">Aadhaar Linked Identity</p>
+                            <p className="text-[10px] text-gray-400 dark:text-slate-455 mt-0.5">National identity verification</p>
                           </div>
                           {isAadhaarLinked ? (
-                            <span className="text-[10px] font-bold text-green-700 bg-green-50 px-2.5 py-1 rounded-full">
+                            <span className="text-[10px] font-bold text-green-700 dark:text-green-400 bg-green-50 dark:bg-green-950/20 px-2.5 py-1 rounded-full">
                               VERIFIED
                             </span>
                           ) : (
                             <button 
                               onClick={() => setIsFirstLaunch(true)}
-                              className="text-xs font-bold text-[#0050cc] hover:underline"
+                              className="text-xs font-bold text-[#0050cc] dark:text-blue-400 hover:underline"
                             >
                               Verify Aadhaar
                             </button>
@@ -1091,14 +1255,14 @@ export default function App() {
 
                         <div className="p-4 flex items-center justify-between">
                           <div>
-                            <p className="font-bold text-gray-800">Night Mode</p>
-                            <p className="text-[10px] text-gray-400 mt-0.5">High-contrast dark color scheme</p>
+                            <p className="font-bold text-gray-800 dark:text-slate-200">Night Mode</p>
+                            <p className="text-[10px] text-gray-400 dark:text-slate-455 mt-0.5">High-contrast dark color scheme</p>
                           </div>
                           <button
                             type="button"
                             onClick={() => setIsDarkMode(prev => !prev)}
                             className={`w-12 h-6.5 rounded-full p-1 transition-colors duration-300 relative focus:outline-none ${
-                              isDarkMode ? 'bg-[#0050cc]' : 'bg-gray-200'
+                              isDarkMode ? 'bg-[#0050cc]' : 'bg-gray-200 dark:bg-slate-700'
                             }`}
                           >
                             <motion.div
@@ -1118,7 +1282,7 @@ export default function App() {
 
                         <button
                           onClick={handleLogout}
-                          className="w-full text-left p-4 flex items-center justify-between text-[#ba1a1a] hover:bg-red-50/50 transition-all font-bold cursor-pointer"
+                          className="w-full text-left p-4 flex items-center justify-between text-[#ba1a1a] dark:text-red-400 hover:bg-red-50/50 dark:hover:bg-red-950/20 transition-all font-bold cursor-pointer"
                         >
                           <span>Reset App Onboarding</span>
                           <LogOut className="w-4 h-4" />
@@ -1133,31 +1297,38 @@ export default function App() {
         </main>
 
         {/* Global Floating Bottom Nav Bar */}
-        <nav className="sticky bottom-0 bg-white/95 backdrop-blur-md border-t border-gray-100 px-4 py-2 flex justify-between items-center z-40">
+        <nav className="sticky bottom-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-gray-100 dark:border-slate-800 px-4 py-2 flex justify-between items-center z-40">
           {[
             { id: 'home' as const, label: 'Home', icon: Home },
+            { id: 'appointments' as const, label: 'Appointments', icon: Calendar },
             { id: 'records' as const, label: 'Records', icon: FileText },
+            { id: 'emergency' as const, label: 'Emergency', icon: Siren },
             { id: 'wallet' as const, label: 'Wallet', icon: Wallet },
-            { id: 'sos' as const, label: 'SOS', icon: HeartPulse },
             { id: 'profile' as const, label: 'Profile', icon: User }
           ].map((tab) => {
             const IconComponent = tab.icon;
-            const isActive = activeTab === tab.id && !isBookingFlow && !activeLiveQueueAppt;
+            const isActive = tab.id === 'appointments'
+              ? isBookingFlow && !activeLiveQueueAppt
+              : activeTab === tab.id && !isBookingFlow && !activeLiveQueueAppt;
 
             return (
               <button
                 key={tab.id}
                 onClick={() => {
-                  setIsBookingFlow(false);
                   setActiveLiveQueueAppt(null);
-                  setActiveTab(tab.id);
+                  if (tab.id === 'appointments') {
+                    setIsBookingFlow(true);
+                  } else {
+                    setIsBookingFlow(false);
+                    setActiveTab(tab.id);
+                  }
                 }}
                 className={`flex flex-col items-center p-2 transition-all cursor-pointer ${
                   isActive 
-                    ? 'text-[#0050cc] scale-105' 
-                    : tab.id === 'sos' 
-                      ? 'text-[#ba1a1a] hover:text-[#ba1a1a]' 
-                      : 'text-gray-400 hover:text-gray-600'
+                    ? 'text-[#0050cc] dark:text-blue-400 scale-105' 
+                    : tab.id === 'emergency' 
+                      ? 'text-[#ba1a1a] dark:text-red-400 hover:text-[#ba1a1a]' 
+                      : 'text-gray-400 dark:text-slate-450 hover:text-gray-600'
                 }`}
               >
                 <IconComponent className={`w-5.5 h-5.5 ${isActive ? 'stroke-[2.5]' : 'stroke-[2]'}`} />
@@ -1176,18 +1347,18 @@ export default function App() {
                 animate={{ x: 0 }}
                 exit={{ x: '100%' }}
                 transition={{ type: 'tween', duration: 0.25 }}
-                className="bg-white w-full max-w-sm h-full shadow-2xl flex flex-col justify-between p-6"
+                className="bg-white dark:bg-slate-900 w-full max-w-sm h-full shadow-2xl flex flex-col justify-between p-6"
               >
                 <div className="space-y-4 flex-1 overflow-y-auto no-scrollbar">
-                  <div className="flex justify-between items-center border-b border-gray-100 pb-3">
-                    <h3 className="font-extrabold text-gray-900 text-base flex items-center space-x-2">
+                  <div className="flex justify-between items-center border-b border-gray-100 dark:border-slate-800 pb-3">
+                    <h3 className="font-extrabold text-gray-900 dark:text-white text-base flex items-center space-x-2">
                       <span>Notifications</span>
-                      <span className="text-xs bg-[#002068]/5 text-[#002068] px-2 py-0.5 rounded-full font-bold">
+                      <span className="text-xs bg-[#0A5BFF]/5 text-[#0A5BFF] px-2 py-0.5 rounded-full font-bold">
                         {unreadNotifCount} New
                       </span>
                     </h3>
-                    <button onClick={() => setShowNotificationsView(false)} className="p-1 hover:bg-gray-100 rounded-full">
-                      <X className="w-5 h-5 text-gray-500" />
+                    <button onClick={() => setShowNotificationsView(false)} className="p-1 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full">
+                      <X className="w-5 h-5 text-gray-500 dark:text-slate-450" />
                     </button>
                   </div>
 
@@ -1196,26 +1367,28 @@ export default function App() {
                       <div
                         key={n.id}
                         className={`p-4 rounded-2xl border transition-all ${
-                          n.isRead ? 'bg-white border-gray-100' : 'bg-[#0050cc]/5 border-blue-100/50'
+                          n.isRead 
+                            ? 'bg-white dark:bg-slate-800 border-gray-100 dark:border-slate-700' 
+                            : 'bg-[#0050cc]/5 dark:bg-[#0050cc]/10 border-blue-100/50 dark:border-blue-900/50'
                         }`}
                       >
                         <div className="flex justify-between items-start">
-                          <h4 className="font-bold text-gray-900 text-xs">{n.title}</h4>
-                          <span className="text-[9px] text-gray-400">{n.timeAgo}</span>
+                          <h4 className="font-bold text-gray-900 dark:text-white text-xs">{n.title}</h4>
+                          <span className="text-[9px] text-gray-400 dark:text-slate-500">{n.timeAgo}</span>
                         </div>
-                        <p className="text-[11px] text-gray-500 mt-1 leading-relaxed">{n.desc}</p>
+                        <p className="text-[11px] text-gray-500 dark:text-slate-400 mt-1 leading-relaxed">{n.desc}</p>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                <div className="pt-4 border-t border-gray-100">
+                <div className="pt-4 border-t border-gray-100 dark:border-slate-800">
                   <button
                     onClick={() => {
                       markAllNotificationsAsRead();
                       setShowNotificationsView(false);
                     }}
-                    className="w-full bg-[#002068] text-white py-3.5 rounded-xl font-bold hover:bg-[#00164e] transition-all text-xs"
+                    className="w-full bg-[#0A5BFF] text-white py-3.5 rounded-xl font-bold hover:bg-[#00164e] transition-all text-xs"
                   >
                     Mark All as Read
                   </button>
@@ -1233,23 +1406,23 @@ export default function App() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className="bg-white rounded-3xl w-full max-w-sm p-6 space-y-6 border border-gray-100 shadow-2xl relative overflow-hidden"
+                className="bg-white dark:bg-slate-900 rounded-3xl w-full max-w-sm p-6 space-y-6 border border-gray-100 dark:border-slate-800 shadow-2xl relative overflow-hidden"
               >
                 <button
                   onClick={() => setShowABHADialog(false)}
-                  className="absolute top-4 right-4 p-1 bg-gray-50 hover:bg-gray-100 rounded-full transition-all"
+                  className="absolute top-4 right-4 p-1 bg-gray-50 dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-full transition-all"
                 >
-                  <X className="w-5 h-5 text-gray-500" />
+                  <X className="w-5 h-5 text-gray-500 dark:text-slate-450" />
                 </button>
 
                 <div className="text-center space-y-1">
-                  <h3 className="font-extrabold text-gray-900 text-base">ABHA Health Card</h3>
-                  <p className="text-xs text-gray-400">Scan at the OPD kiosk for quick check-in</p>
+                  <h3 className="font-extrabold text-gray-900 dark:text-white text-base">ABHA Health Card</h3>
+                  <p className="text-xs text-gray-400 dark:text-slate-450">Scan at the OPD kiosk for quick check-in</p>
                 </div>
 
                 {/* Simulated Digital barcode and QR */}
-                <div className="bg-[#f7fafd] rounded-2xl p-4 flex flex-col items-center justify-center border border-gray-100 space-y-4">
-                  <div className="w-36 h-36 border-4 border-white rounded-xl shadow-sm bg-white p-2">
+                <div className="bg-[#F8FAFD] dark:bg-slate-800 rounded-2xl p-4 flex flex-col items-center justify-center border border-gray-100 dark:border-slate-700 space-y-4">
+                  <div className="w-36 h-36 border-4 border-white dark:border-slate-900 rounded-xl shadow-sm bg-white dark:bg-slate-900 p-2">
                     <img
                       src="https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg"
                       alt="ABHA QR Code"
@@ -1260,32 +1433,32 @@ export default function App() {
                   
                   {/* barcode lines */}
                   <div className="w-full space-y-1 pt-1">
-                    <div className="h-6 bg-gray-800 rounded flex space-x-1.5 overflow-hidden">
+                    <div className="h-6 bg-gray-800 dark:bg-slate-950 rounded flex space-x-1.5 overflow-hidden">
                       {/* Alternating black and white bars for barcode look */}
                       {Array.from({ length: 24 }).map((_, i) => (
                         <div 
                           key={i} 
-                          className="bg-black" 
+                          className="bg-black dark:bg-slate-300" 
                           style={{ width: `${(i % 3 === 0 ? 8 : i % 2 === 0 ? 4 : 2)}px` }} 
                         />
                       ))}
                     </div>
-                    <p className="text-[9px] text-gray-400 font-mono tracking-widest text-center mt-1">2254-0188-9012</p>
+                    <p className="text-[9px] text-gray-400 dark:text-slate-500 font-mono tracking-widest text-center mt-1">2254-0188-9012</p>
                   </div>
                 </div>
 
                 <div className="space-y-2 text-xs">
-                  <div className="flex justify-between py-1 border-b border-gray-100">
-                    <span className="text-gray-400">Card Status</span>
-                    <span className="font-bold text-green-700">VERIFIED & ACTIVE</span>
+                  <div className="flex justify-between py-1 border-b border-gray-100 dark:border-slate-800">
+                    <span className="text-gray-400 dark:text-slate-450">Card Status</span>
+                    <span className="font-bold text-green-700 dark:text-green-400">VERIFIED & ACTIVE</span>
                   </div>
-                  <div className="flex justify-between py-1 border-b border-gray-100">
-                    <span className="text-gray-400">ABHA Address</span>
-                    <span className="font-bold text-gray-800">rahulpatil@abha</span>
+                  <div className="flex justify-between py-1 border-b border-gray-100 dark:border-slate-800">
+                    <span className="text-gray-400 dark:text-slate-455">ABHA Address</span>
+                    <span className="font-bold text-gray-800 dark:text-slate-200">rahulpatil@abha</span>
                   </div>
-                  <div className="flex justify-between py-1 border-b border-gray-100">
-                    <span className="text-gray-400">Linked Identity</span>
-                    <span className="font-bold text-gray-800">Aadhaar (Ending *1189)</span>
+                  <div className="flex justify-between py-1 border-b border-gray-100 dark:border-slate-800">
+                    <span className="text-gray-400 dark:text-slate-455">Linked Identity</span>
+                    <span className="font-bold text-gray-800 dark:text-slate-200">Aadhaar (Ending *1189)</span>
                   </div>
                 </div>
 
@@ -1294,7 +1467,7 @@ export default function App() {
                     setToast({ title: 'Wallet Saved', message: 'Card buffered to your Apple/Google Wallet successfully!', type: 'success' });
                     setShowABHADialog(false);
                   }}
-                  className="w-full bg-[#002068] text-white py-3.5 rounded-xl font-bold hover:bg-[#00164e] transition-all text-xs"
+                  className="w-full bg-[#0A5BFF] text-white py-3.5 rounded-xl font-bold hover:bg-[#00164e] transition-all text-xs"
                 >
                   Save to Google Wallet
                 </button>
@@ -1309,7 +1482,7 @@ export default function App() {
             <div className="fixed inset-0 z-50 bg-[#020617] flex flex-col justify-between p-4 text-white">
               {teleconsultStep === 'connecting' ? (
                 <div className="flex-1 flex flex-col items-center justify-center space-y-6 text-center">
-                  <div className="w-24 h-24 rounded-full bg-[#002068]/50 border-4 border-blue-500/30 flex items-center justify-center relative">
+                  <div className="w-24 h-24 rounded-full bg-[#0A5BFF]/50 border-4 border-blue-500/30 flex items-center justify-center relative">
                     <span className="absolute inset-0 rounded-full border-4 border-blue-400 animate-ping" />
                     <Video className="w-10 h-10 text-blue-400" />
                   </div>
@@ -1343,7 +1516,7 @@ export default function App() {
                     </div>
 
                     {/* Local User Camera Viewport (Picture in Picture) */}
-                    <div className="absolute bottom-4 right-4 w-28 h-36 rounded-2xl overflow-hidden border-2 border-white bg-slate-850 shadow-lg z-10">
+                    <div className="absolute bottom-4 right-4 w-28 h-36 rounded-2xl overflow-hidden border-2 border-white bg-slate-800 shadow-lg z-10">
                       {!isCamOff ? (
                         <div className="w-full h-full relative">
                           <img 
@@ -1478,7 +1651,7 @@ export default function App() {
                       setTeleconsultStep('connecting');
                       setActiveTab('records'); // auto navigate to records so they can see it!
                     }}
-                    className="bg-[#002068] hover:bg-blue-700 text-white px-6 py-3.5 rounded-xl font-bold text-xs transition-all w-full max-w-xs cursor-pointer active:scale-95"
+                    className="bg-[#0A5BFF] hover:bg-blue-700 text-white px-6 py-3.5 rounded-xl font-bold text-xs transition-all w-full max-w-xs cursor-pointer active:scale-95"
                   >
                     Go to My Records
                   </button>
@@ -1488,35 +1661,8 @@ export default function App() {
           )}
         </AnimatePresence>
 
-        {/* Floating Portal Switcher — compact scrollable strip */}
-        <div className="fixed bottom-4 left-0 right-0 z-50 px-4">
-          <div
-            className="flex items-center gap-2 overflow-x-auto pb-1"
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-          >
-            {[
-              { portal: 'doctor',     label: 'Doctor',    Icon: Activity,      cls: 'bg-[#003F8A] hover:bg-blue-800' },
-              { portal: 'nurse',      label: 'Nurse',     Icon: ClipboardList, cls: 'bg-emerald-600 hover:bg-emerald-700' },
-              { portal: 'reception',  label: 'Reception', Icon: Building,      cls: 'bg-purple-600 hover:bg-purple-700' },
-              { portal: 'ai',         label: 'AI Copilot',Icon: Brain,         cls: 'bg-gradient-to-r from-indigo-600 via-purple-600 to-rose-500' },
-              { portal: 'laboratory', label: 'Lab',       Icon: FlaskConical,  cls: 'bg-sky-600 hover:bg-sky-700' },
-              { portal: 'radiology',  label: 'RIS/PACS',  Icon: Tv,            cls: 'bg-slate-700 hover:bg-slate-800' },
-              { portal: 'pharmacy',   label: 'Pharmacy',  Icon: Pill,          cls: 'bg-teal-700 hover:bg-teal-800' },
-              { portal: 'emergency',  label: 'Emergency', Icon: Siren,         cls: 'bg-rose-600 hover:bg-rose-700', pulse: true },
-              { portal: 'surgery',    label: 'Surgical',  Icon: Scissors,      cls: 'bg-gradient-to-tr from-rose-600 to-amber-500' },
-            ].map(({ portal: p, label, Icon, cls, pulse }) => (
-              <button
-                key={p}
-                onClick={() => setPortal(p as any)}
-                title={label}
-                className={`${cls} text-white font-bold text-[10px] px-3 py-2 rounded-full shadow-lg flex items-center gap-1.5 transition-all hover:scale-105 active:scale-95 border border-white/30 cursor-pointer flex-shrink-0`}
-              >
-                <Icon className={`w-3.5 h-3.5 ${pulse ? 'animate-pulse' : ''}`} />
-                <span className="whitespace-nowrap">{label}</span>
-              </button>
-            ))}
-          </div>
-        </div>
+        {/* Floating Portal Switcher */}
+        {renderPortalSwitcher(portal)}
 
 
       {/* Global Toast Banner */}
@@ -1526,14 +1672,14 @@ export default function App() {
             initial={{ opacity: 0, y: -20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.95 }}
-            className="fixed top-6 left-1/2 -translate-y-1/2 z-[9999] max-w-sm w-[90%] bg-white border border-gray-200 rounded-2xl shadow-2xl p-4 flex items-start space-x-3 pointer-events-auto"
+            className="fixed top-6 left-1/2 -translate-y-1/2 z-[9999] max-w-sm w-[90%] bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl shadow-2xl p-4 flex items-start space-x-3 pointer-events-auto"
           >
             <div className={`p-2 rounded-xl ${toast.type === 'warning' ? 'bg-red-500/10 text-red-500' : toast.type === 'success' ? 'bg-green-500/10 text-green-500' : 'bg-blue-500/10 text-blue-500'}`}>
               {toast.type === 'warning' ? <AlertTriangle className="w-5 h-5" /> : toast.type === 'success' ? <Check className="w-5 h-5" /> : <Bell className="w-5 h-5" />}
             </div>
             <div className="flex-1 min-w-0">
-              <h5 className="text-xs font-black text-gray-900">{toast.title}</h5>
-              <p className="text-[11px] text-gray-500 leading-normal mt-0.5">{toast.message}</p>
+              <h5 className="text-xs font-black text-gray-900 dark:text-white">{toast.title}</h5>
+              <p className="text-[11px] text-gray-500 dark:text-slate-400 leading-normal mt-0.5">{toast.message}</p>
             </div>
             <button onClick={() => setToast(null)} className="text-gray-400 hover:text-gray-600 transition-colors">
               <X className="w-4 h-4" />

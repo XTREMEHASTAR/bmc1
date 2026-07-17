@@ -75,7 +75,7 @@ export default function WalletTab({ balance, transactions, onAddMoney, onPayBill
   return (
     <div className="space-y-6 pb-24">
       {/* Wallet Balance Card */}
-      <div className="bg-gradient-to-br from-[#002068] via-[#003399] to-[#0050cc] text-white rounded-3xl p-6 shadow-xl relative overflow-hidden">
+      <div className="bg-gradient-to-br from-[#0A5BFF] via-[#003399] to-[#0050cc] text-white rounded-3xl p-6 shadow-xl relative overflow-hidden">
         {/* Abstract background element */}
         <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full translate-x-10 -translate-y-10" />
         
@@ -90,9 +90,9 @@ export default function WalletTab({ balance, transactions, onAddMoney, onPayBill
         <div className="grid grid-cols-3 gap-2 mt-6">
           <button
             onClick={() => setShowAddModal(true)}
-            className="bg-white text-[#002068] py-3.5 px-2 rounded-xl font-bold flex items-center justify-center space-x-1.5 hover:bg-gray-50 active:scale-95 transition-all text-xs"
+            className="bg-white text-[#0A5BFF] py-3.5 px-2 rounded-xl font-bold flex items-center justify-center space-x-1.5 hover:bg-gray-50 active:scale-95 transition-all text-xs"
           >
-            <Plus className="w-3.5 h-3.5 text-[#002068] stroke-[3]" />
+            <Plus className="w-3.5 h-3.5 text-[#0A5BFF] stroke-[3]" />
             <span>Add Money</span>
           </button>
           
@@ -180,7 +180,7 @@ export default function WalletTab({ balance, transactions, onAddMoney, onPayBill
                 <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
                   tx.type === 'credit' 
                     ? 'bg-green-50 dark:bg-green-950/30 text-green-600 dark:text-green-400' 
-                    : 'bg-blue-50 dark:bg-blue-950/30 text-[#002068] dark:text-blue-400'
+                    : 'bg-blue-50 dark:bg-blue-950/30 text-[#0A5BFF] dark:text-blue-400'
                 }`}>
                   {tx.type === 'credit' ? (
                     <Plus className="w-5 h-5" />
@@ -245,14 +245,14 @@ export default function WalletTab({ balance, transactions, onAddMoney, onPayBill
                     Enter Amount (₹)
                   </label>
                   <div className="relative">
-                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-2xl font-bold text-gray-400 dark:text-gray-650">
+                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-2xl font-bold text-gray-400 dark:text-gray-600">
                       ₹
                     </span>
                     <input
                       type="number"
                       value={amountInput}
                       onChange={(e) => setAmountInput(e.target.value)}
-                      className="w-full pl-12 pr-4 py-4 rounded-2xl border border-gray-200 dark:border-slate-800 bg-[#f7fafd] dark:bg-slate-950 font-bold text-2xl text-gray-800 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-[#002068] dark:focus:ring-blue-500 focus:border-transparent"
+                      className="w-full pl-12 pr-4 py-4 rounded-2xl border border-gray-200 dark:border-slate-800 bg-[#F8FAFD] dark:bg-slate-950 font-bold text-2xl text-gray-800 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-[#0A5BFF] dark:focus:ring-blue-500 focus:border-transparent"
                       required
                       min="1"
                     />
@@ -266,7 +266,7 @@ export default function WalletTab({ balance, transactions, onAddMoney, onPayBill
                       type="button"
                       key={preset}
                       onClick={() => setAmountInput(preset.toString())}
-                      className="py-2.5 px-3 border border-gray-200 dark:border-slate-800 hover:border-[#0050cc] dark:hover:border-blue-550 hover:bg-[#0050cc]/5 dark:hover:bg-[#0050cc]/10 text-gray-700 dark:text-gray-300 hover:text-[#0050cc] dark:hover:text-blue-400 rounded-xl font-semibold text-sm transition-all"
+                      className="py-2.5 px-3 border border-gray-200 dark:border-slate-800 hover:border-[#0050cc] dark:hover:border-blue-500 hover:bg-[#0050cc]/5 dark:hover:bg-[#0050cc]/10 text-gray-700 dark:text-gray-300 hover:text-[#0050cc] dark:hover:text-blue-400 rounded-xl font-semibold text-sm transition-all"
                     >
                       + ₹{preset}
                     </button>
@@ -276,7 +276,7 @@ export default function WalletTab({ balance, transactions, onAddMoney, onPayBill
                 <button
                   type="submit"
                   disabled={isProcessing}
-                  className="w-full bg-[#002068] dark:bg-[#0050cc] text-white py-4 rounded-xl font-bold hover:bg-[#00164e] dark:hover:bg-blue-700 transition-all shadow-md flex items-center justify-center space-x-2 disabled:opacity-50"
+                  className="w-full bg-[#0A5BFF] dark:bg-[#0050cc] text-white py-4 rounded-xl font-bold hover:bg-[#00164e] dark:hover:bg-blue-700 transition-all shadow-md flex items-center justify-center space-x-2 disabled:opacity-50"
                 >
                   {isProcessing ? (
                     <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -311,13 +311,13 @@ export default function WalletTab({ balance, transactions, onAddMoney, onPayBill
                 </button>
               </div>
 
-              <div className="p-4 bg-[#f7fafd] dark:bg-slate-950 rounded-2xl border border-gray-100 dark:border-slate-800 space-y-3">
+              <div className="p-4 bg-[#F8FAFD] dark:bg-slate-950 rounded-2xl border border-gray-100 dark:border-slate-800 space-y-3">
                 <div className="flex justify-between items-start">
                   <div>
                     <h4 className="font-bold text-gray-900 dark:text-white text-sm">{payTarget.title}</h4>
                     <p className="text-[11px] text-gray-500 dark:text-gray-400">MCGM Digital billing system ID: #B-88390</p>
                   </div>
-                  <span className="text-xs font-bold bg-[#002068]/5 dark:bg-[#002068]/20 text-[#002068] dark:text-[#38bdf8] px-2.5 py-1 rounded-full">
+                  <span className="text-xs font-bold bg-[#0A5BFF]/5 dark:bg-[#0A5BFF]/20 text-[#0A5BFF] dark:text-[#38bdf8] px-2.5 py-1 rounded-full">
                     PENDING
                   </span>
                 </div>
@@ -330,14 +330,14 @@ export default function WalletTab({ balance, transactions, onAddMoney, onPayBill
               <div className="space-y-4">
                 <div className="flex justify-between items-center text-xs px-1">
                   <span className="text-gray-500 dark:text-gray-400">Your Current Balance</span>
-                  <span className="font-bold text-[#002068] dark:text-blue-400">₹{balance.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</span>
+                  <span className="font-bold text-[#0A5BFF] dark:text-blue-400">₹{balance.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</span>
                 </div>
 
                 <button
                   type="button"
                   onClick={handlePaySubmit}
                   disabled={isProcessing || balance < payTarget.amount}
-                  className="w-full bg-[#002068] dark:bg-blue-600 text-white py-4 rounded-xl font-bold hover:bg-[#00164e] dark:hover:bg-blue-700 transition-all shadow-md flex items-center justify-center space-x-2 disabled:opacity-50"
+                  className="w-full bg-[#0A5BFF] dark:bg-blue-600 text-white py-4 rounded-xl font-bold hover:bg-[#00164e] dark:hover:bg-blue-700 transition-all shadow-md flex items-center justify-center space-x-2 disabled:opacity-50"
                 >
                   {isProcessing ? (
                     <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -368,7 +368,7 @@ export default function WalletTab({ balance, transactions, onAddMoney, onPayBill
               <h3 className="text-base font-extrabold tracking-wide uppercase">Scan OPD Receipt QR</h3>
               <button 
                 onClick={() => setShowScanModal(false)}
-                className="p-2 bg-slate-900 border border-slate-800 rounded-xl hover:bg-slate-850"
+                className="p-2 bg-slate-900 border border-slate-800 rounded-xl hover:bg-slate-800"
               >
                 <X className="w-5 h-5 text-gray-400" />
               </button>
@@ -488,7 +488,7 @@ export default function WalletTab({ balance, transactions, onAddMoney, onPayBill
                 </div>
                 <button
                   onClick={() => setShowScanModal(false)}
-                  className="bg-[#002068] hover:bg-blue-700 text-white px-8 py-3.5 rounded-xl font-bold text-xs transition-all w-full max-w-xs"
+                  className="bg-[#0A5BFF] hover:bg-blue-700 text-white px-8 py-3.5 rounded-xl font-bold text-xs transition-all w-full max-w-xs"
                 >
                   Back to Wallet
                 </button>

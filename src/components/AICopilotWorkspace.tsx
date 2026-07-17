@@ -273,7 +273,7 @@ export default function AICopilotWorkspace({ isDarkMode, setIsDarkMode, onLogout
     <div className={`min-h-screen font-sans transition-colors duration-300 ${isDarkMode ? 'bg-[#030712] text-slate-100' : 'bg-slate-50 text-slate-900'}`}>
       
       {/* Top Header Bar */}
-      <header className="border-b border-slate-850 bg-[#090d16] px-6 py-4 flex items-center justify-between">
+      <header className="border-b border-slate-800 bg-[#090d16] px-6 py-4 flex items-center justify-between">
         <div className="flex items-center space-x-3">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 via-purple-600 to-rose-500 flex items-center justify-center text-white shadow-lg">
             <Brain className="w-6 h-6" />
@@ -294,14 +294,14 @@ export default function AICopilotWorkspace({ isDarkMode, setIsDarkMode, onLogout
           </div>
           <div className="h-4 w-[1px] bg-slate-800" />
           <div>Guardrails: ABDM-Active</div>
-          <div className="h-4 w-[1px] bg-slate-850" />
+          <div className="h-4 w-[1px] bg-slate-800" />
           <button 
             onClick={() => setIsDarkMode(!isDarkMode)} 
             className="p-1.5 hover:bg-slate-800 rounded-lg text-gray-400 transition-all cursor-pointer"
           >
             {isDarkMode ? 'Light Mode' : 'Dark Mode'}
           </button>
-          <div className="h-4 w-[1px] bg-slate-850" />
+          <div className="h-4 w-[1px] bg-slate-800" />
           <button 
             onClick={onLogout} 
             className="p-1.5 hover:bg-slate-800 rounded-lg text-rose-450 text-rose-400 transition-all cursor-pointer flex items-center space-x-1"
@@ -315,9 +315,9 @@ export default function AICopilotWorkspace({ isDarkMode, setIsDarkMode, onLogout
       <div className="flex flex-col lg:flex-row min-h-[calc(100vh-73px)]">
         
         {/* Navigation Sidebar */}
-        <nav className="w-full lg:w-64 border-r border-slate-850 bg-[#070b13] p-4 flex flex-col justify-between">
+        <nav className="w-full lg:w-64 border-r border-slate-800 bg-[#070b13] p-4 flex flex-col justify-between">
           <div className="space-y-1">
-            <p className="text-[9px] font-black uppercase text-gray-550 tracking-widest px-3 mb-2">Cognitive Ecosystem</p>
+            <p className="text-[9px] font-black uppercase text-gray-500 tracking-widest px-3 mb-2">Cognitive Ecosystem</p>
             
             <button
               onClick={() => setActiveTab('overview')}
@@ -420,7 +420,7 @@ export default function AICopilotWorkspace({ isDarkMode, setIsDarkMode, onLogout
             </button>
           </div>
 
-          <div className="pt-6 border-t border-slate-850 text-[10px] text-gray-500 space-y-1.5 px-3">
+          <div className="pt-6 border-t border-slate-800 text-[10px] text-gray-500 space-y-1.5 px-3">
             <p>Compliance Mode: Strict</p>
             <p>FHIR Format: R4 Compatible</p>
             <p>DPDP Audit Log: Active</p>
@@ -437,9 +437,9 @@ export default function AICopilotWorkspace({ isDarkMode, setIsDarkMode, onLogout
               {/* Core metrics row */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 {metrics.map((m, idx) => (
-                  <div key={idx} className="bg-[#090d16] border border-slate-850 rounded-2xl p-5 relative overflow-hidden">
+                  <div key={idx} className="bg-[#090d16] border border-slate-800 rounded-2xl p-5 relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-16 h-16 bg-blue-500/5 rounded-full translate-x-4 -translate-y-4" />
-                    <p className="text-[10px] text-gray-450 uppercase font-black tracking-wider">{m.name}</p>
+                    <p className="text-[10px] text-gray-400 uppercase font-black tracking-wider">{m.name}</p>
                     <div className="flex items-end space-x-2 mt-4">
                       <span className="text-2xl font-black">{m.value}</span>
                       <span className={`text-[10px] font-black ${m.positive ? 'text-emerald-500' : 'text-rose-500'}`}>
@@ -462,7 +462,7 @@ export default function AICopilotWorkspace({ isDarkMode, setIsDarkMode, onLogout
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 
                 {/* Live Model Throughput Graph mockup */}
-                <div className="bg-[#090d16] border border-slate-850 rounded-3xl p-5 space-y-4">
+                <div className="bg-[#090d16] border border-slate-800 rounded-3xl p-5 space-y-4">
                   <div className="flex justify-between items-center">
                     <h4 className="text-xs font-black uppercase tracking-wider text-gray-300">Predictive Surges & Agent Activity</h4>
                     <span className="text-[9px] bg-blue-500/20 text-blue-400 font-extrabold px-2 py-0.5 rounded-full">LIVE</span>
@@ -485,7 +485,7 @@ export default function AICopilotWorkspace({ isDarkMode, setIsDarkMode, onLogout
                 </div>
 
                 {/* Safety Audits / Guardrails Panel */}
-                <div className="bg-[#090d16] border border-slate-850 rounded-3xl p-5 space-y-4">
+                <div className="bg-[#090d16] border border-slate-800 rounded-3xl p-5 space-y-4">
                   <div className="flex justify-between items-center">
                     <h4 className="text-xs font-black uppercase tracking-wider text-gray-300">DPDP Safety Guardrail Logs</h4>
                     <span className="text-[8px] font-black text-emerald-400 flex items-center space-x-1 uppercase">
@@ -495,7 +495,7 @@ export default function AICopilotWorkspace({ isDarkMode, setIsDarkMode, onLogout
                   </div>
 
                   <div className="space-y-3">
-                    <div className="p-3 bg-[#030712] border border-slate-850 rounded-2xl flex items-center justify-between">
+                    <div className="p-3 bg-[#030712] border border-slate-800 rounded-2xl flex items-center justify-between">
                       <div className="flex items-center space-x-3">
                         <div className="w-2.5 h-2.5 bg-emerald-500 rounded-full" />
                         <div>
@@ -506,7 +506,7 @@ export default function AICopilotWorkspace({ isDarkMode, setIsDarkMode, onLogout
                       <span className="text-[9px] font-mono text-gray-400">10:28 AM</span>
                     </div>
 
-                    <div className="p-3 bg-[#030712] border border-slate-850 rounded-2xl flex items-center justify-between">
+                    <div className="p-3 bg-[#030712] border border-slate-800 rounded-2xl flex items-center justify-between">
                       <div className="flex items-center space-x-3">
                         <div className="w-2.5 h-2.5 bg-amber-500 rounded-full" />
                         <div>
@@ -517,7 +517,7 @@ export default function AICopilotWorkspace({ isDarkMode, setIsDarkMode, onLogout
                       <span className="text-[9px] font-mono text-gray-400">10:14 AM</span>
                     </div>
 
-                    <div className="p-3 bg-[#030712] border border-slate-850 rounded-2xl flex items-center justify-between">
+                    <div className="p-3 bg-[#030712] border border-slate-800 rounded-2xl flex items-center justify-between">
                       <div className="flex items-center space-x-3">
                         <div className="w-2.5 h-2.5 bg-rose-500 rounded-full" />
                         <div>
@@ -561,7 +561,7 @@ export default function AICopilotWorkspace({ isDarkMode, setIsDarkMode, onLogout
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 
                 {/* Dictation Controller */}
-                <div className="bg-[#090d16] border border-slate-850 rounded-3xl p-5 space-y-4">
+                <div className="bg-[#090d16] border border-slate-800 rounded-3xl p-5 space-y-4">
                   <h4 className="text-xs font-black uppercase tracking-wider text-gray-300">Voice Control Console</h4>
                   
                   <div className="flex flex-col items-center justify-center py-8 space-y-4 border border-dashed border-slate-800 rounded-2xl bg-[#030712]">
@@ -606,7 +606,7 @@ export default function AICopilotWorkspace({ isDarkMode, setIsDarkMode, onLogout
                   {/* Dictated text transcript stream */}
                   <div className="space-y-2">
                     <h5 className="text-[10px] font-black uppercase text-gray-500 tracking-wider">Live Transcript</h5>
-                    <div className="p-3 bg-[#030712] border border-slate-850 rounded-2xl text-[11px] text-gray-400 leading-relaxed font-semibold min-h-[80px]">
+                    <div className="p-3 bg-[#030712] border border-slate-800 rounded-2xl text-[11px] text-gray-400 leading-relaxed font-semibold min-h-[80px]">
                       {recordingTranscript || "No transcription. Click Start to begin recording."}
                     </div>
                   </div>
@@ -619,9 +619,9 @@ export default function AICopilotWorkspace({ isDarkMode, setIsDarkMode, onLogout
                     <motion.div 
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="bg-[#090d16] border border-slate-855 rounded-3xl p-5 space-y-4"
+                      className="bg-[#090d16] border border-slate-800 rounded-3xl p-5 space-y-4"
                     >
-                      <div className="flex justify-between items-center border-b border-slate-850 pb-3">
+                      <div className="flex justify-between items-center border-b border-slate-800 pb-3">
                         <h4 className="text-xs font-black uppercase tracking-wider text-gray-300">Generated SOAP Clinical Record</h4>
                         <span className="text-[9px] bg-purple-500/20 text-purple-400 font-extrabold px-2 py-0.5 rounded-full uppercase">Drafted</span>
                       </div>
@@ -629,28 +629,28 @@ export default function AICopilotWorkspace({ isDarkMode, setIsDarkMode, onLogout
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="space-y-1">
                           <p className="text-[9px] font-black uppercase text-purple-400">Subjective (S)</p>
-                          <p className="text-xs text-gray-300 leading-relaxed bg-[#030712] p-3 rounded-2xl border border-slate-850">{soapNotes.subjective}</p>
+                          <p className="text-xs text-gray-300 leading-relaxed bg-[#030712] p-3 rounded-2xl border border-slate-800">{soapNotes.subjective}</p>
                         </div>
                         <div className="space-y-1">
                           <p className="text-[9px] font-black uppercase text-purple-400">Objective (O)</p>
-                          <p className="text-xs text-gray-300 leading-relaxed bg-[#030712] p-3 rounded-2xl border border-slate-850">{soapNotes.objective}</p>
+                          <p className="text-xs text-gray-300 leading-relaxed bg-[#030712] p-3 rounded-2xl border border-slate-800">{soapNotes.objective}</p>
                         </div>
                         <div className="space-y-1">
                           <p className="text-[9px] font-black uppercase text-purple-400">Assessment (A)</p>
-                          <p className="text-xs text-gray-300 leading-relaxed bg-[#030712] p-3 rounded-2xl border border-slate-850">{soapNotes.assessment}</p>
+                          <p className="text-xs text-gray-300 leading-relaxed bg-[#030712] p-3 rounded-2xl border border-slate-800">{soapNotes.assessment}</p>
                         </div>
                         <div className="space-y-1">
                           <p className="text-[9px] font-black uppercase text-purple-400">Plan (P)</p>
-                          <p className="text-xs text-gray-300 leading-relaxed bg-[#030712] p-3 rounded-2xl border border-slate-850">{soapNotes.plan}</p>
+                          <p className="text-xs text-gray-300 leading-relaxed bg-[#030712] p-3 rounded-2xl border border-slate-800">{soapNotes.plan}</p>
                         </div>
                       </div>
 
                       {/* Coding standard conversions */}
-                      <div className="border-t border-slate-850 pt-4 space-y-3">
+                      <div className="border-t border-slate-800 pt-4 space-y-3">
                         <h5 className="text-[10px] font-black uppercase text-gray-400 tracking-wider">Clinical Standards Alignment (ICD-10 / SNOMED CT)</h5>
                         <div className="flex flex-wrap gap-2">
                           {suggestedCodes.map((c, i) => (
-                            <span key={i} className="text-[10px] bg-[#0c1221] border border-slate-850 rounded-xl px-3 py-2 flex items-center space-x-2 font-semibold">
+                            <span key={i} className="text-[10px] bg-[#0c1221] border border-slate-800 rounded-xl px-3 py-2 flex items-center space-x-2 font-semibold">
                               <span className="text-rose-400 font-extrabold text-[9px]">{c.type}</span>
                               <span className="font-mono text-slate-200">{c.code}</span>
                               <span className="text-gray-500">•</span>
@@ -661,12 +661,12 @@ export default function AICopilotWorkspace({ isDarkMode, setIsDarkMode, onLogout
                       </div>
 
                       {/* Suggested Meds and Safety interaction warnings */}
-                      <div className="border-t border-slate-850 pt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="border-t border-slate-800 pt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
                         
                         <div className="space-y-2">
                           <h5 className="text-[10px] font-black uppercase text-gray-400 tracking-wider">Suggested Prescriptions</h5>
                           {suggestedMeds.map((m, i) => (
-                            <div key={i} className="p-3 bg-[#030712] border border-slate-850 rounded-2xl flex justify-between items-center">
+                            <div key={i} className="p-3 bg-[#030712] border border-slate-800 rounded-2xl flex justify-between items-center">
                               <div>
                                 <p className="text-xs font-black text-slate-200">{m.name} {m.dose}</p>
                                 <p className="text-[9px] text-gray-500">Frequency: {m.frequency}</p>
@@ -695,7 +695,7 @@ export default function AICopilotWorkspace({ isDarkMode, setIsDarkMode, onLogout
 
                     </motion.div>
                   ) : (
-                    <div className="h-full bg-[#090d16] border border-slate-850 rounded-3xl p-6 flex flex-col justify-center items-center text-center text-gray-500 space-y-2 py-24">
+                    <div className="h-full bg-[#090d16] border border-slate-800 rounded-3xl p-6 flex flex-col justify-center items-center text-center text-gray-500 space-y-2 py-24">
                       <Brain className="w-12 h-12 opacity-30 text-purple-400" />
                       <h4 className="text-xs font-black text-slate-400 uppercase tracking-wider">Awaiting Ambient Input</h4>
                       <p className="text-[11px] max-w-sm">Click "Start Dictation" and describe symptoms to draft an structured SOAP report.</p>
@@ -721,7 +721,7 @@ export default function AICopilotWorkspace({ isDarkMode, setIsDarkMode, onLogout
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 
                 {/* Upload Console */}
-                <div className="bg-[#090d16] border border-slate-850 rounded-3xl p-5 space-y-4">
+                <div className="bg-[#090d16] border border-slate-800 rounded-3xl p-5 space-y-4">
                   <h4 className="text-xs font-black uppercase tracking-wider text-gray-300">File Sandbox</h4>
                   
                   <div className="border-2 border-dashed border-slate-800 rounded-2xl p-6 text-center space-y-4 bg-[#030712] flex flex-col items-center">
@@ -737,14 +737,14 @@ export default function AICopilotWorkspace({ isDarkMode, setIsDarkMode, onLogout
                     <div className="grid grid-cols-2 gap-2">
                       <button 
                         onClick={() => handleAnalyzeReport('blood')}
-                        className="p-3 bg-[#030712] border border-slate-850 hover:border-slate-700 text-left rounded-xl transition-all cursor-pointer"
+                        className="p-3 bg-[#030712] border border-slate-800 hover:border-slate-700 text-left rounded-xl transition-all cursor-pointer"
                       >
                         <p className="text-xs font-black text-slate-200">CBC Hematology</p>
                         <p className="text-[9px] text-gray-500 mt-0.5">Lab Blood Report</p>
                       </button>
                       <button 
                         onClick={() => handleAnalyzeReport('xray')}
-                        className="p-3 bg-[#030712] border border-slate-850 hover:border-slate-700 text-left rounded-xl transition-all cursor-pointer"
+                        className="p-3 bg-[#030712] border border-slate-800 hover:border-slate-700 text-left rounded-xl transition-all cursor-pointer"
                       >
                         <p className="text-xs font-black text-slate-200">Chest X-Ray AP</p>
                         <p className="text-[9px] text-gray-500 mt-0.5">Radiology Scan</p>
@@ -757,7 +757,7 @@ export default function AICopilotWorkspace({ isDarkMode, setIsDarkMode, onLogout
                 <div className="lg:col-span-2 space-y-4">
                   
                   {analysisLoading ? (
-                    <div className="h-64 bg-[#090d16] border border-slate-850 rounded-3xl flex flex-col justify-center items-center space-y-3">
+                    <div className="h-64 bg-[#090d16] border border-slate-800 rounded-3xl flex flex-col justify-center items-center space-y-3">
                       <RefreshCw className="w-8 h-8 text-blue-500 animate-spin" />
                       <p className="text-xs text-gray-500 font-bold uppercase tracking-wider">Analyzing File & Querying Gemini API...</p>
                     </div>
@@ -765,9 +765,9 @@ export default function AICopilotWorkspace({ isDarkMode, setIsDarkMode, onLogout
                     <motion.div 
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="bg-[#090d16] border border-slate-850 rounded-3xl p-5 space-y-4"
+                      className="bg-[#090d16] border border-slate-800 rounded-3xl p-5 space-y-4"
                     >
-                      <div className="flex justify-between items-center border-b border-slate-850 pb-3">
+                      <div className="flex justify-between items-center border-b border-slate-800 pb-3">
                         <div>
                           <h4 className="text-xs font-black uppercase tracking-wider text-gray-300">Extraction & Interpretive Insights</h4>
                           <p className="text-[9px] text-gray-500 mt-0.5">Source: {selectedFile}</p>
@@ -780,7 +780,7 @@ export default function AICopilotWorkspace({ isDarkMode, setIsDarkMode, onLogout
                       </div>
 
                       <div className="space-y-4">
-                        <div className="p-4 bg-[#030712] border border-slate-850 rounded-2xl space-y-2">
+                        <div className="p-4 bg-[#030712] border border-slate-800 rounded-2xl space-y-2">
                           <p className="text-[9px] font-black uppercase text-blue-400">Clinical Interpretation Summary</p>
                           <p className="text-xs text-slate-200 leading-relaxed font-semibold">{analysisResult}</p>
                         </div>
@@ -799,7 +799,7 @@ export default function AICopilotWorkspace({ isDarkMode, setIsDarkMode, onLogout
                       </div>
                     </motion.div>
                   ) : (
-                    <div className="h-full bg-[#090d16] border border-slate-850 rounded-3xl p-6 flex flex-col justify-center items-center text-center text-gray-500 space-y-2 py-24">
+                    <div className="h-full bg-[#090d16] border border-slate-800 rounded-3xl p-6 flex flex-col justify-center items-center text-center text-gray-500 space-y-2 py-24">
                       <Upload className="w-12 h-12 opacity-30 text-blue-400" />
                       <h4 className="text-xs font-black text-slate-400 uppercase tracking-wider">Awaiting Scan or PDF Upload</h4>
                       <p className="text-[11px] max-w-sm">Select one of the sample diagnostic files to trigger extraction modeling.</p>
@@ -825,8 +825,8 @@ export default function AICopilotWorkspace({ isDarkMode, setIsDarkMode, onLogout
               <div className="space-y-4">
                 
                 {/* Search Bar Input */}
-                <div className="bg-[#090d16] border border-slate-855 rounded-3xl p-5 space-y-4">
-                  <div className="flex items-center space-x-3 bg-[#030712] border border-slate-850 rounded-2xl px-4 py-3">
+                <div className="bg-[#090d16] border border-slate-800 rounded-3xl p-5 space-y-4">
+                  <div className="flex items-center space-x-3 bg-[#030712] border border-slate-800 rounded-2xl px-4 py-3">
                     <Search className="w-5 h-5 text-gray-400" />
                     <input 
                       type="text"
@@ -862,7 +862,7 @@ export default function AICopilotWorkspace({ isDarkMode, setIsDarkMode, onLogout
 
                 {/* Results and SQL representation */}
                 {searchLoading ? (
-                  <div className="h-48 bg-[#090d16] border border-slate-850 rounded-3xl flex items-center justify-center space-x-2">
+                  <div className="h-48 bg-[#090d16] border border-slate-800 rounded-3xl flex items-center justify-center space-x-2">
                     <RefreshCw className="w-5 h-5 text-blue-500 animate-spin" />
                     <span className="text-xs text-gray-500 font-bold uppercase tracking-wider">Compiling search query...</span>
                   </div>
@@ -874,22 +874,22 @@ export default function AICopilotWorkspace({ isDarkMode, setIsDarkMode, onLogout
                   >
                     
                     {/* Compiled FHIR Query expression */}
-                    <div className="bg-[#090d16] border border-slate-850 rounded-3xl p-5 space-y-4">
+                    <div className="bg-[#090d16] border border-slate-800 rounded-3xl p-5 space-y-4">
                       <div className="flex items-center space-x-2 text-amber-500">
                         <Terminal className="w-4 h-4" />
                         <h4 className="text-xs font-black uppercase tracking-wider">Compiled FHIR Query</h4>
                       </div>
-                      <div className="p-3 bg-[#030712] border border-slate-850 rounded-2xl font-mono text-[10px] text-amber-200 overflow-x-auto">
+                      <div className="p-3 bg-[#030712] border border-slate-800 rounded-2xl font-mono text-[10px] text-amber-200 overflow-x-auto">
                         {fhirQuery}
                       </div>
                     </div>
 
                     {/* Results list */}
-                    <div className="lg:col-span-2 bg-[#090d16] border border-slate-850 rounded-3xl p-5 space-y-4">
+                    <div className="lg:col-span-2 bg-[#090d16] border border-slate-800 rounded-3xl p-5 space-y-4">
                       <h4 className="text-xs font-black uppercase tracking-wider text-gray-300">Database Query Results</h4>
                       <div className="space-y-3">
                         {searchResults.map((r, i) => (
-                          <div key={i} className="p-4 bg-[#030712] border border-slate-850 rounded-2xl flex justify-between items-center">
+                          <div key={i} className="p-4 bg-[#030712] border border-slate-800 rounded-2xl flex justify-between items-center">
                             <div>
                               <p className="text-xs font-black text-slate-200">{r.name}</p>
                               <p className="text-[9px] text-gray-500 mt-0.5">{r.gender} • Age {r.age}</p>
@@ -905,7 +905,7 @@ export default function AICopilotWorkspace({ isDarkMode, setIsDarkMode, onLogout
 
                   </motion.div>
                 ) : (
-                  <div className="h-48 bg-[#090d16] border border-slate-855 rounded-3xl flex flex-col justify-center items-center text-center text-gray-500 py-12">
+                  <div className="h-48 bg-[#090d16] border border-slate-800 rounded-3xl flex flex-col justify-center items-center text-center text-gray-500 py-12">
                     <Search className="w-10 h-10 opacity-30 text-amber-500 mb-2" />
                     <p className="text-xs font-black text-slate-400 uppercase tracking-wider">Console Idle</p>
                     <p className="text-[10px] text-gray-500">Enter a query above to see FHIR compiling translation.</p>
@@ -929,7 +929,7 @@ export default function AICopilotWorkspace({ isDarkMode, setIsDarkMode, onLogout
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 
                 {/* Inputs card */}
-                <div className="bg-[#090d16] border border-slate-850 rounded-3xl p-5 space-y-4">
+                <div className="bg-[#090d16] border border-slate-800 rounded-3xl p-5 space-y-4">
                   <h4 className="text-xs font-black uppercase tracking-wider text-gray-300">Term Input Console</h4>
                   
                   <div className="space-y-3">
@@ -937,7 +937,7 @@ export default function AICopilotWorkspace({ isDarkMode, setIsDarkMode, onLogout
                     <textarea 
                       value={patientTerm}
                       onChange={(e) => setPatientTerm(e.target.value)}
-                      className="w-full min-h-[100px] p-3 bg-[#030712] border border-slate-800 rounded-2xl text-xs font-semibold outline-none text-slate-100 placeholder-gray-650"
+                      className="w-full min-h-[100px] p-3 bg-[#030712] border border-slate-800 rounded-2xl text-xs font-semibold outline-none text-slate-100 placeholder-gray-600"
                       placeholder="e.g. Elevated serum creatinine, borderline renal dysfunction"
                     />
                   </div>
@@ -964,7 +964,7 @@ export default function AICopilotWorkspace({ isDarkMode, setIsDarkMode, onLogout
                 <div className="lg:col-span-2 space-y-4">
                   
                   {translationLoading ? (
-                    <div className="h-64 bg-[#090d16] border border-slate-850 rounded-3xl flex items-center justify-center space-x-2">
+                    <div className="h-64 bg-[#090d16] border border-slate-800 rounded-3xl flex items-center justify-center space-x-2">
                       <RefreshCw className="w-5 h-5 text-rose-500 animate-spin" />
                       <span className="text-xs text-gray-500 font-bold uppercase tracking-wider">Generating translations...</span>
                     </div>
@@ -975,24 +975,24 @@ export default function AICopilotWorkspace({ isDarkMode, setIsDarkMode, onLogout
                       className="space-y-4"
                     >
                       
-                      <div className="bg-[#090d16] border border-slate-850 rounded-3xl p-5 space-y-3">
-                        <div className="flex justify-between items-center border-b border-slate-850 pb-2.5">
+                      <div className="bg-[#090d16] border border-slate-800 rounded-3xl p-5 space-y-3">
+                        <div className="flex justify-between items-center border-b border-slate-800 pb-2.5">
                           <h4 className="text-[10px] font-black uppercase tracking-wider text-gray-300">English Translation</h4>
                           <span className="text-[9px] font-bold text-gray-500">en-IN</span>
                         </div>
                         <p className="text-xs text-slate-200 leading-relaxed">{translatedTerms.en}</p>
                       </div>
 
-                      <div className="bg-[#090d16] border border-slate-850 rounded-3xl p-5 space-y-3">
-                        <div className="flex justify-between items-center border-b border-slate-850 pb-2.5">
+                      <div className="bg-[#090d16] border border-slate-800 rounded-3xl p-5 space-y-3">
+                        <div className="flex justify-between items-center border-b border-slate-800 pb-2.5">
                           <h4 className="text-[10px] font-black uppercase tracking-wider text-gray-300">Hindi Translation (हिंदी)</h4>
                           <span className="text-[9px] font-bold text-gray-500">hi-IN</span>
                         </div>
                         <p className="text-xs text-slate-200 leading-relaxed">{translatedTerms.hi}</p>
                       </div>
 
-                      <div className="bg-[#090d16] border border-slate-855 rounded-3xl p-5 space-y-3">
-                        <div className="flex justify-between items-center border-b border-slate-850 pb-2.5">
+                      <div className="bg-[#090d16] border border-slate-800 rounded-3xl p-5 space-y-3">
+                        <div className="flex justify-between items-center border-b border-slate-800 pb-2.5">
                           <h4 className="text-[10px] font-black uppercase tracking-wider text-gray-300">Marathi Translation (मराठी)</h4>
                           <span className="text-[9px] font-bold text-gray-500">mr-IN</span>
                         </div>
@@ -1008,7 +1008,7 @@ export default function AICopilotWorkspace({ isDarkMode, setIsDarkMode, onLogout
 
                     </motion.div>
                   ) : (
-                    <div className="h-full bg-[#090d16] border border-slate-850 rounded-3xl p-6 flex flex-col justify-center items-center text-center text-gray-500 space-y-2 py-24">
+                    <div className="h-full bg-[#090d16] border border-slate-800 rounded-3xl p-6 flex flex-col justify-center items-center text-center text-gray-500 space-y-2 py-24">
                       <Languages className="w-12 h-12 opacity-30 text-rose-400" />
                       <h4 className="text-xs font-black text-slate-400 uppercase tracking-wider">Awaiting Explanation Request</h4>
                       <p className="text-[11px] max-w-sm">Click "Generate Explanations" to translate jargon into plain multilingual statements.</p>
@@ -1034,12 +1034,12 @@ export default function AICopilotWorkspace({ isDarkMode, setIsDarkMode, onLogout
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 
                 {/* Roster list */}
-                <div className="lg:col-span-2 bg-[#090d16] border border-slate-850 rounded-3xl p-5 space-y-4">
+                <div className="lg:col-span-2 bg-[#090d16] border border-slate-800 rounded-3xl p-5 space-y-4">
                   <h4 className="text-xs font-black uppercase tracking-wider text-gray-300">Ward Risk Registry</h4>
                   
                   <div className="space-y-3">
                     {nursePatients.map((p) => (
-                      <div key={p.id} className="p-4 bg-[#030712] border border-slate-850 rounded-2xl flex justify-between items-center">
+                      <div key={p.id} className="p-4 bg-[#030712] border border-slate-800 rounded-2xl flex justify-between items-center">
                         <div className="space-y-1">
                           <div className="flex items-center space-x-2">
                             <p className="text-xs font-black text-slate-200">{p.name}</p>
@@ -1081,7 +1081,7 @@ export default function AICopilotWorkspace({ isDarkMode, setIsDarkMode, onLogout
                 </div>
 
                 {/* Handover SBAR generation */}
-                <div className="bg-[#090d16] border border-slate-850 rounded-3xl p-5 space-y-4">
+                <div className="bg-[#090d16] border border-slate-800 rounded-3xl p-5 space-y-4">
                   <h4 className="text-xs font-black uppercase tracking-wider text-gray-300">SBAR Shift Handover Draft</h4>
                   
                   {activeHandover ? (
@@ -1090,22 +1090,22 @@ export default function AICopilotWorkspace({ isDarkMode, setIsDarkMode, onLogout
                       animate={{ opacity: 1 }}
                       className="space-y-4"
                     >
-                      <div className="p-3 bg-[#030712] border border-slate-850 rounded-2xl space-y-2">
+                      <div className="p-3 bg-[#030712] border border-slate-800 rounded-2xl space-y-2">
                         <p className="text-[10px] font-black uppercase text-teal-400">Situation (S)</p>
                         <p className="text-[11px] text-gray-300 leading-tight">Patient {activeHandover} in ICU Bed 04 exhibiting symptoms consistent with post-op sepsis warnings.</p>
                       </div>
 
-                      <div className="p-3 bg-[#030712] border border-slate-850 rounded-2xl space-y-2">
+                      <div className="p-3 bg-[#030712] border border-slate-800 rounded-2xl space-y-2">
                         <p className="text-[10px] font-black uppercase text-teal-400">Background (B)</p>
                         <p className="text-[11px] text-gray-300 leading-tight">Post-op telemetry indicates heart rate climbing past 110 BPM. BP stabilizing at 90/58.</p>
                       </div>
 
-                      <div className="p-3 bg-[#030712] border border-slate-850 rounded-2xl space-y-2">
+                      <div className="p-3 bg-[#030712] border border-slate-800 rounded-2xl space-y-2">
                         <p className="text-[10px] font-black uppercase text-teal-400">Assessment (A)</p>
                         <p className="text-[11px] text-gray-300 leading-tight">Early Warning Score (EWS) is 7. Highly suggestive of early systemic inflammatory response.</p>
                       </div>
 
-                      <div className="p-3 bg-[#030712] border border-slate-850 rounded-2xl space-y-2">
+                      <div className="p-3 bg-[#030712] border border-slate-800 rounded-2xl space-y-2">
                         <p className="text-[10px] font-black uppercase text-teal-400">Recommendation (R)</p>
                         <p className="text-[11px] text-gray-300 leading-tight">Initiate IV fluid challenge. Inform registrar. Monitor urine output every hour.</p>
                       </div>
@@ -1136,7 +1136,7 @@ export default function AICopilotWorkspace({ isDarkMode, setIsDarkMode, onLogout
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 
                 {/* Finder Panel */}
-                <div className="bg-[#090d16] border border-slate-850 rounded-3xl p-5 space-y-4">
+                <div className="bg-[#090d16] border border-slate-800 rounded-3xl p-5 space-y-4">
                   <h4 className="text-xs font-black uppercase tracking-wider text-gray-300">Generic substitution Finder</h4>
                   
                   <div className="space-y-3">
@@ -1159,13 +1159,13 @@ export default function AICopilotWorkspace({ isDarkMode, setIsDarkMode, onLogout
                 </div>
 
                 {/* Alternatives results list */}
-                <div className="lg:col-span-2 bg-[#090d16] border border-slate-850 rounded-3xl p-5 space-y-4">
+                <div className="lg:col-span-2 bg-[#090d16] border border-slate-800 rounded-3xl p-5 space-y-4">
                   <h4 className="text-xs font-black uppercase tracking-wider text-gray-300">Stock & Alternatives List</h4>
                   
                   {genericAlternatives.length > 0 ? (
                     <div className="space-y-3">
                       {genericAlternatives.map((g, i) => (
-                        <div key={i} className="p-4 bg-[#030712] border border-slate-850 rounded-2xl flex justify-between items-center">
+                        <div key={i} className="p-4 bg-[#030712] border border-slate-800 rounded-2xl flex justify-between items-center">
                           <div className="space-y-1">
                             <p className="text-xs font-black text-slate-200">{g.name}</p>
                             <p className="text-[9px] text-gray-500">Mfg: {g.manufacturer}</p>
@@ -1203,7 +1203,7 @@ export default function AICopilotWorkspace({ isDarkMode, setIsDarkMode, onLogout
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 
                 {/* Parameters Panel */}
-                <div className="bg-[#090d16] border border-slate-855 rounded-3xl p-5 space-y-4">
+                <div className="bg-[#090d16] border border-slate-800 rounded-3xl p-5 space-y-4">
                   <h4 className="text-xs font-black uppercase tracking-wider text-gray-300">Forecast Parameters</h4>
                   
                   <div className="space-y-3">
@@ -1231,11 +1231,11 @@ export default function AICopilotWorkspace({ isDarkMode, setIsDarkMode, onLogout
                 </div>
 
                 {/* Ward forecast numbers */}
-                <div className="lg:col-span-2 bg-[#090d16] border border-slate-850 rounded-3xl p-5 space-y-4">
+                <div className="lg:col-span-2 bg-[#090d16] border border-slate-800 rounded-3xl p-5 space-y-4">
                   <h4 className="text-xs font-black uppercase tracking-wider text-gray-300">Surge Predictions</h4>
                   
                   <div className="grid grid-cols-2 gap-4">
-                    <div className="p-5 bg-[#030712] border border-slate-850 rounded-2xl">
+                    <div className="p-5 bg-[#030712] border border-slate-800 rounded-2xl">
                       <span className="text-[9px] text-gray-500 font-black uppercase">Predicted Gastroenteritis Cases (Next 14 Days)</span>
                       <h5 className="text-3xl font-black text-rose-500 mt-2">{forecastCases}</h5>
                       <span className="text-[9px] text-rose-400 font-bold flex items-center space-x-1 mt-1">
@@ -1243,7 +1243,7 @@ export default function AICopilotWorkspace({ isDarkMode, setIsDarkMode, onLogout
                       </span>
                     </div>
 
-                    <div className="p-5 bg-[#030712] border border-slate-850 rounded-2xl">
+                    <div className="p-5 bg-[#030712] border border-slate-800 rounded-2xl">
                       <span className="text-[9px] text-gray-500 font-black uppercase">Recommended Vaccination Buffer</span>
                       <h5 className="text-3xl font-black text-slate-200 mt-2">1,500 doses</h5>
                       <span className="text-[9px] text-emerald-400 font-bold flex items-center space-x-1 mt-1">
@@ -1253,7 +1253,7 @@ export default function AICopilotWorkspace({ isDarkMode, setIsDarkMode, onLogout
                   </div>
 
                   {/* Strategic policy recommendations */}
-                  <div className="p-4 bg-slate-900/50 border border-slate-850 rounded-2xl space-y-2">
+                  <div className="p-4 bg-slate-900/50 border border-slate-800 rounded-2xl space-y-2">
                     <h5 className="text-xs font-black text-indigo-400 uppercase">Policy Insight & Action Guidelines</h5>
                     <p className="text-[11px] text-gray-400 leading-relaxed">
                       Outbreak modeling suggests water supply chlorination checks in F-North G-Block. Recommend dispatching 50 primary hygiene kits and anti-viral buffer stocks to Sion Hospital Pharmacy storage.
@@ -1278,8 +1278,8 @@ export default function AICopilotWorkspace({ isDarkMode, setIsDarkMode, onLogout
               <div className="space-y-4">
                 
                 {/* Explainable AI block example */}
-                <div className="bg-[#090d16] border border-slate-850 rounded-3xl p-5 space-y-4">
-                  <div className="flex justify-between items-center border-b border-slate-850 pb-3">
+                <div className="bg-[#090d16] border border-slate-800 rounded-3xl p-5 space-y-4">
+                  <div className="flex justify-between items-center border-b border-slate-800 pb-3">
                     <h4 className="text-xs font-black uppercase tracking-wider text-gray-300">Model Recommendation Explainability Card</h4>
                     <span className="text-[9px] bg-emerald-500/20 text-emerald-400 font-extrabold px-2.5 py-0.5 rounded-full">Approved by Doctor</span>
                   </div>
@@ -1302,7 +1302,7 @@ export default function AICopilotWorkspace({ isDarkMode, setIsDarkMode, onLogout
                     </div>
                   </div>
 
-                  <div className="p-4 bg-[#030712] border border-slate-850 rounded-2xl space-y-2">
+                  <div className="p-4 bg-[#030712] border border-slate-800 rounded-2xl space-y-2">
                     <h5 className="text-[10px] font-black uppercase text-amber-500">Alternative Possibilities Analyzed</h5>
                     <p className="text-[11px] text-gray-400 leading-relaxed">
                       1. Keep Warfarin at low dose (1.5mg) with daily telemetry testing (24% confidence).<br />
@@ -1312,15 +1312,15 @@ export default function AICopilotWorkspace({ isDarkMode, setIsDarkMode, onLogout
                 </div>
 
                 {/* Audit trail */}
-                <div className="bg-[#090d16] border border-slate-850 rounded-3xl p-5 space-y-4">
+                <div className="bg-[#090d16] border border-slate-800 rounded-3xl p-5 space-y-4">
                   <h4 className="text-xs font-black uppercase tracking-wider text-gray-300">Doctor Decision Audit Logs</h4>
                   
                   <div className="space-y-2">
-                    <div className="p-3 bg-[#030712] border border-slate-850 rounded-2xl flex items-center justify-between text-xs">
+                    <div className="p-3 bg-[#030712] border border-slate-800 rounded-2xl flex items-center justify-between text-xs">
                       <span className="font-semibold text-slate-200">Dr. Deshmukh approved Osteoarthritis SOAP Note draft</span>
                       <span className="text-[9px] text-gray-500">09 July 2026, 10:28 AM</span>
                     </div>
-                    <div className="p-3 bg-[#030712] border border-slate-850 rounded-2xl flex items-center justify-between text-xs">
+                    <div className="p-3 bg-[#030712] border border-slate-800 rounded-2xl flex items-center justify-between text-xs">
                       <span className="font-semibold text-slate-200">Dr. Deshmukh rejected Paracetamol alternative brand dosage change</span>
                       <span className="text-[9px] text-gray-500">09 July 2026, 10:14 AM</span>
                     </div>
@@ -1344,13 +1344,13 @@ export default function AICopilotWorkspace({ isDarkMode, setIsDarkMode, onLogout
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 
                 {/* System Prompt */}
-                <div className="bg-[#090d16] border border-slate-850 rounded-3xl p-5 space-y-4">
+                <div className="bg-[#090d16] border border-slate-800 rounded-3xl p-5 space-y-4">
                   <div className="flex items-center space-x-2 text-blue-400">
                     <Code className="w-4 h-4" />
                     <h4 className="text-xs font-black uppercase tracking-wider">System Prompt (SOAP Note Extraction)</h4>
                   </div>
                   
-                  <pre className="p-4 bg-[#030712] border border-slate-850 rounded-2xl font-mono text-[9px] text-blue-200 overflow-x-auto leading-relaxed whitespace-pre-wrap">
+                  <pre className="p-4 bg-[#030712] border border-slate-800 rounded-2xl font-mono text-[9px] text-blue-200 overflow-x-auto leading-relaxed whitespace-pre-wrap">
 {`You are an ambient clinical assistant. Listen to the consultation transcript and output a JSON containing SOAP structured fields.
 - Subjective: Symptoms reported by patient.
 - Objective: Physician exam findings.
@@ -1360,13 +1360,13 @@ export default function AICopilotWorkspace({ isDarkMode, setIsDarkMode, onLogout
                 </div>
 
                 {/* FHIR Spec */}
-                <div className="bg-[#090d16] border border-slate-850 rounded-3xl p-5 space-y-4">
+                <div className="bg-[#090d16] border border-slate-800 rounded-3xl p-5 space-y-4">
                   <div className="flex items-center space-x-2 text-emerald-400">
                     <Database className="w-4 h-4" />
                     <h4 className="text-xs font-black uppercase tracking-wider">ABDM FHIR Diagnostic Report Schema</h4>
                   </div>
                   
-                  <pre className="p-4 bg-[#030712] border border-slate-850 rounded-2xl font-mono text-[9px] text-emerald-200 overflow-x-auto leading-relaxed whitespace-pre-wrap">
+                  <pre className="p-4 bg-[#030712] border border-slate-800 rounded-2xl font-mono text-[9px] text-emerald-200 overflow-x-auto leading-relaxed whitespace-pre-wrap">
 {`{
   "resourceType": "DiagnosticReport",
   "status": "final",

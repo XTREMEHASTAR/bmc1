@@ -42,11 +42,11 @@ export default function LiveQueueStatus({ appointment, patients, onBack }: LiveQ
           <ArrowLeft className="w-4 h-4" />
           <span>Back</span>
         </button>
-        <span className="text-sm font-extrabold text-[#002068]">Live Queue Tracker</span>
+        <span className="text-sm font-extrabold text-[#0A5BFF]">Live Queue Tracker</span>
       </div>
 
       {/* Appointment Summary banner */}
-      <div className="bg-gradient-to-r from-[#002068] to-[#0050cc] text-white rounded-3xl p-5 shadow-md relative overflow-hidden">
+      <div className="bg-gradient-to-r from-[#0A5BFF] to-[#0050cc] text-white rounded-3xl p-5 shadow-md relative overflow-hidden">
         <p className="text-[10px] font-bold tracking-widest uppercase text-blue-200">Current Appointment</p>
         <h2 className="text-xl font-black mt-1">{appointment.department.name} OPD</h2>
         <p className="text-xs text-blue-50 mt-1">{appointment.hospital.name}, Building A, 2nd Floor</p>
@@ -75,7 +75,7 @@ export default function LiveQueueStatus({ appointment, patients, onBack }: LiveQ
         <div className="grid grid-cols-2 gap-4 divide-x divide-gray-100">
           <div className="text-center py-2">
             <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Token Number</p>
-            <p className="text-2xl font-black text-[#002068] mt-1">{appointment.tokenNo}</p>
+            <p className="text-2xl font-black text-[#0A5BFF] mt-1">{appointment.tokenNo}</p>
           </div>
           <div className="text-center py-2">
             <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Wait Time</p>
@@ -110,7 +110,7 @@ export default function LiveQueueStatus({ appointment, patients, onBack }: LiveQ
 
             {/* Step 1: Confirmed */}
             <div className="relative flex items-start space-x-3">
-              <div className="absolute -left-6 w-3.5 h-3.5 rounded-full bg-[#002068] border-2 border-white flex items-center justify-center text-white" />
+              <div className="absolute -left-6 w-3.5 h-3.5 rounded-full bg-[#0A5BFF] border-2 border-white flex items-center justify-center text-white" />
               <div>
                 <h5 className="font-bold text-gray-900">Token Confirmed</h5>
                 <p className="text-[10px] text-gray-400 mt-0.5">MCGM Digital gateway validated</p>

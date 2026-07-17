@@ -719,26 +719,26 @@ export default function PharmacyDashboard({
           </div>
 
           {/* AI Helper Quick Summary Widget */}
-          <div className="bg-[#0f172a] border border-gray-800 rounded-2xl p-4 space-y-3.5">
-            <h5 className="text-[10px] font-black text-indigo-400 uppercase tracking-widest flex items-center space-x-1.5">
-              <Brain className="w-3.5 h-3.5 text-indigo-400" />
+          <div className={`rounded-2xl p-4 space-y-3.5 border ${isDarkMode ? 'bg-[#0f172a] border-gray-800' : 'bg-white border-gray-200 shadow-sm'}`}>
+            <h5 className="text-[10px] font-black text-indigo-500 uppercase tracking-widest flex items-center space-x-1.5">
+              <Brain className="w-3.5 h-3.5 text-indigo-500" />
               <span>AI Pharmacy Copilot</span>
             </h5>
             <div className="space-y-2">
               <div className="flex justify-between items-center text-[10px]">
-                <span className="text-gray-400">Low Stock SKUs</span>
-                <span className={`font-black ${lowStockCount > 0 ? 'text-amber-400' : 'text-emerald-400'}`}>{lowStockCount}</span>
+                <span className={isDarkMode ? 'text-gray-400' : 'text-gray-600'}>Low Stock SKUs</span>
+                <span className={`font-black ${lowStockCount > 0 ? 'text-amber-500' : 'text-emerald-500'}`}>{lowStockCount}</span>
               </div>
               <div className="flex justify-between items-center text-[10px]">
-                <span className="text-gray-400">Near Expiry</span>
-                <span className="font-black text-rose-400">{expiryCount}</span>
+                <span className={isDarkMode ? 'text-gray-400' : 'text-gray-600'}>Near Expiry</span>
+                <span className="font-black text-rose-500">{expiryCount}</span>
               </div>
               <div className="flex justify-between items-center text-[10px]">
-                <span className="text-gray-400">IoT Cold Chain</span>
-                <span className="font-black text-emerald-400">Stable</span>
+                <span className={isDarkMode ? 'text-gray-400' : 'text-gray-600'}>IoT Cold Chain</span>
+                <span className="font-black text-emerald-500">Stable</span>
               </div>
             </div>
-            <div className="bg-slate-950 p-2.5 rounded-xl border border-slate-800 text-[9px] leading-relaxed text-gray-400">
+            <div className={`p-2.5 rounded-xl border text-[9px] leading-relaxed ${isDarkMode ? 'bg-slate-950 border-slate-800 text-gray-400' : 'bg-indigo-50 border-indigo-100 text-gray-600'}`}>
               💡 **Suggestion:** Metformin batch B-M8811 recall isolated successfully. 18 patients need notify protocol.
             </div>
           </div>
@@ -754,7 +754,7 @@ export default function PharmacyDashboard({
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 <div className={`p-5 rounded-2xl border flex flex-col ${isDarkMode ? 'bg-[#0f172a] border-gray-800' : 'bg-white border-gray-200'}`}>
                   <span className="text-[10px] uppercase font-black text-gray-500">Today's Prescriptions</span>
-                  <span className="text-2xl font-black text-white mt-1.5">{prescriptions.length}</span>
+                  <span className={`text-2xl font-black mt-1.5 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{prescriptions.length}</span>
                   <div className="flex items-center space-x-1 mt-2 text-[9px] text-emerald-400 font-bold">
                     <ArrowUpRight className="w-3.5 h-3.5" />
                     <span>+12.4% vs yesterday</span>
@@ -771,7 +771,7 @@ export default function PharmacyDashboard({
 
                 <div className={`p-5 rounded-2xl border flex flex-col ${isDarkMode ? 'bg-[#0f172a] border-gray-800' : 'bg-white border-gray-200'}`}>
                   <span className="text-[10px] uppercase font-black text-gray-500">Low Stock Alert</span>
-                  <span className={`text-2xl font-black mt-1.5 ${lowStockCount > 0 ? 'text-rose-500' : 'text-white'}`}>{lowStockCount}</span>
+                  <span className={`text-2xl font-black mt-1.5 ${lowStockCount > 0 ? 'text-rose-500' : isDarkMode ? 'text-white' : 'text-gray-900'}`}>{lowStockCount}</span>
                   <span className="text-[9px] text-gray-400 mt-2 font-medium">Amoxicillin critical level</span>
                 </div>
 
@@ -786,13 +786,13 @@ export default function PharmacyDashboard({
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 
                 {/* Active Prescriptions Queue */}
-                <div className={`lg:col-span-2 p-6 rounded-2xl border flex flex-col ${isDarkMode ? 'bg-[#0f172a] border-gray-800' : 'bg-white border-gray-200'}`}>
-                  <div className="flex justify-between items-center border-b border-gray-800 pb-3">
-                    <h3 className="text-sm font-black uppercase text-white flex items-center space-x-2">
-                      <Clock className="w-4.5 h-4.5 text-indigo-400" />
+                <div className={`lg:col-span-2 p-6 rounded-2xl border flex flex-col ${isDarkMode ? 'bg-[#0f172a] border-gray-800' : 'bg-white border-gray-200 shadow-sm'}`}>
+                  <div className={`flex justify-between items-center border-b pb-3 ${isDarkMode ? 'border-gray-800' : 'border-gray-200'}`}>
+                    <h3 className={`text-sm font-black uppercase flex items-center space-x-2 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+                      <Clock className="w-4.5 h-4.5 text-indigo-500" />
                       <span>Pending Verification Queue</span>
                     </h3>
-                    <span className="bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 text-[9px] px-2 py-0.5 rounded font-black">REALTIME SYNC</span>
+                    <span className="bg-indigo-500/10 text-indigo-500 border border-indigo-500/20 text-[9px] px-2 py-0.5 rounded font-black">REALTIME SYNC</span>
                   </div>
 
                   <div className="mt-4 space-y-3.5">
@@ -803,19 +803,19 @@ export default function PharmacyDashboard({
                           setSelectedPrescription(rx);
                           setActiveTab('dispense');
                         }}
-                        className="bg-slate-900/60 border border-slate-800 hover:border-indigo-500 p-4 rounded-xl flex items-center justify-between cursor-pointer transition-all hover:scale-[1.01]"
+                        className={`border hover:border-indigo-500 p-4 rounded-xl flex items-center justify-between cursor-pointer transition-all hover:scale-[1.01] ${isDarkMode ? 'bg-slate-900/60 border-slate-800' : 'bg-gray-50 border-gray-200 hover:shadow-sm'}`}
                       >
                         <div className="space-y-1">
                           <div className="flex items-center space-x-2">
-                            <span className="text-xs font-black text-white">{rx.patientName}</span>
+                            <span className={`text-xs font-black ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{rx.patientName}</span>
                             <span className={`text-[8px] font-black px-1.5 py-0.5 rounded ${
-                              rx.priority === 'EMERGENCY' ? 'bg-rose-500 text-white animate-pulse' : rx.priority === 'URGENT' ? 'bg-amber-500 text-slate-950' : 'bg-slate-800 text-gray-300'
+                              rx.priority === 'EMERGENCY' ? 'bg-rose-500 text-white animate-pulse' : rx.priority === 'URGENT' ? 'bg-amber-500 text-slate-950' : isDarkMode ? 'bg-slate-800 text-gray-300' : 'bg-gray-200 text-gray-700'
                             }`}>
                               {rx.priority}
                             </span>
                           </div>
-                          <p className="text-[10px] text-gray-400">Diagnosis: {rx.diagnosis} • Ref: {rx.doctorName}</p>
-                          <p className="text-[10px] text-gray-500">Meds: {rx.medicationsOrdered.map(m => m.medicineName).join(', ')}</p>
+                          <p className={`text-[10px] ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Diagnosis: {rx.diagnosis} • Ref: {rx.doctorName}</p>
+                          <p className={`text-[10px] ${isDarkMode ? 'text-gray-500' : 'text-gray-500'}`}>Meds: {rx.medicationsOrdered.map(m => m.medicineName).join(', ')}</p>
                         </div>
                         <div className="text-right flex flex-col items-end space-y-1.5">
                           <span className={`text-[9px] font-black px-2 py-0.5 rounded-full ${
@@ -831,31 +831,31 @@ export default function PharmacyDashboard({
                 </div>
 
                 {/* Expiry alerts & low stock summary */}
-                <div className={`p-6 rounded-2xl border flex flex-col justify-between ${isDarkMode ? 'bg-[#0f172a] border-gray-800' : 'bg-white border-gray-200'}`}>
+                <div className={`p-6 rounded-2xl border flex flex-col justify-between ${isDarkMode ? 'bg-[#0f172a] border-gray-800' : 'bg-white border-gray-200 shadow-sm'}`}>
                   <div className="space-y-4">
-                    <h3 className="text-sm font-black uppercase text-white border-b border-gray-800 pb-3 flex items-center space-x-2">
+                    <h3 className={`text-sm font-black uppercase border-b pb-3 flex items-center space-x-2 ${isDarkMode ? 'text-white border-gray-800' : 'text-gray-900 border-gray-200'}`}>
                       <AlertTriangle className="w-4.5 h-4.5 text-amber-500" />
                       <span>Expiry & Low Stock Center</span>
                     </h3>
 
                     <div className="space-y-3">
                       {medicines.filter(m => m.stockLevel <= m.minThreshold).map(m => (
-                        <div key={m.sku} className="bg-slate-900 border border-slate-800 p-3 rounded-xl flex items-center justify-between text-[10px]">
+                        <div key={m.sku} className={`border p-3 rounded-xl flex items-center justify-between text-[10px] ${isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-gray-50 border-gray-200'}`}>
                           <div>
-                            <span className="text-white font-bold">{m.brandName} ({m.genericName})</span>
-                            <p className="text-rose-400 font-medium">Stock: {m.stockLevel} units (Min: {m.minThreshold})</p>
+                            <span className={`font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{m.brandName} ({m.genericName})</span>
+                            <p className="text-rose-500 font-medium">Stock: {m.stockLevel} units (Min: {m.minThreshold})</p>
                           </div>
-                          <span className="bg-rose-500/10 text-rose-400 border border-rose-500/20 px-2 py-0.5 rounded text-[8px] font-bold">LOW STOCK</span>
+                          <span className="bg-rose-500/10 text-rose-500 border border-rose-500/20 px-2 py-0.5 rounded text-[8px] font-bold">LOW STOCK</span>
                         </div>
                       ))}
 
                       {medicines.filter(m => new Date(m.expiryDate).getTime() - new Date().getTime() < 120 * 24 * 60 * 60 * 1000).map(m => (
-                        <div key={m.sku} className="bg-slate-900 border border-slate-800 p-3 rounded-xl flex items-center justify-between text-[10px]">
+                        <div key={m.sku} className={`border p-3 rounded-xl flex items-center justify-between text-[10px] ${isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-gray-50 border-gray-200'}`}>
                           <div>
-                            <span className="text-white font-bold">{m.brandName}</span>
-                            <p className="text-amber-400 font-medium">Expiry: {m.expiryDate}</p>
+                            <span className={`font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{m.brandName}</span>
+                            <p className="text-amber-500 font-medium">Expiry: {m.expiryDate}</p>
                           </div>
-                          <span className="bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded text-[8px] font-bold">NEAR EXPIRY</span>
+                          <span className="bg-amber-500/10 text-amber-500 border border-amber-500/20 px-2 py-0.5 rounded text-[8px] font-bold">NEAR EXPIRY</span>
                         </div>
                       ))}
                     </div>
@@ -886,24 +886,24 @@ export default function PharmacyDashboard({
           {activeTab === 'dispense' && selectedPrescription && (
             <div className="space-y-6">
               {/* Workspace Header */}
-              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-gray-800 pb-4">
+              <div className={`flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b pb-4 ${isDarkMode ? 'border-gray-800' : 'border-gray-200'}`}>
                 <div className="flex items-center space-x-3.5">
                   <div className="w-10 h-10 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400">
                     <CheckSquare className="w-5 h-5" />
                   </div>
                   <div>
-                    <h2 className="text-base font-black text-white">Active Dispensing Workspace</h2>
-                    <p className="text-[10px] text-gray-400">Order ID: {selectedPrescription.id} • Patient: {selectedPrescription.patientName}</p>
+                    <h2 className={`text-base font-black ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Active Dispensing Workspace</h2>
+                    <p className={`text-[10px] ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Order ID: {selectedPrescription.id} • Patient: {selectedPrescription.patientName}</p>
                   </div>
                 </div>
 
                 <div className="flex items-center space-x-3">
                   <span className={`text-[10px] font-black px-3 py-1 rounded-full ${
-                    selectedPrescription.priority === 'EMERGENCY' ? 'bg-rose-500 text-white animate-pulse' : 'bg-slate-800 text-gray-300'
+                    selectedPrescription.priority === 'EMERGENCY' ? 'bg-rose-500 text-white animate-pulse' : isDarkMode ? 'bg-slate-800 text-gray-300' : 'bg-gray-200 text-gray-700'
                   }`}>
                     {selectedPrescription.priority} Priority
                   </span>
-                  <span className="text-[10px] text-gray-500">ABHA: {selectedPrescription.abhaId}</span>
+                  <span className={`text-[10px] ${isDarkMode ? 'text-gray-500' : 'text-gray-500'}`}>ABHA: {selectedPrescription.abhaId}</span>
                 </div>
               </div>
 
@@ -911,18 +911,18 @@ export default function PharmacyDashboard({
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 
                 {/* Left Panel: Patient Card & Safety Checks */}
-                <div className={`p-6 rounded-2xl border flex flex-col justify-between ${isDarkMode ? 'bg-[#0f172a] border-gray-800' : 'bg-white border-gray-200'}`}>
+                <div className={`p-6 rounded-2xl border flex flex-col justify-between ${isDarkMode ? 'bg-[#0f172a] border-gray-800' : 'bg-white border-gray-200 shadow-sm'}`}>
                   <div className="space-y-5">
-                    <h3 className="text-xs font-black uppercase text-indigo-400 border-b border-gray-800 pb-2">Patient Profile & History</h3>
+                    <h3 className={`text-xs font-black uppercase text-indigo-500 border-b pb-2 ${isDarkMode ? 'border-gray-800' : 'border-gray-200'}`}>Patient Profile & History</h3>
                     <div className="space-y-2 text-xs">
-                      <div className="flex justify-between"><span className="text-gray-400">Age / Gender:</span><span className="text-white font-bold">{selectedPrescription.age} Y / {selectedPrescription.gender}</span></div>
-                      <div className="flex justify-between"><span className="text-gray-400">Diagnosis:</span><span className="text-white font-bold">{selectedPrescription.diagnosis}</span></div>
-                      <div className="flex justify-between"><span className="text-gray-400">Prescribing Doctor:</span><span className="text-white font-bold">{selectedPrescription.doctorName} ({selectedPrescription.department})</span></div>
+                      <div className="flex justify-between"><span className={isDarkMode ? 'text-gray-400' : 'text-gray-600'}>Age / Gender:</span><span className={`font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{selectedPrescription.age} Y / {selectedPrescription.gender}</span></div>
+                      <div className="flex justify-between"><span className={isDarkMode ? 'text-gray-400' : 'text-gray-600'}>Diagnosis:</span><span className={`font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{selectedPrescription.diagnosis}</span></div>
+                      <div className="flex justify-between"><span className={isDarkMode ? 'text-gray-400' : 'text-gray-600'}>Prescribing Doctor:</span><span className={`font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{selectedPrescription.doctorName} ({selectedPrescription.department})</span></div>
                     </div>
 
                     {/* Allergies & Drug Interactions */}
                     <div className="space-y-3.5">
-                      <div className="bg-rose-950/40 border border-rose-500/20 p-4 rounded-xl">
+                      <div className={`border p-4 rounded-xl ${isDarkMode ? 'bg-rose-950/40 border-rose-500/20' : 'bg-rose-50 border-rose-200'}`}>
                         <h4 className="text-[10px] font-black text-rose-400 uppercase flex items-center space-x-1.5">
                           <AlertTriangle className="w-3.5 h-3.5" />
                           <span>Allergy Alerts</span>
@@ -930,7 +930,7 @@ export default function PharmacyDashboard({
                         <div className="mt-2 space-y-1">
                           {selectedPrescription.allergies.length > 0 ? (
                             selectedPrescription.allergies.map(al => (
-                              <p key={al} className="text-[10px] text-white font-bold">• Contraindicated: patient allergic to {al}</p>
+                              <p key={al} className={`text-[10px] font-bold ${isDarkMode ? 'text-white' : 'text-rose-900'}`}>• Contraindicated: patient allergic to {al}</p>
                             ))
                           ) : (
                             <p className="text-[10px] text-gray-400">No known drug allergies reported ✓</p>
@@ -938,21 +938,21 @@ export default function PharmacyDashboard({
                         </div>
                       </div>
 
-                      <div className="bg-amber-950/40 border border-amber-500/20 p-4 rounded-xl">
-                        <h4 className="text-[10px] font-black text-amber-400 uppercase flex items-center space-x-1.5">
+                      <div className={`border p-4 rounded-xl ${isDarkMode ? 'bg-amber-950/40 border-amber-500/20' : 'bg-amber-50 border-amber-200'}`}>
+                        <h4 className="text-[10px] font-black text-amber-500 uppercase flex items-center space-x-1.5">
                           <Brain className="w-3.5 h-3.5" />
                           <span>AI Clinical Drug Interactions</span>
                         </h4>
-                        <div className="mt-2 text-[10px] text-gray-300 leading-normal space-y-1.5">
-                          <p className="font-bold">• Check: Azithromycin + Amlodipine interaction check complete (No critical interaction detected).</p>
-                          <p className="text-amber-400 font-bold">• Note: Avoid administering duplicate therapies with other analgesics.</p>
+                        <div className="mt-2 text-[10px] leading-normal space-y-1.5">
+                          <p className={`font-bold ${isDarkMode ? 'text-gray-300' : 'text-gray-800'}`}>• Check: Azithromycin + Amlodipine interaction check complete (No critical interaction detected).</p>
+                          <p className={`font-bold ${isDarkMode ? 'text-amber-400' : 'text-amber-700'}`}>• Note: Avoid administering duplicate therapies with other analgesics.</p>
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  <div className="pt-4 border-t border-gray-800">
-                    <span className="text-[10px] uppercase font-bold text-gray-400 block mb-2">ABDM FHIR Consent Signature status</span>
+                  <div className={`pt-4 border-t ${isDarkMode ? 'border-gray-800' : 'border-gray-200'}`}>
+                    <span className={`text-[10px] uppercase font-bold block mb-2 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>ABDM FHIR Consent Signature status</span>
                     <div className="flex items-center space-x-2 text-[10px] text-emerald-400 font-bold">
                       <ShieldCheck className="w-4 h-4" />
                       <span>ABDM Digitally signed transaction token verified</span>
@@ -961,32 +961,32 @@ export default function PharmacyDashboard({
                 </div>
 
                 {/* Center Panel: Medicine Picking & Double Verification */}
-                <div className={`lg:col-span-2 p-6 rounded-2xl border flex flex-col justify-between ${isDarkMode ? 'bg-[#0f172a] border-gray-800' : 'bg-white border-gray-200'}`}>
+                <div className={`lg:col-span-2 p-6 rounded-2xl border flex flex-col justify-between ${isDarkMode ? 'bg-[#0f172a] border-gray-800' : 'bg-white border-gray-200 shadow-sm'}`}>
                   <div className="space-y-5">
-                    <h3 className="text-xs font-black uppercase text-indigo-400 border-b border-gray-800 pb-2">Prescribed Medications & Barcode Verify</h3>
+                    <h3 className={`text-xs font-black uppercase text-indigo-500 border-b pb-2 ${isDarkMode ? 'border-gray-800' : 'border-gray-200'}`}>Prescribed Medications & Barcode Verify</h3>
                     
                     <div className="space-y-4">
                       {selectedPrescription.medicationsOrdered.map((med, idx) => {
                         const matchedMed = medicines.find(m => m.genericName.toLowerCase().includes(med.medicineName.toLowerCase()) || m.brandName.toLowerCase().includes(med.medicineName.toLowerCase()));
                         return (
-                          <div key={idx} className="bg-slate-900 border border-slate-800 p-4 rounded-xl space-y-3">
+                          <div key={idx} className={`border p-4 rounded-xl space-y-3 ${isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-gray-50 border-gray-200'}`}>
                             <div className="flex justify-between items-start">
                               <div>
-                                <h4 className="text-xs font-black text-white">{med.medicineName}</h4>
-                                <p className="text-[10px] text-gray-400">{med.dosage} • {med.frequency} • {med.duration}</p>
+                                <h4 className={`text-xs font-black ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{med.medicineName}</h4>
+                                <p className={`text-[10px] ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>{med.dosage} • {med.frequency} • {med.duration}</p>
                               </div>
-                              <span className="text-xs font-black text-indigo-400">Qty: {med.quantity}</span>
+                              <span className="text-xs font-black text-indigo-500">Qty: {med.quantity}</span>
                             </div>
 
                             {/* Verification status and stock location */}
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-[10px] bg-slate-950 p-2.5 rounded-lg border border-slate-800/80">
+                            <div className={`grid grid-cols-1 md:grid-cols-2 gap-3 text-[10px] p-2.5 rounded-lg border ${isDarkMode ? 'bg-slate-950 border-slate-800/80' : 'bg-white border-gray-200'}`}>
                               <div>
-                                <span className="text-gray-500">Pick Location:</span>
-                                <p className="text-white font-bold mt-0.5">{matchedMed?.location || 'Generic Rack D'}</p>
+                                <span className={isDarkMode ? 'text-gray-500' : 'text-gray-500'}>Pick Location:</span>
+                                <p className={`font-bold mt-0.5 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{matchedMed?.location || 'Generic Rack D'}</p>
                               </div>
                               <div>
-                                <span className="text-gray-500">Batch & Expiry:</span>
-                                <p className={`font-bold mt-0.5 ${matchedMed && new Date(matchedMed.expiryDate).getTime() < new Date().getTime() + 180*24*60*60*1000 ? 'text-amber-400' : 'text-emerald-400'}`}>
+                                <span className={isDarkMode ? 'text-gray-500' : 'text-gray-500'}>Batch & Expiry:</span>
+                                <p className={`font-bold mt-0.5 ${matchedMed && new Date(matchedMed.expiryDate).getTime() < new Date().getTime() + 180*24*60*60*1000 ? 'text-amber-500' : 'text-emerald-500'}`}>
                                   {matchedMed ? `${matchedMed.batchNumber} (Exp: ${matchedMed.expiryDate})` : 'N/A'}
                                 </p>
                               </div>
@@ -997,15 +997,15 @@ export default function PharmacyDashboard({
                     </div>
 
                     {/* Barcode scanner simulator */}
-                    <div className="bg-slate-900 border border-slate-800 p-4 rounded-xl space-y-3">
-                      <label className="text-[10px] uppercase font-bold text-gray-400 block">Scan Medicine Barcode for Double-Verification</label>
+                    <div className={`border p-4 rounded-xl space-y-3 ${isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-gray-50 border-gray-200'}`}>
+                      <label className={`text-[10px] uppercase font-bold block ${isDarkMode ? 'text-gray-400' : 'text-gray-700'}`}>Scan Medicine Barcode for Double-Verification</label>
                       <div className="flex space-x-2">
                         <input
                           type="text"
                           placeholder="Place cursor here and scan or type barcode (e.g. B-P4028)"
                           value={scannedBarcode}
                           onChange={(e) => setScannedBarcode(e.target.value)}
-                          className="bg-slate-950 border border-slate-800 text-xs font-bold text-white px-3 py-2 rounded-xl flex-1 outline-none placeholder-gray-600"
+                          className={`border text-xs font-bold px-3 py-2 rounded-xl flex-1 outline-none ${isDarkMode ? 'bg-slate-950 border-slate-800 text-white placeholder-gray-600' : 'bg-white border-gray-300 text-gray-900 placeholder-gray-400'}`}
                         />
                         <button
                           onClick={() => {
@@ -1023,17 +1023,15 @@ export default function PharmacyDashboard({
                     </div>
 
                     {/* Patient Counseling Section */}
-                    <div className="bg-slate-900 border border-slate-800 p-4 rounded-xl space-y-3">
-                      <div className="flex justify-between items-center border-b border-slate-800 pb-2">
-                        <span className="text-[10px] uppercase font-bold text-gray-400">Counseling Language</span>
+                    <div className={`border p-4 rounded-xl space-y-3 ${isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-gray-50 border-gray-200'}`}>
+                      <div className={`flex justify-between items-center border-b pb-2 ${isDarkMode ? 'border-slate-800' : 'border-gray-200'}`}>
+                        <span className={`text-[10px] uppercase font-bold ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Counseling Language</span>
                         <div className="flex space-x-1.5">
                           {['english', 'marathi', 'hindi'].map(lang => (
                             <button
                               key={lang}
                               onClick={() => setSelectedLanguage(lang as any)}
-                              className={`text-[9px] font-bold px-2 py-0.5 rounded capitalize ${
-                                selectedLanguage === lang ? 'bg-indigo-600 text-white font-extrabold' : 'bg-slate-800 text-gray-400'
-                              }`}
+                              className={`text-[9px] font-bold px-2 py-0.5 rounded capitalize cursor-pointer ${selectedLanguage === lang ? 'bg-indigo-600 text-white font-extrabold' : isDarkMode ? 'bg-slate-800 text-gray-400' : 'bg-gray-200 text-gray-600'}`}
                             >
                               {lang}
                             </button>
@@ -1041,8 +1039,8 @@ export default function PharmacyDashboard({
                         </div>
                       </div>
 
-                      <div className="text-[10px] text-gray-300 leading-normal">
-                        <p className="bg-slate-950 p-3 rounded-lg border border-slate-800">
+                      <div className="text-[10px] leading-normal">
+                        <p className={`p-3 rounded-lg border ${isDarkMode ? 'bg-slate-950 border-slate-800 text-gray-300' : 'bg-white border-gray-200 text-gray-700'}`}>
                           {getLanguageCounseling(selectedLanguage, selectedPrescription)}
                         </p>
                       </div>
@@ -1050,14 +1048,14 @@ export default function PharmacyDashboard({
                       <div className="flex items-center justify-between">
                         <button
                           onClick={() => handleSpeakInstructions(getLanguageCounseling(selectedLanguage, selectedPrescription))}
-                          className="flex items-center space-x-2 bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 text-xs px-3.5 py-2 rounded-xl font-bold hover:bg-indigo-500/20 transition-all cursor-pointer"
+                          className="flex items-center space-x-2 bg-indigo-500/10 text-indigo-500 border border-indigo-500/20 text-xs px-3.5 py-2 rounded-xl font-bold hover:bg-indigo-500/20 transition-all cursor-pointer"
                         >
                           <Volume2 className="w-4 h-4" />
                           <span>{isCounselingSpeaking ? 'Stop Voice Instruction' : 'Play Voice Counseling'}</span>
                         </button>
                         
-                        <div className="flex items-center space-x-2 text-[9px] text-gray-400">
-                          <QrCode className="w-4 h-4 text-indigo-400" />
+                        <div className={`flex items-center space-x-2 text-[9px] ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                          <QrCode className="w-4 h-4 text-indigo-500" />
                           <span>Scan QR for patient mobile guide</span>
                         </div>
                       </div>
@@ -1065,7 +1063,7 @@ export default function PharmacyDashboard({
                   </div>
 
                   {/* Approve / Release Dispensation */}
-                  <div className="border-t border-gray-800 pt-4 mt-4 space-y-4">
+                  <div className={`border-t pt-4 mt-4 space-y-4 ${isDarkMode ? 'border-gray-800' : 'border-gray-200'}`}>
                     <div className="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-3">
                       <div className="flex-1">
                         <input
@@ -1076,9 +1074,7 @@ export default function PharmacyDashboard({
                             setPharmacistPin(e.target.value);
                             setPinError(false);
                           }}
-                          className={`bg-slate-950 border px-3 py-2.5 rounded-xl text-xs font-bold text-white w-full outline-none placeholder-gray-600 ${
-                            pinError ? 'border-rose-500 text-rose-400' : 'border-slate-800'
-                          }`}
+                          className={`border px-3 py-2.5 rounded-xl text-xs font-bold w-full outline-none ${isDarkMode ? `bg-slate-950 text-white placeholder-gray-600 ${pinError ? 'border-rose-500' : 'border-slate-800'}` : `bg-white text-gray-900 placeholder-gray-400 ${pinError ? 'border-rose-500' : 'border-gray-300'}`}`}
                         />
                       </div>
                       <div className="flex space-x-2">
@@ -1095,7 +1091,7 @@ export default function PharmacyDashboard({
                             setPrescriptions(prev => prev.map(p => p.id === selectedPrescription.id ? { ...p, status: 'CANCELLED' } : p));
                             triggerToast('Prescription Cancelled', 'Order status marked as cancelled.', 'warning');
                           }}
-                          className="bg-slate-800 hover:bg-slate-700 text-gray-300 font-bold text-xs px-4 py-2.5 rounded-xl transition-all"
+                          className={`font-bold text-xs px-4 py-2.5 rounded-xl transition-all cursor-pointer ${isDarkMode ? 'bg-slate-800 hover:bg-slate-700 text-gray-300' : 'bg-gray-200 hover:bg-gray-300 text-gray-700'}`}
                         >
                           Cancel Order
                         </button>
@@ -1111,14 +1107,14 @@ export default function PharmacyDashboard({
           {/* TAB 3: INVENTORY MANAGEMENT */}
           {activeTab === 'inventory' && (
             <div className="space-y-6">
-              <div className="flex justify-between items-center border-b border-gray-800 pb-4">
+              <div className={`flex justify-between items-center border-b pb-4 ${isDarkMode ? 'border-gray-800' : 'border-gray-200'}`}>
                 <div className="flex items-center space-x-3">
                   <div className="w-10 h-10 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400">
                     <Database className="w-5 h-5" />
                   </div>
                   <div>
-                    <h2 className="text-base font-black text-white">Medicine Master Inventory</h2>
-                    <p className="text-[10px] text-gray-400">Manage government medical stores catalog & warehouse stocks</p>
+                    <h2 className={`text-base font-black ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Medicine Master Inventory</h2>
+                    <p className={`text-[10px] ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Manage government medical stores catalog & warehouse stocks</p>
                   </div>
                 </div>
 
@@ -1133,9 +1129,9 @@ export default function PharmacyDashboard({
 
               {/* Add Medicine Form Modal */}
               {isAddingMedicine && (
-                <form onSubmit={handleAddMedicine} className="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4">
-                  <div className="flex justify-between items-center border-b border-slate-800 pb-3">
-                    <h3 className="text-xs font-black text-white uppercase">Register Medicine Master SKU</h3>
+                <form onSubmit={handleAddMedicine} className={`border p-6 rounded-2xl space-y-4 ${isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-gray-200 shadow-sm'}`}>
+                  <div className={`flex justify-between items-center border-b pb-3 ${isDarkMode ? 'border-slate-800' : 'border-gray-200'}`}>
+                    <h3 className={`text-xs font-black uppercase ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Register Medicine Master SKU</h3>
                     <button type="button" onClick={() => setIsAddingMedicine(false)} className="text-gray-500 hover:text-white">
                       <X className="w-4 h-4" />
                     </button>
@@ -1229,7 +1225,7 @@ export default function PharmacyDashboard({
                 <div className="overflow-x-auto">
                   <table className="w-full text-left border-collapse">
                     <thead>
-                      <tr className="border-b border-gray-800 text-[10px] text-gray-500 uppercase font-black">
+                      <tr className={`border-b text-[10px] text-gray-500 uppercase font-black ${isDarkMode ? 'border-gray-800' : 'border-gray-200'}`}>
                         <th className="pb-3">SKU</th>
                         <th className="pb-3">Generic Name / Brand</th>
                         <th className="pb-3">Category</th>
@@ -1242,17 +1238,17 @@ export default function PharmacyDashboard({
                     </thead>
                     <tbody className="divide-y divide-gray-800/40 text-xs">
                       {medicines.map((med) => (
-                        <tr key={med.sku} className="hover:bg-slate-900/30">
-                          <td className="py-3 font-mono font-bold text-indigo-400">{med.sku}</td>
+                        <tr key={med.sku} className={`${isDarkMode ? 'hover:bg-slate-900/30' : 'hover:bg-gray-50'}`}>
+                          <td className="py-3 font-mono font-bold text-indigo-500">{med.sku}</td>
                           <td className="py-3">
-                            <span className="text-white font-bold block">{med.brandName}</span>
-                            <span className="text-[9px] text-gray-400">{med.genericName} ({med.manufacturer})</span>
+                            <span className={`font-bold block ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{med.brandName}</span>
+                            <span className={`text-[9px] ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>{med.genericName} ({med.manufacturer})</span>
                           </td>
                           <td className="py-3">
-                            <span className="text-[10px] font-bold text-gray-300">{med.category}</span>
+                            <span className={`text-[10px] font-bold ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>{med.category}</span>
                           </td>
                           <td className="py-3">
-                            <span className={`font-black ${med.stockLevel <= med.minThreshold ? 'text-rose-400' : 'text-white'}`}>
+                            <span className={`font-black ${med.stockLevel <= med.minThreshold ? 'text-rose-500' : isDarkMode ? 'text-white' : 'text-gray-900'}`}>
                               {med.stockLevel} units
                             </span>
                             {med.stockLevel <= med.minThreshold && (
@@ -1292,14 +1288,14 @@ export default function PharmacyDashboard({
           {/* TAB 4: COLD CHAIN MONITORING */}
           {activeTab === 'coldchain' && (
             <div className="space-y-6">
-              <div className="flex justify-between items-center border-b border-gray-800 pb-4">
+              <div className={`flex justify-between items-center border-b pb-4 ${isDarkMode ? 'border-gray-800' : 'border-gray-200'}`}>
                 <div className="flex items-center space-x-3">
                   <div className="w-10 h-10 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400">
                     <Thermometer className="w-5 h-5" />
                   </div>
                   <div>
-                    <h2 className="text-base font-black text-white">Cold Chain Management</h2>
-                    <p className="text-[10px] text-gray-400">Real-time IoT temperature sensors monitoring vaccine fridge room</p>
+                    <h2 className={`text-base font-black ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Cold Chain Management</h2>
+                    <p className={`text-[10px] ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Real-time IoT temperature sensors monitoring vaccine fridge room</p>
                   </div>
                 </div>
                 
@@ -1312,12 +1308,12 @@ export default function PharmacyDashboard({
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {sensors.map(sens => (
                   <div key={sens.id} className={`p-6 rounded-2xl border flex flex-col justify-between ${
-                    sens.status === 'WARNING' ? 'bg-amber-950/20 border-amber-500/30' : 'bg-[#0f172a] border-gray-800'
+                    sens.status === 'WARNING' ? (isDarkMode ? 'bg-amber-950/20 border-amber-500/30' : 'bg-amber-50 border-amber-200') : isDarkMode ? 'bg-[#0f172a] border-gray-800' : 'bg-white border-gray-200 shadow-sm'
                   }`}>
                     <div className="space-y-4">
                       <div className="flex justify-between items-start">
                         <div>
-                          <h4 className="text-xs font-black text-white">{sens.name}</h4>
+                          <h4 className={`text-xs font-black ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{sens.name}</h4>
                           <span className="text-[9px] text-gray-500 font-mono">ID: {sens.id}</span>
                         </div>
                         <span className={`text-[9px] font-black px-2 py-0.5 rounded-full ${
@@ -1338,12 +1334,12 @@ export default function PharmacyDashboard({
                         </div>
                         <div className="text-center">
                           <span className="text-[9px] uppercase font-bold text-gray-500">Humidity</span>
-                          <span className="text-xl font-black text-white block mt-1">{sens.humidity}%</span>
+                          <span className={`text-xl font-black block mt-1 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{sens.humidity}%</span>
                         </div>
                       </div>
                     </div>
 
-                    <div className="border-t border-gray-800 pt-3 mt-4 flex justify-between items-center text-[9px] text-gray-500">
+                    <div className={`border-t pt-3 mt-4 flex justify-between items-center text-[9px] text-gray-500 ${isDarkMode ? 'border-gray-800' : 'border-gray-200'}`}>
                       <span>Last reported: Just now</span>
                       <button className="text-indigo-400 font-bold hover:underline cursor-pointer">Calibration history</button>
                     </div>
@@ -1352,25 +1348,25 @@ export default function PharmacyDashboard({
               </div>
 
               {/* Temperature threshold and regulatory guidance warning block */}
-              <div className="bg-[#0f172a] border border-gray-800 p-6 rounded-2xl space-y-3.5">
-                <h4 className="text-xs font-black text-white uppercase flex items-center space-x-2">
+              <div className={`border p-6 rounded-2xl space-y-3.5 ${isDarkMode ? 'bg-[#0f172a] border-gray-800' : 'bg-white border-gray-200 shadow-sm'}`}>
+                <h4 className={`text-xs font-black uppercase flex items-center space-x-2 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
                   <ShieldAlert className="w-4.5 h-4.5 text-amber-500" />
                   <span>Vaccine Storage Compliance Checklist</span>
                 </h4>
-                <p className="text-xs text-gray-400 leading-normal">
+                <p className={`text-xs leading-normal ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
                   WHO and Ministry of Health Guidelines mandate storing all vaccines and sensitive immunoglobulins in WHO-PQS prequalified refrigerators between 2°C to 8°C.
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
-                  <div className="bg-slate-900/60 p-3.5 rounded-xl border border-slate-800 text-[10px]">
-                    <span className="text-emerald-400 font-bold block">✓ Safe Temperature Log</span>
+                  <div className={`p-3.5 rounded-xl border text-[10px] ${isDarkMode ? 'bg-slate-900/60 border-slate-800' : 'bg-gray-50 border-gray-200'}`}>
+                    <span className="text-emerald-500 font-bold block">✓ Safe Temperature Log</span>
                     <span className="text-gray-500 block mt-1">Automatic logging every 5 mins</span>
                   </div>
-                  <div className="bg-slate-900/60 p-3.5 rounded-xl border border-slate-800 text-[10px]">
-                    <span className="text-emerald-400 font-bold block">✓ Power Backup Active</span>
+                  <div className={`p-3.5 rounded-xl border text-[10px] ${isDarkMode ? 'bg-slate-900/60 border-slate-800' : 'bg-gray-50 border-gray-200'}`}>
+                    <span className="text-emerald-500 font-bold block">✓ Power Backup Active</span>
                     <span className="text-gray-500 block mt-1">Automatic switchover to secondary grid</span>
                   </div>
-                  <div className="bg-slate-900/60 p-3.5 rounded-xl border border-slate-800 text-[10px]">
-                    <span className="text-amber-400 font-bold block">⚠ Refrigerator Warming Alert</span>
+                  <div className={`p-3.5 rounded-xl border text-[10px] ${isDarkMode ? 'bg-slate-900/60 border-slate-800' : 'bg-gray-50 border-gray-200'}`}>
+                    <span className="text-amber-500 font-bold block">⚠ Refrigerator Warming Alert</span>
                     <span className="text-gray-500 block mt-1">Insulin fridge B warming (8.9°C)</span>
                   </div>
                 </div>
@@ -1381,14 +1377,14 @@ export default function PharmacyDashboard({
           {/* TAB 5: PROCUREMENT MODULE */}
           {activeTab === 'procurement' && (
             <div className="space-y-6">
-              <div className="flex justify-between items-center border-b border-gray-800 pb-4">
+              <div className={`flex justify-between items-center border-b pb-4 ${isDarkMode ? 'border-gray-800' : 'border-gray-200'}`}>
                 <div className="flex items-center space-x-3">
                   <div className="w-10 h-10 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400">
                     <Truck className="w-5 h-5" />
                   </div>
                   <div>
-                    <h2 className="text-base font-black text-white">Procurement & Order Requests</h2>
-                    <p className="text-[10px] text-gray-400">Create and approve replenishment request forms for central store</p>
+                    <h2 className={`text-base font-black ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Procurement & Order Requests</h2>
+                    <p className={`text-[10px] ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Create and approve replenishment request forms for central store</p>
                   </div>
                 </div>
 
@@ -1401,9 +1397,9 @@ export default function PharmacyDashboard({
               </div>
 
               {isRequestingProcurement && (
-                <form onSubmit={handleCreateProcurementRequest} className="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4">
-                  <div className="flex justify-between items-center border-b border-slate-800 pb-3">
-                    <h3 className="text-xs font-black text-white uppercase">New Purchase Order Request</h3>
+                <form onSubmit={handleCreateProcurementRequest} className={`border p-6 rounded-2xl space-y-4 ${isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-gray-200 shadow-sm'}`}>
+                  <div className={`flex justify-between items-center border-b pb-3 ${isDarkMode ? 'border-slate-800' : 'border-gray-200'}`}>
+                    <h3 className={`text-xs font-black uppercase ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>New Purchase Order Request</h3>
                     <button type="button" onClick={() => setIsRequestingProcurement(false)} className="text-gray-500 hover:text-white">
                       <X className="w-4 h-4" />
                     </button>
@@ -1463,18 +1459,18 @@ export default function PharmacyDashboard({
               <div className={`p-6 rounded-2xl border ${isDarkMode ? 'bg-[#0f172a] border-gray-800' : 'bg-white border-gray-200'}`}>
                 <div className="space-y-4">
                   {procurements.map(proc => (
-                    <div key={proc.id} className="bg-slate-900/60 border border-slate-800 p-4 rounded-xl flex items-center justify-between text-xs">
+                    <div key={proc.id} className={`border p-4 rounded-xl flex items-center justify-between text-xs ${isDarkMode ? 'bg-slate-900/60 border-slate-800' : 'bg-gray-50 border-gray-200'}`}>
                       <div>
                         <div className="flex items-center space-x-2">
-                          <span className="text-white font-bold">{proc.medicineName}</span>
-                          <span className="text-[9px] text-indigo-400 font-mono">{proc.id}</span>
+                          <span className={`font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{proc.medicineName}</span>
+                          <span className="text-[9px] text-indigo-500 font-mono">{proc.id}</span>
                         </div>
-                        <p className="text-[10px] text-gray-400 mt-1">Vendor: {proc.supplier} • Qty: {proc.quantity} units</p>
+                        <p className={`text-[10px] mt-1 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Vendor: {proc.supplier} • Qty: {proc.quantity} units</p>
                       </div>
                       <div className="flex items-center space-x-4">
                         <div className="text-right">
                           <span className="text-[10px] text-gray-500">Est. Cost:</span>
-                          <span className="text-white font-bold block">₹{proc.estimatedCost.toLocaleString('en-IN')}</span>
+                          <span className={`font-bold block ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>₹{proc.estimatedCost.toLocaleString('en-IN')}</span>
                         </div>
                         <span className={`text-[9px] font-black px-2.5 py-1 rounded-full ${
                           proc.status === 'APPROVED' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'
@@ -1492,14 +1488,14 @@ export default function PharmacyDashboard({
           {/* TAB 6: DRUG RECALLS */}
           {activeTab === 'recalls' && (
             <div className="space-y-6">
-              <div className="flex justify-between items-center border-b border-gray-800 pb-4">
+              <div className={`flex justify-between items-center border-b pb-4 ${isDarkMode ? 'border-gray-800' : 'border-gray-200'}`}>
                 <div className="flex items-center space-x-3">
                   <div className="w-10 h-10 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400">
                     <AlertOctagon className="w-5 h-5" />
                   </div>
                   <div>
-                    <h2 className="text-base font-black text-white">Drug Recall Management</h2>
-                    <p className="text-[10px] text-gray-400">Emergency manufacturer and regulatory drug recalls alerts</p>
+                    <h2 className={`text-base font-black ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Drug Recall Management</h2>
+                    <p className={`text-[10px] ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Emergency manufacturer and regulatory drug recalls alerts</p>
                   </div>
                 </div>
               </div>
@@ -1507,30 +1503,30 @@ export default function PharmacyDashboard({
               {/* Recall Alert cards */}
               <div className="space-y-4">
                 {recallAlerts.map(rec => (
-                  <div key={rec.id} className="bg-rose-950/20 border border-rose-500/30 p-6 rounded-2xl flex flex-col justify-between">
+                  <div key={rec.id} className={`border p-6 rounded-2xl flex flex-col justify-between ${isDarkMode ? 'bg-rose-950/20 border-rose-500/30' : 'bg-rose-50 border-rose-200'}`}>
                     <div className="space-y-3.5">
                       <div className="flex justify-between items-start">
                         <div>
                           <span className="text-xs bg-rose-500 text-white px-2 py-0.5 rounded font-black text-[9px] uppercase tracking-wide">
                             {rec.severity} SEVERITY RECALL
                           </span>
-                          <h4 className="text-sm font-black text-white mt-1.5">{rec.medicineName} (Batch: {rec.batchNumber})</h4>
+                          <h4 className={`text-sm font-black mt-1.5 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{rec.medicineName} (Batch: {rec.batchNumber})</h4>
                         </div>
                         <span className="text-[9px] text-gray-500 font-mono">{rec.id}</span>
                       </div>
 
-                      <p className="text-xs text-gray-300 leading-normal">
+                      <p className={`text-xs leading-normal ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                         **Reason for recall:** {rec.reason}
                       </p>
 
-                      <div className="bg-slate-950/60 p-4 rounded-xl border border-slate-900 text-[10px] space-y-1.5">
-                        <p className="text-white font-bold">Affected Patient Protocol Status:</p>
-                        <p className="text-gray-400">• Detected {rec.affectedPatientsCount} patients who received this batch in the last 30 days.</p>
-                        <p className="text-amber-400 font-bold">• Action Pending: Dispatch automated alert notifications (SMS/WhatsApp) to all affected patients.</p>
+                      <div className={`p-4 rounded-xl border text-[10px] space-y-1.5 ${isDarkMode ? 'bg-slate-950/60 border-slate-900' : 'bg-white border-gray-200'}`}>
+                        <p className={`font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Affected Patient Protocol Status:</p>
+                        <p className={isDarkMode ? 'text-gray-400' : 'text-gray-600'}>• Detected {rec.affectedPatientsCount} patients who received this batch in the last 30 days.</p>
+                        <p className={`font-bold ${isDarkMode ? 'text-amber-400' : 'text-amber-700'}`}>• Action Pending: Dispatch automated alert notifications (SMS/WhatsApp) to all affected patients.</p>
                       </div>
                     </div>
 
-                    <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-gray-800/60 mt-4 justify-between">
+                    <div className={`flex flex-col sm:flex-row gap-3 pt-4 border-t mt-4 justify-between ${isDarkMode ? 'border-gray-800/60' : 'border-gray-200'}`}>
                       <div className="flex space-x-2">
                         <button
                           onClick={() => {
@@ -1545,7 +1541,7 @@ export default function PharmacyDashboard({
                           onClick={() => {
                             triggerToast('Notifications Dispatched', 'Automated alerts sent to affected patients & physicians.', 'success');
                           }}
-                          className="bg-slate-800 hover:bg-slate-700 text-gray-350 font-bold text-xs px-4 py-2 rounded-xl transition-all cursor-pointer"
+                          className={`font-bold text-xs px-4 py-2 rounded-xl transition-all cursor-pointer ${isDarkMode ? 'bg-slate-800 hover:bg-slate-700 text-gray-350' : 'bg-gray-200 hover:bg-gray-300 text-gray-700'}`}
                         >
                           Dispatch Patient Alerts
                         </button>
@@ -1561,22 +1557,21 @@ export default function PharmacyDashboard({
           {/* TAB 7: ANALYTICS & FORECASTING */}
           {activeTab === 'analytics' && (
             <div className="space-y-6">
-              <div className="flex justify-between items-center border-b border-gray-800 pb-4">
+              <div className={`flex justify-between items-center border-b pb-4 ${isDarkMode ? 'border-gray-800' : 'border-gray-200'}`}>
                 <div className="flex items-center space-x-3">
                   <div className="w-10 h-10 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400">
                     <BarChart2 className="w-5 h-5" />
                   </div>
                   <div>
-                    <h2 className="text-base font-black text-white">Pharmacy Analytics & Seasonal Forecasting</h2>
-                    <p className="text-[10px] text-gray-400">Medication consumption trends, seasonal demand forecasts, and supply delays</p>
+                    <h2 className={`text-base font-black ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Pharmacy Analytics & Seasonal Forecasting</h2>
+                    <p className={`text-[10px] ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Medication consumption trends, seasonal demand forecasts, and supply delays</p>
                   </div>
                 </div>
               </div>
 
-              {/* Charts grid placeholder / table metrics */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div className={`p-6 rounded-2xl border flex flex-col justify-between ${isDarkMode ? 'bg-[#0f172a] border-gray-800' : 'bg-white border-gray-200'}`}>
-                  <h3 className="text-xs font-black uppercase text-indigo-400 border-b border-gray-800 pb-2">Fastest Moving Medicines</h3>
+                <div className={`p-6 rounded-2xl border flex flex-col justify-between ${isDarkMode ? 'bg-[#0f172a] border-gray-800' : 'bg-white border-gray-200 shadow-sm'}`}>
+                  <h3 className={`text-xs font-black uppercase text-indigo-500 border-b pb-2 ${isDarkMode ? 'border-gray-800' : 'border-gray-200'}`}>Fastest Moving Medicines</h3>
                   
                   <div className="space-y-3.5 mt-4">
                     {[
@@ -1587,10 +1582,10 @@ export default function PharmacyDashboard({
                     ].map(f => (
                       <div key={f.name} className="space-y-1">
                         <div className="flex justify-between text-[11px]">
-                          <span className="text-white font-bold">{f.name}</span>
-                          <span className="text-indigo-400 font-bold">{f.volume} units</span>
+                          <span className={`font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{f.name}</span>
+                          <span className="text-indigo-500 font-bold">{f.volume} units</span>
                         </div>
-                        <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                        <div className={`w-full h-1.5 rounded-full overflow-hidden ${isDarkMode ? 'bg-slate-800' : 'bg-gray-200'}`}>
                           <div className="h-full bg-indigo-600 rounded-full" style={{ width: `${f.percent}%` }} />
                         </div>
                       </div>
@@ -1598,32 +1593,32 @@ export default function PharmacyDashboard({
                   </div>
                 </div>
 
-                <div className={`p-6 rounded-2xl border flex flex-col justify-between ${isDarkMode ? 'bg-[#0f172a] border-gray-800' : 'bg-white border-gray-200'}`}>
-                  <h3 className="text-xs font-black uppercase text-indigo-400 border-b border-gray-800 pb-2">AI Demand Predictions (Next 30 Days)</h3>
+                <div className={`p-6 rounded-2xl border flex flex-col justify-between ${isDarkMode ? 'bg-[#0f172a] border-gray-800' : 'bg-white border-gray-200 shadow-sm'}`}>
+                  <h3 className={`text-xs font-black uppercase text-indigo-500 border-b pb-2 ${isDarkMode ? 'border-gray-800' : 'border-gray-200'}`}>AI Demand Predictions (Next 30 Days)</h3>
                   
                   <div className="space-y-3.5 mt-4">
-                    <div className="bg-slate-900 border border-slate-800 p-3 rounded-xl flex items-center justify-between text-xs">
+                    <div className={`border p-3 rounded-xl flex items-center justify-between text-xs ${isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-gray-50 border-gray-200'}`}>
                       <div>
-                        <span className="text-white font-bold block">Seasonal Flu Outbreak Demand</span>
-                        <p className="text-[10px] text-gray-400 mt-0.5">Paracetamol/Antibiotics predicted spike</p>
+                        <span className={`font-bold block ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Seasonal Flu Outbreak Demand</span>
+                        <p className={`text-[10px] mt-0.5 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Paracetamol/Antibiotics predicted spike</p>
                       </div>
                       <span className="text-rose-400 font-black">+35% forecast</span>
                     </div>
 
-                    <div className="bg-slate-900 border border-slate-800 p-3 rounded-xl flex items-center justify-between text-xs">
+                    <div className={`border p-3 rounded-xl flex items-center justify-between text-xs ${isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-gray-50 border-gray-200'}`}>
                       <div>
-                        <span className="text-white font-bold block">Supplier Delay Warning</span>
-                        <p className="text-[10px] text-gray-400 mt-0.5">GlaxoSmithKline India logistics warning</p>
+                        <span className={`font-bold block ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Supplier Delay Warning</span>
+                        <p className={`text-[10px] mt-0.5 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>GlaxoSmithKline India logistics warning</p>
                       </div>
-                      <span className="text-amber-400 font-black">4 days delay risk</span>
+                      <span className="text-amber-500 font-black">4 days delay risk</span>
                     </div>
 
-                    <div className="bg-slate-900 border border-slate-800 p-3 rounded-xl flex items-center justify-between text-xs">
+                    <div className={`border p-3 rounded-xl flex items-center justify-between text-xs ${isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-gray-50 border-gray-200'}`}>
                       <div>
-                        <span className="text-white font-bold block">Central Warehouse Replenishment</span>
-                        <p className="text-[10px] text-gray-400 mt-0.5">Auto order recommended for Insulin</p>
+                        <span className={`font-bold block ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Central Warehouse Replenishment</span>
+                        <p className={`text-[10px] mt-0.5 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Auto order recommended for Insulin</p>
                       </div>
-                      <span className="text-emerald-400 font-black">Order advised</span>
+                      <span className="text-emerald-500 font-black">Order advised</span>
                     </div>
                   </div>
                 </div>

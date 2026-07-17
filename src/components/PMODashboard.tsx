@@ -86,7 +86,7 @@ export default function PMODashboard({
   return (
     <div className={`min-h-screen font-sans ${isDarkMode ? 'bg-[#06070c] text-gray-100' : 'bg-slate-50 text-slate-800'} transition-all`}>
       {/* Top Navigation Header */}
-      <header className="sticky top-0 z-40 border-b p-4 backdrop-blur-md flex items-center justify-between transition-colors bg-white/95 border-gray-150 dark:bg-[#0a0b12]/95 dark:border-gray-900">
+      <header className="sticky top-0 z-40 border-b p-4 backdrop-blur-md flex items-center justify-between transition-colors bg-white/95 border-gray-200 dark:bg-[#0a0b12]/95 dark:border-gray-900">
         <div className="flex items-center space-x-3">
           <div className="p-2.5 bg-gradient-to-tr from-cyan-600 via-indigo-600 to-rose-600 rounded-xl text-white shadow-md">
             <Briefcase className="w-5.5 h-5.5" />
@@ -108,7 +108,7 @@ export default function PMODashboard({
         <div className="flex items-center space-x-2.5">
           <button 
             onClick={() => setIsDarkMode(!isDarkMode)}
-            className="p-2.5 rounded-xl border border-gray-200 hover:bg-slate-100 dark:border-gray-800 dark:hover:bg-slate-900 text-gray-450 cursor-pointer animate-transition"
+            className="p-2.5 rounded-xl border border-gray-200 hover:bg-slate-100 dark:border-gray-800 dark:hover:bg-slate-900 text-gray-400 cursor-pointer animate-transition"
           >
             {isDarkMode ? (
               <span className="text-yellow-400 font-bold text-xs">Light Mode</span>
@@ -131,33 +131,33 @@ export default function PMODashboard({
 
         {/* Strategic Dashboard Metrics */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="bg-white dark:bg-[#0f111c] border border-gray-150 dark:border-gray-850 rounded-2xl p-4 shadow-sm flex flex-col justify-between">
-            <span className="text-[9px] font-black uppercase tracking-wider text-gray-450">Active Pilots</span>
+          <div className="bg-white dark:bg-[#0f111c] border border-gray-200 dark:border-gray-800 rounded-2xl p-4 shadow-sm flex flex-col justify-between">
+            <span className="text-[9px] font-black uppercase tracking-wider text-gray-400">Active Pilots</span>
             <h3 className="text-xl font-black text-indigo-500 mt-1">KEM Hospital</h3>
             <span className="text-[10px] text-emerald-500 font-bold mt-1">✓ Core EMR Online</span>
           </div>
 
-          <div className="bg-white dark:bg-[#0f111c] border border-gray-150 dark:border-gray-850 rounded-2xl p-4 shadow-sm flex flex-col justify-between">
-            <span className="text-[9px] font-black uppercase tracking-wider text-gray-450">Overall Readiness Rate</span>
+          <div className="bg-white dark:bg-[#0f111c] border border-gray-200 dark:border-gray-800 rounded-2xl p-4 shadow-sm flex flex-col justify-between">
+            <span className="text-[9px] font-black uppercase tracking-wider text-gray-400">Overall Readiness Rate</span>
             <h3 className="text-xl font-black text-cyan-500 mt-1">84.2% Complete</h3>
-            <span className="text-[10px] text-gray-450 font-semibold mt-1">12 major gates checked</span>
+            <span className="text-[10px] text-gray-400 font-semibold mt-1">12 major gates checked</span>
           </div>
 
-          <div className="bg-white dark:bg-[#0f111c] border border-gray-150 dark:border-gray-850 rounded-2xl p-4 shadow-sm flex flex-col justify-between">
-            <span className="text-[9px] font-black uppercase tracking-wider text-gray-450">Active Risks Blockers</span>
+          <div className="bg-white dark:bg-[#0f111c] border border-gray-200 dark:border-gray-800 rounded-2xl p-4 shadow-sm flex flex-col justify-between">
+            <span className="text-[9px] font-black uppercase tracking-wider text-gray-400">Active Risks Blockers</span>
             <h3 className="text-xl font-black text-rose-500 mt-1">0 Critical Risks</h3>
             <span className="text-[10px] text-emerald-500 font-bold mt-1">✓ Mitigation paths active</span>
           </div>
 
-          <div className="bg-white dark:bg-[#0f111c] border border-gray-150 dark:border-gray-850 rounded-2xl p-4 shadow-sm flex flex-col justify-between">
-            <span className="text-[9px] font-black uppercase tracking-wider text-gray-450">Project Budget Consumed</span>
+          <div className="bg-white dark:bg-[#0f111c] border border-gray-200 dark:border-gray-800 rounded-2xl p-4 shadow-sm flex flex-col justify-between">
+            <span className="text-[9px] font-black uppercase tracking-wider text-gray-400">Project Budget Consumed</span>
             <h3 className="text-xl font-black text-emerald-500 mt-1">42% of ₹45 Cr</h3>
             <span className="text-[10px] text-indigo-400 font-bold mt-1">On-track, target cost met</span>
           </div>
         </div>
 
         {/* Tab Selection */}
-        <div className="flex flex-wrap gap-1.5 p-1 bg-white dark:bg-[#0f111c] border border-gray-150 dark:border-gray-850 rounded-2xl max-w-6xl shadow-sm">
+        <div className="flex flex-wrap gap-1.5 p-1 bg-white dark:bg-[#0f111c] border border-gray-200 dark:border-gray-800 rounded-2xl max-w-6xl shadow-sm">
           {[
             { id: 'timeline', label: 'Rollout Timeline', icon: Calendar },
             { id: 'readiness', label: 'Readiness Audit', icon: Layers },
@@ -173,7 +173,7 @@ export default function PMODashboard({
                 className={`flex items-center space-x-2 px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${
                   activeTab === tab.id
                     ? 'bg-indigo-500 text-white shadow-md'
-                    : 'text-gray-450 hover:text-slate-800 dark:hover:text-gray-200 hover:bg-slate-100 dark:hover:bg-slate-900/60'
+                    : 'text-gray-400 hover:text-slate-800 dark:hover:text-gray-200 hover:bg-slate-100 dark:hover:bg-slate-900/60'
                 }`}
               >
                 <Icon className="w-4 h-4" />
@@ -194,7 +194,7 @@ export default function PMODashboard({
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="bg-white dark:bg-[#0f111c] border border-gray-150 dark:border-gray-850 rounded-3xl p-5 shadow-sm space-y-4"
+                className="bg-white dark:bg-[#0f111c] border border-gray-200 dark:border-gray-800 rounded-3xl p-5 shadow-sm space-y-4"
               >
                 <h3 className="text-xs font-black uppercase tracking-wider text-indigo-500">MCGM deployment phases</h3>
 
@@ -207,8 +207,8 @@ export default function PMODashboard({
                   ].map((p, idx) => (
                     <div key={idx} className="p-4 bg-slate-50 dark:bg-slate-900 border border-gray-100 dark:border-gray-800 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-2">
                       <div>
-                        <p className="font-bold text-slate-850 dark:text-gray-200">{p.phase}</p>
-                        <p className="text-[10px] text-gray-450">{p.target}</p>
+                        <p className="font-bold text-slate-800 dark:text-gray-200">{p.phase}</p>
+                        <p className="text-[10px] text-gray-400">{p.target}</p>
                       </div>
                       <div className="flex items-center space-x-3 text-[10px]">
                         <span className="text-gray-400 font-semibold">{p.duration}</span>
@@ -234,7 +234,7 @@ export default function PMODashboard({
                 className="grid grid-cols-1 lg:grid-cols-3 gap-6"
               >
                 {/* Readiness parameters checklist */}
-                <div className="lg:col-span-2 bg-white dark:bg-[#0f111c] border border-gray-150 dark:border-gray-850 rounded-3xl p-5 shadow-sm space-y-4">
+                <div className="lg:col-span-2 bg-white dark:bg-[#0f111c] border border-gray-200 dark:border-gray-800 rounded-3xl p-5 shadow-sm space-y-4">
                   <h3 className="text-xs font-black uppercase tracking-wider text-indigo-500">Readiness checklists</h3>
 
                   <div className="space-y-4">
@@ -268,10 +268,10 @@ export default function PMODashboard({
                 </div>
 
                 {/* Dashboard Audit stats */}
-                <div className="bg-white dark:bg-[#0f111c] border border-gray-150 dark:border-gray-850 rounded-3xl p-5 shadow-sm space-y-4 flex flex-col justify-between">
+                <div className="bg-white dark:bg-[#0f111c] border border-gray-200 dark:border-gray-800 rounded-3xl p-5 shadow-sm space-y-4 flex flex-col justify-between">
                   <div className="space-y-3">
                     <h3 className="text-xs font-black uppercase tracking-wider">Hospital Readiness Rates</h3>
-                    <p className="text-xs text-gray-450 leading-relaxed font-semibold">
+                    <p className="text-xs text-gray-400 leading-relaxed font-semibold">
                       Adjust parameters to simulate local network load capacities, legacy HL7 data migration checks, and roster training programs completion status.
                     </p>
                   </div>
@@ -290,24 +290,24 @@ export default function PMODashboard({
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="bg-white dark:bg-[#0f111c] border border-gray-150 dark:border-gray-850 rounded-3xl p-5 shadow-sm space-y-4"
+                className="bg-white dark:bg-[#0f111c] border border-gray-200 dark:border-gray-800 rounded-3xl p-5 shadow-sm space-y-4"
               >
                 <h3 className="text-xs font-black uppercase tracking-wider text-indigo-500">Resource & Budget Allocation</h3>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-bold">
-                  <div className="p-4 border border-gray-100 dark:border-gray-850 rounded-2xl space-y-2">
+                  <div className="p-4 border border-gray-100 dark:border-gray-800 rounded-2xl space-y-2">
                     <p className="text-[10px] text-gray-400">Core Software & API Integration</p>
                     <p className="text-lg font-black text-indigo-500">₹18.5 Cr</p>
                     <p className="text-[10px] text-emerald-500">✓ Fully funded</p>
                   </div>
 
-                  <div className="p-4 border border-gray-100 dark:border-gray-850 rounded-2xl space-y-2">
+                  <div className="p-4 border border-gray-100 dark:border-gray-800 rounded-2xl space-y-2">
                     <p className="text-[10px] text-gray-400">Hospital Server & IoT Gateways</p>
                     <p className="text-lg font-black text-cyan-500">₹14.2 Cr</p>
                     <p className="text-[10px] text-indigo-400">45% Invoices cleared</p>
                   </div>
 
-                  <div className="p-4 border border-gray-100 dark:border-gray-850 rounded-2xl space-y-2">
+                  <div className="p-4 border border-gray-100 dark:border-gray-800 rounded-2xl space-y-2">
                     <p className="text-[10px] text-gray-400">Nurse & Doctor Change Training</p>
                     <p className="text-lg font-black text-rose-500">₹6.2 Cr</p>
                     <p className="text-[10px] text-gray-400">Ongoing rollout</p>
@@ -323,7 +323,7 @@ export default function PMODashboard({
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="bg-white dark:bg-[#0f111c] border border-gray-150 dark:border-gray-850 rounded-3xl p-5 shadow-sm space-y-4"
+                className="bg-white dark:bg-[#0f111c] border border-gray-200 dark:border-gray-800 rounded-3xl p-5 shadow-sm space-y-4"
               >
                 <h3 className="text-xs font-black uppercase tracking-wider text-indigo-500">Active Deployment Risks Log</h3>
 
@@ -356,7 +356,7 @@ export default function PMODashboard({
                 className="grid grid-cols-1 lg:grid-cols-3 gap-6"
               >
                 {/* Pre-Cutover checklist */}
-                <div className="lg:col-span-2 bg-white dark:bg-[#0f111c] border border-gray-150 dark:border-gray-850 rounded-3xl p-5 shadow-sm space-y-4">
+                <div className="lg:col-span-2 bg-white dark:bg-[#0f111c] border border-gray-200 dark:border-gray-800 rounded-3xl p-5 shadow-sm space-y-4">
                   <h3 className="text-xs font-black uppercase tracking-wider text-indigo-500">Gating Cutover Checklist</h3>
 
                   <div className="space-y-3 text-xs font-semibold">
@@ -381,7 +381,7 @@ export default function PMODashboard({
                 </div>
 
                 {/* Hypercare status */}
-                <div className="bg-white dark:bg-[#0f111c] border border-gray-150 dark:border-gray-850 rounded-3xl p-5 shadow-sm space-y-4 flex flex-col justify-between">
+                <div className="bg-white dark:bg-[#0f111c] border border-gray-200 dark:border-gray-800 rounded-3xl p-5 shadow-sm space-y-4 flex flex-col justify-between">
                   <h3 className="text-xs font-black uppercase tracking-wider">Deployment Readiness Status</h3>
                   
                   <div className="p-4 border border-gray-100 dark:border-gray-800 rounded-2xl text-center">
@@ -391,7 +391,7 @@ export default function PMODashboard({
                     </p>
                   </div>
 
-                  <p className="text-[9px] text-gray-450 text-center font-semibold uppercase">
+                  <p className="text-[9px] text-gray-400 text-center font-semibold uppercase">
                     All checklist items must be approved to initiate live cutover script.
                   </p>
                 </div>

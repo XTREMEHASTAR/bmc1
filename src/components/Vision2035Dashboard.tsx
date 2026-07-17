@@ -95,7 +95,7 @@ export default function Vision2035Dashboard({
   return (
     <div className={`min-h-screen font-sans ${isDarkMode ? 'bg-[#06070c] text-gray-100' : 'bg-slate-50 text-slate-800'} transition-all`}>
       {/* Top Hologram Header */}
-      <header className="sticky top-0 z-40 border-b p-4 backdrop-blur-md flex items-center justify-between transition-colors bg-white/95 border-gray-150 dark:bg-[#0a0b12]/95 dark:border-gray-900">
+      <header className="sticky top-0 z-40 border-b p-4 backdrop-blur-md flex items-center justify-between transition-colors bg-white/95 border-gray-200 dark:bg-[#0a0b12]/95 dark:border-gray-900">
         <div className="flex items-center space-x-3">
           <div className="p-2.5 bg-gradient-to-tr from-cyan-500 via-purple-500 to-rose-500 rounded-xl text-white shadow-md">
             <Sparkles className="w-5.5 h-5.5 animate-pulse" />
@@ -117,7 +117,7 @@ export default function Vision2035Dashboard({
         <div className="flex items-center space-x-2.5">
           <button 
             onClick={() => setIsDarkMode(!isDarkMode)}
-            className="p-2.5 rounded-xl border border-gray-200 hover:bg-slate-100 dark:border-gray-800 dark:hover:bg-slate-900 text-gray-450 cursor-pointer"
+            className="p-2.5 rounded-xl border border-gray-200 hover:bg-slate-100 dark:border-gray-800 dark:hover:bg-slate-900 text-gray-400 cursor-pointer"
           >
             {isDarkMode ? (
               <span className="text-yellow-400 font-bold text-xs">Light Mode</span>
@@ -140,33 +140,33 @@ export default function Vision2035Dashboard({
 
         {/* Strategic Success Metrics */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="bg-white dark:bg-[#0f111c] border border-gray-150 dark:border-gray-850 rounded-2xl p-4 shadow-sm flex flex-col justify-between">
-            <span className="text-[9px] font-black uppercase tracking-wider text-gray-450">Active Digital Twins</span>
+          <div className="bg-white dark:bg-[#0f111c] border border-gray-200 dark:border-gray-800 rounded-2xl p-4 shadow-sm flex flex-col justify-between">
+            <span className="text-[9px] font-black uppercase tracking-wider text-gray-400">Active Digital Twins</span>
             <h3 className="text-xl font-black text-cyan-500 mt-1">4 Cities Mapped</h3>
             <span className="text-[10px] text-emerald-500 font-bold mt-1">✓ Sion, KEM, Cooper, Nair</span>
           </div>
 
-          <div className="bg-white dark:bg-[#0f111c] border border-gray-150 dark:border-gray-850 rounded-2xl p-4 shadow-sm flex flex-col justify-between">
-            <span className="text-[9px] font-black uppercase tracking-wider text-gray-450">Genomic Sequence Matches</span>
+          <div className="bg-white dark:bg-[#0f111c] border border-gray-200 dark:border-gray-800 rounded-2xl p-4 shadow-sm flex flex-col justify-between">
+            <span className="text-[9px] font-black uppercase tracking-wider text-gray-400">Genomic Sequence Matches</span>
             <h3 className="text-xl font-black text-purple-500 mt-1">1.2M Citizens</h3>
             <span className="text-[10px] text-gray-400 font-semibold mt-1">Pharmacogenomics active</span>
           </div>
 
-          <div className="bg-white dark:bg-[#0f111c] border border-gray-150 dark:border-gray-850 rounded-2xl p-4 shadow-sm flex flex-col justify-between">
-            <span className="text-[9px] font-black uppercase tracking-wider text-gray-450">Autonomous Drones Active</span>
+          <div className="bg-white dark:bg-[#0f111c] border border-gray-200 dark:border-gray-800 rounded-2xl p-4 shadow-sm flex flex-col justify-between">
+            <span className="text-[9px] font-black uppercase tracking-wider text-gray-400">Autonomous Drones Active</span>
             <h3 className="text-xl font-black text-pink-500 mt-1">12 Drone Nodes</h3>
             <span className="text-[10px] text-emerald-500 font-bold mt-1">✓ Supply deliveries normal</span>
           </div>
 
-          <div className="bg-white dark:bg-[#0f111c] border border-gray-150 dark:border-gray-850 rounded-2xl p-4 shadow-sm flex flex-col justify-between">
-            <span className="text-[9px] font-black uppercase tracking-wider text-gray-450">Carbon Footprint Saved</span>
+          <div className="bg-white dark:bg-[#0f111c] border border-gray-200 dark:border-gray-800 rounded-2xl p-4 shadow-sm flex flex-col justify-between">
+            <span className="text-[9px] font-black uppercase tracking-wider text-gray-400">Carbon Footprint Saved</span>
             <h3 className="text-xl font-black text-emerald-500 mt-1">3,420 Tons</h3>
             <span className="text-[10px] text-cyan-400 font-bold mt-1">100% Paperless workflows</span>
           </div>
         </div>
 
         {/* Tab Selector */}
-        <div className="flex flex-wrap gap-1.5 p-1 bg-white dark:bg-[#0f111c] border border-gray-150 dark:border-gray-850 rounded-2xl max-w-6xl shadow-sm">
+        <div className="flex flex-wrap gap-1.5 p-1 bg-white dark:bg-[#0f111c] border border-gray-200 dark:border-gray-800 rounded-2xl max-w-6xl shadow-sm">
           {[
             { id: 'digitaltwin', label: 'Hospital Digital Twin', icon: Tv },
             { id: 'genomics', label: 'Precision Genomics', icon: Heart },
@@ -182,7 +182,7 @@ export default function Vision2035Dashboard({
                 className={`flex items-center space-x-2 px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${
                   activeTab === tab.id
                     ? 'bg-cyan-500 text-white shadow-md'
-                    : 'text-gray-450 hover:text-slate-800 dark:hover:text-gray-200 hover:bg-slate-100 dark:hover:bg-slate-900/60'
+                    : 'text-gray-400 hover:text-slate-800 dark:hover:text-gray-200 hover:bg-slate-100 dark:hover:bg-slate-900/60'
                 }`}
               >
                 <Icon className="w-4 h-4" />
@@ -206,7 +206,7 @@ export default function Vision2035Dashboard({
                 className="grid grid-cols-1 lg:grid-cols-3 gap-6"
               >
                 {/* Visualizer maps */}
-                <div className="lg:col-span-2 bg-white dark:bg-[#0f111c] border border-gray-150 dark:border-gray-850 rounded-3xl p-5 shadow-sm space-y-4">
+                <div className="lg:col-span-2 bg-white dark:bg-[#0f111c] border border-gray-200 dark:border-gray-800 rounded-3xl p-5 shadow-sm space-y-4">
                   <h3 className="text-xs font-black uppercase tracking-wider text-cyan-500">Live City Digital Twin Simulator</h3>
 
                   <div className="space-y-4 text-xs font-bold">
@@ -226,14 +226,14 @@ export default function Vision2035Dashboard({
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
-                      <div className="p-4 border border-gray-100 dark:border-gray-850 rounded-2xl">
+                      <div className="p-4 border border-gray-100 dark:border-gray-800 rounded-2xl">
                         <p className="text-[10px] text-gray-400">Predicted Epidemic Outbreak Risk</p>
                         <p className={`text-lg font-black mt-1 ${outbreakRisk > 50 ? 'text-rose-500' : 'text-emerald-500'}`}>
                           {outbreakRisk}% Risk
                         </p>
                       </div>
 
-                      <div className="p-4 border border-gray-100 dark:border-gray-850 rounded-2xl">
+                      <div className="p-4 border border-gray-100 dark:border-gray-800 rounded-2xl">
                         <p className="text-[10px] text-gray-400">Staff Deployment Status</p>
                         <p className="text-lg font-black text-cyan-500">Optimal (100%)</p>
                       </div>
@@ -242,10 +242,10 @@ export default function Vision2035Dashboard({
                 </div>
 
                 {/* Simulated Planning console */}
-                <div className="bg-white dark:bg-[#0f111c] border border-gray-150 dark:border-gray-850 rounded-3xl p-5 shadow-sm space-y-4 flex flex-col justify-between">
+                <div className="bg-white dark:bg-[#0f111c] border border-gray-200 dark:border-gray-800 rounded-3xl p-5 shadow-sm space-y-4 flex flex-col justify-between">
                   <div className="space-y-3">
                     <h3 className="text-xs font-black uppercase tracking-wider">Predictive Simulations</h3>
-                    <p className="text-xs text-gray-450 leading-relaxed font-semibold">
+                    <p className="text-xs text-gray-400 leading-relaxed font-semibold">
                       Adjust bed occupancies to project local clinical resources requirements, emergency responder redirects, and city vaccine drives.
                     </p>
                   </div>
@@ -271,7 +271,7 @@ export default function Vision2035Dashboard({
                 className="grid grid-cols-1 lg:grid-cols-3 gap-6"
               >
                 {/* Genomic sequencing list */}
-                <div className="lg:col-span-2 bg-white dark:bg-[#0f111c] border border-gray-150 dark:border-gray-850 rounded-3xl p-5 shadow-sm space-y-4">
+                <div className="lg:col-span-2 bg-white dark:bg-[#0f111c] border border-gray-200 dark:border-gray-800 rounded-3xl p-5 shadow-sm space-y-4">
                   <h3 className="text-xs font-black uppercase tracking-wider text-cyan-500">Citizen DNA Risk Profiles</h3>
 
                   <div className="space-y-3 text-xs font-semibold">
@@ -279,7 +279,7 @@ export default function Vision2035Dashboard({
                       <div key={idx} className="p-3.5 bg-slate-50 dark:bg-slate-900 border border-gray-100 dark:border-gray-800 rounded-2xl flex justify-between items-center">
                         <div className="space-y-1">
                           <p className="text-slate-800 dark:text-slate-100 font-bold">{marker.gene} • {marker.variant}</p>
-                          <p className="text-[10px] text-gray-450">{marker.drugReactivity}</p>
+                          <p className="text-[10px] text-gray-400">{marker.drugReactivity}</p>
                         </div>
                         <span className={`px-2 py-0.5 text-[8.5px] font-black rounded uppercase ${
                           marker.riskFactor === 'High' ? 'bg-rose-100 dark:bg-rose-950 text-rose-600' :
@@ -294,9 +294,9 @@ export default function Vision2035Dashboard({
                 </div>
 
                 {/* DNA sequencing execution controls */}
-                <div className="bg-white dark:bg-[#0f111c] border border-gray-150 dark:border-gray-850 rounded-3xl p-5 shadow-sm space-y-4">
+                <div className="bg-white dark:bg-[#0f111c] border border-gray-200 dark:border-gray-800 rounded-3xl p-5 shadow-sm space-y-4">
                   <h3 className="text-xs font-black uppercase tracking-wider">Run Gene Sequencing</h3>
-                  <p className="text-xs text-gray-450 leading-relaxed font-semibold">
+                  <p className="text-xs text-gray-400 leading-relaxed font-semibold">
                     Analyses longitudinal DNA profile mappings to calibrate pharmacogenomic drug responses and detect rare diseases risks.
                   </p>
 
@@ -321,7 +321,7 @@ export default function Vision2035Dashboard({
                 exit={{ opacity: 0, y: -10 }}
                 className="space-y-6"
               >
-                <div className="bg-white dark:bg-[#0f111c] border border-gray-150 dark:border-gray-850 rounded-3xl p-5 shadow-sm space-y-4">
+                <div className="bg-white dark:bg-[#0f111c] border border-gray-200 dark:border-gray-800 rounded-3xl p-5 shadow-sm space-y-4">
                   <h3 className="text-xs font-black uppercase tracking-wider text-cyan-500">Autonomous Logistics Drones</h3>
 
                   <div className="space-y-3 text-xs font-semibold">
@@ -338,7 +338,7 @@ export default function Vision2035Dashboard({
                           </span>
                         </div>
 
-                        <div className="flex justify-between text-gray-450 text-[10px]">
+                        <div className="flex justify-between text-gray-400 text-[10px]">
                           <span>Cargo: {drone.cargo}</span>
                           <span>Dest: {drone.destination}</span>
                         </div>
@@ -365,7 +365,7 @@ export default function Vision2035Dashboard({
                 className="grid grid-cols-1 lg:grid-cols-3 gap-6"
               >
                 {/* Waste and carbon offsets */}
-                <div className="lg:col-span-2 bg-white dark:bg-[#0f111c] border border-gray-150 dark:border-gray-850 rounded-3xl p-5 shadow-sm space-y-4">
+                <div className="lg:col-span-2 bg-white dark:bg-[#0f111c] border border-gray-200 dark:border-gray-800 rounded-3xl p-5 shadow-sm space-y-4">
                   <h3 className="text-xs font-black uppercase tracking-wider text-cyan-500">Green Hospital Indicators</h3>
 
                   <div className="space-y-4 text-xs font-bold">
@@ -392,7 +392,7 @@ export default function Vision2035Dashboard({
                 </div>
 
                 {/* Carbon footprint */}
-                <div className="bg-white dark:bg-[#0f111c] border border-gray-150 dark:border-gray-850 rounded-3xl p-5 shadow-sm space-y-4 flex flex-col justify-between">
+                <div className="bg-white dark:bg-[#0f111c] border border-gray-200 dark:border-gray-800 rounded-3xl p-5 shadow-sm space-y-4 flex flex-col justify-between">
                   <h3 className="text-xs font-black uppercase tracking-wider">Carbon Footprint Saved</h3>
                   
                   <div className="p-4 border border-gray-100 dark:border-gray-800 rounded-2xl text-center">
@@ -400,7 +400,7 @@ export default function Vision2035Dashboard({
                     <p className="text-2xl font-black text-emerald-500">142 Tons</p>
                   </div>
 
-                  <p className="text-[9.5px] text-gray-450 text-center font-semibold">
+                  <p className="text-[9.5px] text-gray-400 text-center font-semibold">
                     100% digital patient record routing removes hospital physical paper prints.
                   </p>
                 </div>
@@ -416,21 +416,21 @@ export default function Vision2035Dashboard({
                 exit={{ opacity: 0, y: -10 }}
                 className="space-y-6"
               >
-                <div className="bg-white dark:bg-[#0f111c] border border-gray-150 dark:border-gray-850 rounded-3xl p-5 shadow-sm space-y-4">
+                <div className="bg-white dark:bg-[#0f111c] border border-gray-200 dark:border-gray-800 rounded-3xl p-5 shadow-sm space-y-4">
                   <h3 className="text-xs font-black uppercase tracking-wider text-cyan-500">National Health Grid Status</h3>
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-semibold">
-                    <div className="p-4 bg-slate-50 dark:bg-slate-900 border border-gray-100 dark:border-gray-850 rounded-2xl flex justify-between items-center">
+                    <div className="p-4 bg-slate-50 dark:bg-slate-900 border border-gray-100 dark:border-gray-800 rounded-2xl flex justify-between items-center">
                       <span>Primary Health Centres</span>
                       <span className="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-950 text-emerald-600 text-[8.5px] font-black rounded uppercase">CONNECTED</span>
                     </div>
 
-                    <div className="p-4 bg-slate-50 dark:bg-slate-900 border border-gray-100 dark:border-gray-850 rounded-2xl flex justify-between items-center">
+                    <div className="p-4 bg-slate-50 dark:bg-slate-900 border border-gray-100 dark:border-gray-800 rounded-2xl flex justify-between items-center">
                       <span>Diagnostic Labs</span>
                       <span className="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-950 text-emerald-600 text-[8.5px] font-black rounded uppercase">CONNECTED</span>
                     </div>
 
-                    <div className="p-4 bg-slate-50 dark:bg-slate-900 border border-gray-100 dark:border-gray-850 rounded-2xl flex justify-between items-center">
+                    <div className="p-4 bg-slate-50 dark:bg-slate-900 border border-gray-100 dark:border-gray-800 rounded-2xl flex justify-between items-center">
                       <span>Blood Banks</span>
                       <span className="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-950 text-emerald-600 text-[8.5px] font-black rounded uppercase">CONNECTED</span>
                     </div>

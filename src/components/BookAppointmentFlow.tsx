@@ -136,7 +136,7 @@ export default function BookAppointmentFlow({ walletBalance, onBookingComplete, 
           <ArrowLeft className="w-4 h-4" />
           <span>Back</span>
         </button>
-        <span className="text-sm font-extrabold text-[#002068] dark:text-blue-400">Book Appointment</span>
+        <span className="text-sm font-extrabold text-[#0A5BFF] dark:text-blue-400">Book Appointment</span>
       </div>
 
       {/* Booking Stepper indicator */}
@@ -163,7 +163,7 @@ export default function BookAppointmentFlow({ walletBalance, onBookingComplete, 
                 <div key={st.num} className="flex flex-col items-center space-y-1.5">
                   <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm border-2 transition-all ${
                     isCompleted 
-                      ? 'bg-[#002068] dark:bg-blue-600 border-[#002068] dark:border-blue-600 text-white' 
+                      ? 'bg-[#0A5BFF] dark:bg-blue-600 border-[#0A5BFF] dark:border-blue-600 text-white' 
                       : isActive 
                         ? 'bg-blue-50 dark:bg-blue-950/30 border-[#0050cc] dark:border-blue-500 text-[#0050cc] dark:text-blue-400 ring-4 ring-[#0050cc]/10 dark:ring-blue-500/10' 
                         : 'bg-white dark:bg-slate-950 border-gray-200 dark:border-slate-800 text-gray-400 dark:text-gray-500'
@@ -202,7 +202,7 @@ export default function BookAppointmentFlow({ walletBalance, onBookingComplete, 
                 placeholder="Search for hospitals in Mumbai..."
                 value={searchHospitalTerm}
                 onChange={(e) => setSearchHospitalTerm(e.target.value)}
-                className="w-full pl-12 pr-4 py-3.5 rounded-xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-1 focus:ring-[#002068] dark:focus:ring-blue-500 focus:border-transparent"
+                className="w-full pl-12 pr-4 py-3.5 rounded-xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-1 focus:ring-[#0A5BFF] dark:focus:ring-blue-500 focus:border-transparent"
               />
             </div>
 
@@ -214,7 +214,7 @@ export default function BookAppointmentFlow({ walletBalance, onBookingComplete, 
                   className={`p-4 rounded-2xl border transition-all cursor-pointer flex items-center justify-between ${
                     selectedHospital.id === h.id
                       ? 'border-[#0050cc] dark:border-blue-500 bg-[#0050cc]/5 dark:bg-blue-950/20 shadow-sm'
-                      : 'bg-white dark:bg-slate-900 border-gray-100 dark:border-slate-850 hover:border-gray-200 dark:hover:border-slate-700'
+                      : 'bg-white dark:bg-slate-900 border-gray-100 dark:border-slate-800 hover:border-gray-200 dark:hover:border-slate-700'
                   }`}
                 >
                   <div className="flex items-center space-x-4">
@@ -250,7 +250,7 @@ export default function BookAppointmentFlow({ walletBalance, onBookingComplete, 
 
             <button
               onClick={() => setStep('DEPARTMENT')}
-              className="w-full bg-[#002068] dark:bg-blue-600 text-white py-4 rounded-xl font-bold hover:bg-[#00164e] dark:hover:bg-blue-700 transition-all flex items-center justify-center space-x-2"
+              className="w-full bg-[#0A5BFF] dark:bg-blue-600 text-white py-4 rounded-xl font-bold hover:bg-[#00164e] dark:hover:bg-blue-700 transition-all flex items-center justify-center space-x-2"
             >
               <span>Continue to Select Department</span>
               <ArrowRight className="w-4 h-4" />
@@ -278,7 +278,7 @@ export default function BookAppointmentFlow({ walletBalance, onBookingComplete, 
                 placeholder="Search departments (e.g. Heart, Bones)"
                 value={searchDeptTerm}
                 onChange={(e) => setSearchDeptTerm(e.target.value)}
-                className="w-full pl-12 pr-4 py-3.5 rounded-xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-1 focus:ring-[#002068] dark:focus:ring-blue-500"
+                className="w-full pl-12 pr-4 py-3.5 rounded-xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-1 focus:ring-[#0A5BFF] dark:focus:ring-blue-500"
               />
             </div>
 
@@ -291,7 +291,7 @@ export default function BookAppointmentFlow({ walletBalance, onBookingComplete, 
                   className={`p-4 rounded-2xl border bg-white dark:bg-slate-900 flex flex-col items-center text-center transition-all cursor-pointer hover:border-gray-300 dark:hover:border-slate-700 ${
                     selectedDept.id === d.id
                       ? 'border-[#0050cc] dark:border-blue-500 bg-[#0050cc]/5 dark:bg-blue-950/20 ring-2 ring-[#0050cc]/10 shadow-sm'
-                      : 'border-gray-100 dark:border-slate-850'
+                      : 'border-gray-100 dark:border-slate-800'
                   }`}
                 >
                   <div className="w-12 h-12 bg-[#0050cc]/5 dark:bg-blue-950/40 text-[#0050cc] dark:text-blue-400 rounded-full flex items-center justify-center mb-3">
@@ -329,8 +329,8 @@ export default function BookAppointmentFlow({ walletBalance, onBookingComplete, 
             className="space-y-6"
           >
             {/* Selected Doctor Header */}
-            <div className="bg-[#f7fafd] dark:bg-slate-900 border border-blue-100 dark:border-slate-800 rounded-2xl p-4 flex items-center space-x-4 shadow-sm">
-              <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-white dark:border-slate-800 bg-gray-100 dark:bg-slate-850">
+            <div className="bg-[#F8FAFD] dark:bg-slate-900 border border-blue-100 dark:border-slate-800 rounded-2xl p-4 flex items-center space-x-4 shadow-sm">
+              <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-white dark:border-slate-800 bg-gray-100 dark:bg-slate-800">
                 <img
                   src={selectedDoctor.image}
                   alt={selectedDoctor.name}
@@ -340,8 +340,8 @@ export default function BookAppointmentFlow({ walletBalance, onBookingComplete, 
               </div>
               <div>
                 <h4 className="font-extrabold text-gray-900 dark:text-white text-sm">{selectedDoctor.name}</h4>
-                <p className="text-xs text-gray-550 dark:text-gray-450 mt-0.5">{selectedDoctor.specialty} • {selectedHospital.name}</p>
-                <span className="inline-block text-[10px] font-bold bg-[#002068]/5 dark:bg-blue-950/40 text-[#002068] dark:text-blue-400 px-2.5 py-0.5 rounded mt-1.5">
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{selectedDoctor.specialty} • {selectedHospital.name}</p>
+                <span className="inline-block text-[10px] font-bold bg-[#0A5BFF]/5 dark:bg-blue-950/40 text-[#0A5BFF] dark:text-blue-400 px-2.5 py-0.5 rounded mt-1.5">
                   Consultation Fee: ₹{selectedDoctor.fee}
                 </span>
               </div>
@@ -369,7 +369,7 @@ export default function BookAppointmentFlow({ walletBalance, onBookingComplete, 
                     className={`flex-1 min-w-[64px] py-3 rounded-2xl border text-center transition-all flex flex-col justify-between items-center ${
                       selectedDateIndex === index
                         ? 'border-[#0050cc] dark:border-blue-500 bg-[#0050cc]/5 dark:bg-blue-950/20 ring-2 ring-[#0050cc]/10 shadow-sm'
-                        : 'bg-white dark:bg-slate-900 border-gray-100 dark:border-slate-855 hover:border-gray-200 dark:hover:border-slate-700'
+                        : 'bg-white dark:bg-slate-900 border-gray-100 dark:border-slate-800 hover:border-gray-200 dark:hover:border-slate-700'
                     }`}
                   >
                     <span className="text-[10px] font-bold text-gray-400 dark:text-gray-500 tracking-wider uppercase">{d.dayName}</span>
@@ -384,7 +384,7 @@ export default function BookAppointmentFlow({ walletBalance, onBookingComplete, 
 
             {/* Morning Slots */}
             <div className="space-y-2">
-              <h4 className="text-xs font-bold text-gray-500 dark:text-gray-450 tracking-wider uppercase flex items-center space-x-1.5">
+              <h4 className="text-xs font-bold text-gray-500 dark:text-gray-400 tracking-wider uppercase flex items-center space-x-1.5">
                 <Clock className="w-3.5 h-3.5" />
                 <span>Morning Slots</span>
               </h4>
@@ -395,7 +395,7 @@ export default function BookAppointmentFlow({ walletBalance, onBookingComplete, 
                     onClick={() => setSelectedSlot(slot)}
                     className={`py-3.5 rounded-xl font-bold border transition-all text-center ${
                       selectedSlot === slot
-                        ? 'border-[#0050cc] dark:border-blue-500 bg-[#0050cc] dark:bg-blue-550 text-white shadow-sm'
+                        ? 'border-[#0050cc] dark:border-blue-500 bg-[#0050cc] dark:bg-blue-500 text-white shadow-sm'
                         : 'bg-white dark:bg-slate-900 border-gray-100 dark:border-slate-800 hover:border-gray-200 dark:hover:border-slate-700 text-gray-700 dark:text-gray-300'
                     }`}
                   >
@@ -431,12 +431,12 @@ export default function BookAppointmentFlow({ walletBalance, onBookingComplete, 
             {/* Bottom selected strip & action */}
             <div className="pt-4 border-t border-gray-100 dark:border-slate-800 flex items-center justify-between">
               <div>
-                <p className="text-[10px] text-gray-450 dark:text-gray-500 font-bold uppercase">Selected Slot</p>
+                <p className="text-[10px] text-gray-400 dark:text-gray-500 font-bold uppercase">Selected Slot</p>
                 <p className="text-sm font-black text-gray-900 dark:text-white mt-1">Oct {dates[selectedDateIndex].dayNum}, {selectedSlot}</p>
               </div>
               <button
                 onClick={() => setStep('CONFIRM')}
-                className="bg-[#002068] dark:bg-blue-650 text-white py-3.5 px-6 rounded-xl font-bold hover:bg-[#00164e] dark:hover:bg-blue-700 transition-all flex items-center space-x-1.5 text-xs shadow-md"
+                className="bg-[#0A5BFF] dark:bg-blue-650 text-white py-3.5 px-6 rounded-xl font-bold hover:bg-[#00164e] dark:hover:bg-blue-700 transition-all flex items-center space-x-1.5 text-xs shadow-md"
               >
                 <span>Continue</span>
                 <ChevronRight className="w-4 h-4" />
@@ -465,7 +465,7 @@ export default function BookAppointmentFlow({ walletBalance, onBookingComplete, 
                   <h4 className="font-extrabold text-gray-900 dark:text-white text-sm">{selectedDoctor.name}</h4>
                   <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{selectedDoctor.specialty} OPD Specialist</p>
                 </div>
-                <div className="w-11 h-11 rounded-full overflow-hidden border border-gray-100 dark:border-slate-800 bg-gray-50 dark:bg-slate-850">
+                <div className="w-11 h-11 rounded-full overflow-hidden border border-gray-100 dark:border-slate-800 bg-gray-50 dark:bg-slate-800">
                   <img
                     src={selectedDoctor.image}
                     alt={selectedDoctor.name}
@@ -492,7 +492,7 @@ export default function BookAppointmentFlow({ walletBalance, onBookingComplete, 
 
               <div className="border-t border-gray-100 dark:border-slate-800 pt-3 flex justify-between items-center">
                 <span className="text-xs text-gray-500 dark:text-gray-400 font-bold">Consultation Fee</span>
-                <span className="text-lg font-black text-[#002068] dark:text-blue-400">₹{selectedDoctor.fee}</span>
+                <span className="text-lg font-black text-[#0A5BFF] dark:text-blue-400">₹{selectedDoctor.fee}</span>
               </div>
             </div>
 
@@ -517,7 +517,7 @@ export default function BookAppointmentFlow({ walletBalance, onBookingComplete, 
             <button
               onClick={handleFinalCheckout}
               disabled={isProcessingBooking || walletBalance < selectedDoctor.fee}
-              className="w-full bg-[#002068] dark:bg-blue-650 text-white py-4 rounded-xl font-bold hover:bg-[#00164e] dark:hover:bg-blue-700 transition-all shadow-md flex items-center justify-center space-x-2 disabled:opacity-50"
+              className="w-full bg-[#0A5BFF] dark:bg-blue-650 text-white py-4 rounded-xl font-bold hover:bg-[#00164e] dark:hover:bg-blue-700 transition-all shadow-md flex items-center justify-center space-x-2 disabled:opacity-50"
             >
               {isProcessingBooking ? (
                 <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -555,8 +555,8 @@ export default function BookAppointmentFlow({ walletBalance, onBookingComplete, 
             {/* Ticket Container with dashed border */}
             <div className="bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 rounded-3xl p-6 shadow-md relative overflow-hidden space-y-6">
               {/* Semi-circular coupon punches in side margins */}
-              <div className="absolute left-0 top-[40%] w-4 h-8 bg-[#f7fafd] dark:bg-slate-950 rounded-r-full -translate-x-2 border-y border-r border-gray-100 dark:border-slate-800" />
-              <div className="absolute right-0 top-[40%] w-4 h-8 bg-[#f7fafd] dark:bg-slate-950 rounded-l-full translate-x-2 border-y border-l border-gray-100 dark:border-slate-800" />
+              <div className="absolute left-0 top-[40%] w-4 h-8 bg-[#F8FAFD] dark:bg-slate-950 rounded-r-full -translate-x-2 border-y border-r border-gray-100 dark:border-slate-800" />
+              <div className="absolute right-0 top-[40%] w-4 h-8 bg-[#F8FAFD] dark:bg-slate-950 rounded-l-full translate-x-2 border-y border-l border-gray-100 dark:border-slate-800" />
 
               <div className="text-center space-y-1">
                 <h3 className="text-lg font-black text-gray-900 dark:text-white">Appointment Confirmed!</h3>
@@ -568,7 +568,7 @@ export default function BookAppointmentFlow({ walletBalance, onBookingComplete, 
               {/* Token Display Dotted Card */}
               <div className="border-2 border-dashed border-[#0050cc]/40 dark:border-blue-500/40 bg-blue-50/30 dark:bg-blue-950/20 rounded-2xl p-4 text-center">
                 <p className="text-[10px] font-bold text-[#0050cc] dark:text-blue-400 uppercase tracking-widest">Your Token Number</p>
-                <p className="text-3xl font-black text-[#002068] dark:text-blue-400 tracking-wider mt-1">
+                <p className="text-3xl font-black text-[#0A5BFF] dark:text-blue-400 tracking-wider mt-1">
                   {createdAppointment.tokenNo}
                 </p>
               </div>
@@ -609,7 +609,7 @@ export default function BookAppointmentFlow({ walletBalance, onBookingComplete, 
                   message: 'Calendar Invitation generated! Added to local Apple/Google accounts.',
                   type: 'success'
                 })}
-                className="w-full bg-[#002068] dark:bg-blue-650 text-white py-4 rounded-xl font-bold hover:bg-[#00164e] dark:hover:bg-blue-700 transition-all shadow-md flex items-center justify-center space-x-2 text-sm"
+                className="w-full bg-[#0A5BFF] dark:bg-blue-650 text-white py-4 rounded-xl font-bold hover:bg-[#00164e] dark:hover:bg-blue-700 transition-all shadow-md flex items-center justify-center space-x-2 text-sm"
               >
                 <CalendarPlus className="w-5 h-5" />
                 <span>Add to Calendar</span>
@@ -624,7 +624,7 @@ export default function BookAppointmentFlow({ walletBalance, onBookingComplete, 
             </div>
 
             {/* Help Footer */}
-            <div className="text-center space-y-1 pt-4 border-t border-gray-100 dark:border-slate-800 text-xs text-gray-400 dark:text-gray-550 leading-normal">
+            <div className="text-center space-y-1 pt-4 border-t border-gray-100 dark:border-slate-800 text-xs text-gray-400 dark:text-gray-500 leading-normal">
               <p>Need help? Contact Sion Hospital at <span className="text-[#0050cc] dark:text-blue-400 font-bold">022-2407XXXX</span></p>
               <p className="font-semibold text-[10px]">Reference ID: {createdAppointment.referenceId}</p>
             </div>

@@ -171,7 +171,7 @@ export default function CyberSecurityDashboard({
   };
 
   return (
-    <div className={`min-h-screen font-sans ${isDarkMode ? 'bg-[#090d16] text-gray-150' : 'bg-slate-50 text-slate-800'} transition-all`}>
+    <div className={`min-h-screen font-sans ${isDarkMode ? 'bg-[#090d16] text-gray-200' : 'bg-slate-50 text-slate-800'} transition-all`}>
       {/* Top Header Bar */}
       <header className="sticky top-0 z-40 border-b p-4 backdrop-blur-md flex items-center justify-between transition-colors bg-white/95 border-gray-100 dark:bg-[#0c1322]/95 dark:border-gray-800">
         <div className="flex items-center space-x-3">
@@ -195,7 +195,7 @@ export default function CyberSecurityDashboard({
         <div className="flex items-center space-x-2.5">
           <button 
             onClick={() => setIsDarkMode(!isDarkMode)}
-            className="p-2.5 rounded-xl border border-gray-200 hover:bg-slate-100 dark:border-gray-800 dark:hover:bg-slate-900 text-gray-450 cursor-pointer"
+            className="p-2.5 rounded-xl border border-gray-200 hover:bg-slate-100 dark:border-gray-800 dark:hover:bg-slate-900 text-gray-400 cursor-pointer"
           >
             {isDarkMode ? <Sun className="w-4.5 h-4.5 text-yellow-400" /> : <Moon className="w-4.5 h-4.5 text-slate-700" />}
           </button>
@@ -264,7 +264,7 @@ export default function CyberSecurityDashboard({
                 className={`flex items-center space-x-2 px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${
                   activeTab === tab.id
                     ? 'bg-cyan-600 text-white shadow-md'
-                    : 'text-gray-450 hover:text-slate-800 dark:hover:text-gray-200 hover:bg-slate-100 dark:hover:bg-slate-900/60'
+                    : 'text-gray-400 hover:text-slate-800 dark:hover:text-gray-200 hover:bg-slate-100 dark:hover:bg-slate-900/60'
                 }`}
               >
                 <Icon className="w-4 h-4" />
@@ -305,13 +305,13 @@ export default function CyberSecurityDashboard({
                         <div className="space-y-1">
                           <div className="flex items-center space-x-2">
                             <span className={`px-2 py-0.5 rounded text-[9.5px] font-black uppercase ${
-                              al.severity === 'CRITICAL' ? 'bg-red-150 bg-red-600 text-white' : 'bg-amber-100 dark:bg-amber-950 text-amber-600'
+                              al.severity === 'CRITICAL' ? 'bg-red-200 bg-red-600 text-white' : 'bg-amber-100 dark:bg-amber-950 text-amber-600'
                             }`}>
                               {al.severity}
                             </span>
                             <span className="text-xs font-black text-slate-800 dark:text-slate-100">{al.title}</span>
                           </div>
-                          <p className="text-[10px] text-gray-450 font-semibold">{al.source} • {al.timestamp} • {al.category}</p>
+                          <p className="text-[10px] text-gray-400 font-semibold">{al.source} • {al.timestamp} • {al.category}</p>
                         </div>
 
                         <div className="flex items-center space-x-3">
@@ -371,7 +371,7 @@ export default function CyberSecurityDashboard({
                     <h3 className="text-xs font-black uppercase tracking-wider text-rose-500">Emergency Override (Break Glass Mode)</h3>
                   </div>
                   
-                  <p className="text-xs text-gray-450 leading-relaxed font-semibold">
+                  <p className="text-xs text-gray-400 leading-relaxed font-semibold">
                     Activating Break Glass bypasses Standard role-based access restrictions for critical patient care scenarios. **Warning: This bypass is audited in immutable logs and flags immediate alerts to SOC.**
                   </p>
 
@@ -383,7 +383,7 @@ export default function CyberSecurityDashboard({
                         placeholder="e.g. Patient code blue, immediate record transfer needed"
                         value={breakGlassReason}
                         onChange={(e) => setBreakGlassReason(e.target.value)}
-                        className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-gray-150 dark:border-gray-850 rounded-xl text-xs outline-none focus:ring-1 focus:ring-rose-500"
+                        className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-gray-200 dark:border-gray-800 rounded-xl text-xs outline-none focus:ring-1 focus:ring-rose-500"
                       />
                     </div>
 
@@ -493,7 +493,7 @@ export default function CyberSecurityDashboard({
                       </thead>
                       <tbody>
                         {auditLogs.map(log => (
-                          <tr key={log.id} className="border-b border-gray-50 dark:border-gray-850 hover:bg-slate-100/50 dark:hover:bg-slate-900/10">
+                          <tr key={log.id} className="border-b border-gray-50 dark:border-gray-800 hover:bg-slate-100/50 dark:hover:bg-slate-900/10">
                             <td className="py-3 font-mono">{log.time}</td>
                             <td className="py-3 font-bold text-slate-800 dark:text-slate-100">{log.actor}</td>
                             <td className="py-3">{log.action} <span className="text-gray-400 font-normal">({log.reason})</span></td>
@@ -540,7 +540,7 @@ export default function CyberSecurityDashboard({
                       </thead>
                       <tbody>
                         {devices.map(dev => (
-                          <tr key={dev.id} className="border-b border-gray-50 dark:border-gray-850 hover:bg-slate-100/50 dark:hover:bg-slate-900/10">
+                          <tr key={dev.id} className="border-b border-gray-50 dark:border-gray-800 hover:bg-slate-100/50 dark:hover:bg-slate-900/10">
                             <td className="py-3 font-mono">{dev.id}</td>
                             <td className="py-3 font-bold text-slate-800 dark:text-slate-100">{dev.name}</td>
                             <td className="py-3">{dev.hospital}</td>
@@ -605,11 +605,11 @@ export default function CyberSecurityDashboard({
                 <div className="bg-white dark:bg-[#111827] border border-gray-100 dark:border-gray-800 rounded-3xl p-5 shadow-sm space-y-4">
                   <h3 className="text-xs font-black uppercase tracking-wider">AI Model Trust Metrics</h3>
                   <div className="space-y-3.5 text-xs font-semibold">
-                    <div className="flex justify-between py-2 border-b border-gray-50 dark:border-gray-850">
+                    <div className="flex justify-between py-2 border-b border-gray-50 dark:border-gray-800">
                       <span className="text-gray-400">Clinical Retinopathy Classifier Bias</span>
                       <span className="text-emerald-500">0.02 (Optimal)</span>
                     </div>
-                    <div className="flex justify-between py-2 border-b border-gray-50 dark:border-gray-850">
+                    <div className="flex justify-between py-2 border-b border-gray-50 dark:border-gray-800">
                       <span className="text-gray-400">Hallucination Index</span>
                       <span className="text-emerald-500">&lt; 1%</span>
                     </div>
@@ -659,7 +659,7 @@ export default function CyberSecurityDashboard({
                 {/* Disaster Recovery drills simulator */}
                 <div className="lg:col-span-2 bg-white dark:bg-[#111827] border border-gray-100 dark:border-gray-800 rounded-3xl p-5 shadow-sm space-y-4">
                   <h3 className="text-xs font-black uppercase tracking-wider text-cyan-600 dark:text-cyan-400">Business Continuity & Offline Recovery Drills</h3>
-                  <p className="text-xs text-gray-450 leading-relaxed font-semibold">
+                  <p className="text-xs text-gray-400 leading-relaxed font-semibold">
                     Simulate local backup restore and offline caching operations to verify continuity of care during network outages.
                   </p>
 
@@ -668,7 +668,7 @@ export default function CyberSecurityDashboard({
                       <span>Offline Sync Progress</span>
                       <span>{offlineSyncProgress}%</span>
                     </div>
-                    <div className="w-full h-2.5 bg-gray-250 dark:bg-gray-800 rounded-full overflow-hidden">
+                    <div className="w-full h-2.5 bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden">
                       <div className="h-full bg-cyan-500 transition-all duration-300" style={{ width: `${offlineSyncProgress}%` }} />
                     </div>
                   </div>
@@ -686,7 +686,7 @@ export default function CyberSecurityDashboard({
                 <div className="bg-white dark:bg-[#111827] border border-gray-100 dark:border-gray-800 rounded-3xl p-5 shadow-sm space-y-4">
                   <h3 className="text-xs font-black uppercase tracking-wider">Redundant Infrastructure Status</h3>
                   <div className="space-y-3.5 text-xs font-semibold">
-                    <div className="flex justify-between items-center py-2 border-b border-gray-50 dark:border-gray-850">
+                    <div className="flex justify-between items-center py-2 border-b border-gray-50 dark:border-gray-800">
                       <span className="text-gray-400">KEM Hot Standby Node</span>
                       <span className="text-emerald-500">ONLINE</span>
                     </div>

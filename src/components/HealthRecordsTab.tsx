@@ -111,7 +111,7 @@ export default function HealthRecordsTab({ records, onAddRecord }: HealthRecords
                 placeholder="Search prescriptions, reports..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-12 pr-4 py-3.5 rounded-xl border border-gray-200 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-[#002068] text-sm"
+                className="w-full pl-12 pr-4 py-3.5 rounded-xl border border-gray-200 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-[#0A5BFF] text-sm dark:bg-slate-800 dark:border-slate-700 dark:text-slate-100"
               />
             </div>
 
@@ -128,8 +128,8 @@ export default function HealthRecordsTab({ records, onAddRecord }: HealthRecords
                   onClick={() => setActiveFilter(pill.code as any)}
                   className={`px-5 py-2.5 rounded-full font-bold text-xs tracking-wide transition-all duration-200 whitespace-nowrap shadow-sm ${
                     activeFilter === pill.code
-                      ? 'bg-[#002068] text-white'
-                      : 'bg-white border border-gray-200 text-gray-500 hover:text-gray-800'
+                      ? 'bg-[#0A5BFF] text-white'
+                      : 'bg-white border border-gray-200 text-gray-500 hover:text-gray-800 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-400 dark:hover:text-slate-200'
                   }`}
                 >
                   {pill.label}
@@ -143,16 +143,16 @@ export default function HealthRecordsTab({ records, onAddRecord }: HealthRecords
                 <div
                   key={rec.id}
                   onClick={() => setSelectedRecord(rec)}
-                  className="bg-white border border-gray-100 rounded-2xl p-4 flex items-center justify-between shadow-sm hover:border-gray-200 transition-all cursor-pointer active:scale-99"
+                  className="bg-white border border-gray-100 rounded-2xl p-4 flex items-center justify-between shadow-sm hover:border-gray-200 transition-all cursor-pointer active:scale-99 dark:bg-slate-800 dark:border-slate-700/60 dark:hover:border-slate-650"
                 >
                   <div className="flex items-center space-x-4">
-                    <div className="w-11 h-11 rounded-xl bg-red-50 flex items-center justify-center text-[#ba1a1a]">
+                    <div className="w-11 h-11 rounded-xl bg-red-50 dark:bg-red-950/20 flex items-center justify-center text-[#ba1a1a] dark:text-red-400">
                       <FileText className="w-5 h-5" />
                     </div>
                     <div>
-                      <h4 className="font-bold text-gray-900 text-sm">{rec.title}</h4>
-                      <p className="text-[11px] text-gray-400 mt-0.5">{rec.doctorName ? `${rec.doctorName} • ` : ''}{rec.source}</p>
-                      <p className="text-[10px] text-gray-500 mt-1 flex items-center font-semibold">
+                      <h4 className="font-bold text-gray-900 dark:text-white text-sm">{rec.title}</h4>
+                      <p className="text-[11px] text-gray-400 dark:text-slate-400 mt-0.5">{rec.doctorName ? `${rec.doctorName} • ` : ''}{rec.source}</p>
+                      <p className="text-[10px] text-gray-500 dark:text-slate-450 mt-1 flex items-center font-semibold">
                         <Calendar className="w-3 h-3 mr-1" />
                         {rec.date}
                       </p>
@@ -160,7 +160,7 @@ export default function HealthRecordsTab({ records, onAddRecord }: HealthRecords
                   </div>
 
                   <div className="flex items-center space-x-2">
-                    <span className="text-[10px] font-extrabold tracking-widest uppercase bg-gray-100 text-gray-500 px-2.5 py-1 rounded">
+                    <span className="text-[10px] font-extrabold tracking-widest uppercase bg-gray-100 dark:bg-slate-700 text-gray-500 dark:text-slate-350 px-2.5 py-1 rounded">
                       {rec.type}
                     </span>
                     <ChevronRight className="w-4 h-4 text-gray-400" />
@@ -178,7 +178,7 @@ export default function HealthRecordsTab({ records, onAddRecord }: HealthRecords
             {/* Floating Action Button */}
             <button
               onClick={() => setShowAddModal(true)}
-              className="fixed bottom-24 right-6 w-14 h-14 bg-[#002068] text-white rounded-full flex items-center justify-center shadow-xl hover:bg-[#00164e] active:scale-95 transition-all z-40 cursor-pointer border-2 border-white"
+              className="fixed bottom-24 right-6 w-14 h-14 bg-[#0A5BFF] text-white rounded-full flex items-center justify-center shadow-xl hover:bg-[#00164e] active:scale-95 transition-all z-40 cursor-pointer border-2 border-white"
             >
               <Plus className="w-6 h-6 stroke-[3]" />
             </button>
@@ -198,63 +198,63 @@ export default function HealthRecordsTab({ records, onAddRecord }: HealthRecords
                   setSelectedRecord(null);
                   setAiInterpretation('');
                 }}
-                className="p-2 border border-gray-200 bg-white rounded-xl hover:bg-gray-50 transition-all flex items-center text-sm font-bold text-gray-700 space-x-2"
+                className="p-2 border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-750 transition-all flex items-center text-sm font-bold text-gray-700 dark:text-slate-300 space-x-2"
               >
                 <ArrowLeft className="w-4 h-4" />
                 <span>Back</span>
               </button>
-              <span className="text-xs font-bold text-gray-500">MCGM Digital Health Card</span>
+              <span className="text-xs font-bold text-gray-500 dark:text-slate-400">MCGM Digital Health Card</span>
             </div>
 
             {/* Report Top Card */}
-            <div className="bg-white border border-gray-100 rounded-3xl p-5 shadow-sm space-y-4">
+            <div className="bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-3xl p-5 shadow-sm space-y-4">
               <div className="flex justify-between items-start">
                 <div>
-                  <h1 className="text-xl font-bold text-gray-900 tracking-tight">{selectedRecord.title}</h1>
-                  <p className="text-xs text-gray-500 mt-1 flex items-center font-semibold">
+                  <h1 className="text-xl font-bold text-gray-900 dark:text-white tracking-tight">{selectedRecord.title}</h1>
+                  <p className="text-xs text-gray-500 dark:text-slate-400 mt-1 flex items-center font-semibold">
                     <Calendar className="w-3.5 h-3.5 mr-1" />
                     {selectedRecord.date}
                   </p>
                 </div>
-                <span className="text-[10px] font-extrabold px-3 py-1 bg-green-50 text-green-700 border border-green-200/50 rounded-full tracking-wider">
+                <span className="text-[10px] font-extrabold px-3 py-1 bg-green-50 dark:bg-green-950/20 text-green-700 dark:text-green-400 border border-green-200/50 dark:border-green-800/40 rounded-full tracking-wider">
                   COMPLETED/FINAL
                 </span>
               </div>
 
-              <div className="flex justify-between items-center text-xs text-gray-500 pt-3 border-t border-gray-100">
+              <div className="flex justify-between items-center text-xs text-gray-500 dark:text-slate-450 pt-3 border-t border-gray-100 dark:border-slate-700">
                 <span>Issued by:</span>
-                <span className="font-bold text-gray-800">{selectedRecord.source}</span>
+                <span className="font-bold text-gray-800 dark:text-slate-200">{selectedRecord.source}</span>
               </div>
             </div>
 
             {/* Blood Hematology Results Table */}
             {selectedRecord.isBloodReport && selectedRecord.hematologyResults && (
-              <div className="bg-white border border-gray-100 rounded-3xl overflow-hidden shadow-sm">
-                <div className="p-4 bg-gray-50/50 border-b border-gray-100 flex justify-between items-center">
-                  <h3 className="font-bold text-gray-900 text-sm">Hematology Results</h3>
+              <div className="bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-3xl overflow-hidden shadow-sm">
+                <div className="p-4 bg-gray-50/50 dark:bg-slate-900/40 border-b border-gray-100 dark:border-slate-700 flex justify-between items-center">
+                  <h3 className="font-bold text-gray-900 dark:text-white text-sm">Hematology Results</h3>
                   <span className="text-[10px] font-bold text-gray-500">5 Parameters</span>
                 </div>
 
                 <div className="overflow-x-auto">
                   <table className="w-full text-left border-collapse">
                     <thead>
-                      <tr className="border-b border-gray-100 bg-gray-50/30 text-[10px] font-bold tracking-wider text-gray-400">
+                      <tr className="border-b border-gray-100 dark:border-slate-700 bg-gray-50/30 dark:bg-slate-900/20 text-[10px] font-bold tracking-wider text-gray-400">
                         <th className="p-4 uppercase">Parameter</th>
                         <th className="p-4 uppercase">Result</th>
                         <th className="p-4 uppercase">Unit</th>
                         <th className="p-4 uppercase">Normal Range</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-100 text-sm">
+                    <tbody className="divide-y divide-gray-100 dark:divide-slate-700 text-sm">
                       {selectedRecord.hematologyResults.map((row) => (
-                        <tr key={row.parameter} className="hover:bg-gray-50/50">
-                          <td className="p-4 font-bold text-gray-900">{row.parameter}</td>
+                        <tr key={row.parameter} className="hover:bg-gray-50/50 dark:hover:bg-slate-750/30">
+                          <td className="p-4 font-bold text-gray-900 dark:text-white">{row.parameter}</td>
                           <td className={`p-4 font-black ${
-                            row.status === 'low' ? 'text-[#ba1a1a]' : 
-                            row.status === 'high' ? 'text-amber-600' : 'text-gray-800'
+                            row.status === 'low' ? 'text-[#ba1a1a] dark:text-red-400' : 
+                            row.status === 'high' ? 'text-amber-600 dark:text-amber-400' : 'text-gray-800 dark:text-slate-200'
                           }`}>{row.result}</td>
-                          <td className="p-4 text-gray-500 text-xs">{row.unit}</td>
-                          <td className="p-4 text-gray-500 text-xs font-semibold">{row.normalRange}</td>
+                          <td className="p-4 text-gray-500 dark:text-slate-400 text-xs">{row.unit}</td>
+                          <td className="p-4 text-gray-500 dark:text-slate-400 text-xs font-semibold">{row.normalRange}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -264,7 +264,7 @@ export default function HealthRecordsTab({ records, onAddRecord }: HealthRecords
             )}
 
             {/* Actions Panel */}
-            <div className="bg-[#002068] text-white rounded-3xl p-5 shadow-lg space-y-3">
+            <div className="bg-[#0A5BFF] text-white rounded-3xl p-5 shadow-lg space-y-3">
               <h4 className="font-bold text-xs tracking-wider uppercase text-blue-200">Report Actions</h4>
               <div className="grid grid-cols-2 gap-3">
                 <button
@@ -273,7 +273,7 @@ export default function HealthRecordsTab({ records, onAddRecord }: HealthRecords
                     message: 'PDF statement successfully buffered to device downloads.',
                     type: 'success'
                   })}
-                  className="bg-white text-[#002068] py-3.5 px-4 rounded-xl font-bold hover:bg-gray-50 transition-all flex items-center justify-center space-x-2 text-xs"
+                  className="bg-white text-[#0A5BFF] py-3.5 px-4 rounded-xl font-bold hover:bg-gray-50 transition-all flex items-center justify-center space-x-2 text-xs"
                 >
                   <Download className="w-4 h-4" />
                   <span>Download PDF</span>
@@ -293,43 +293,43 @@ export default function HealthRecordsTab({ records, onAddRecord }: HealthRecords
             </div>
 
             {/* Patient Information Grid */}
-            <div className="bg-white border border-gray-100 rounded-3xl p-5 shadow-sm space-y-4">
-              <h3 className="font-bold text-gray-900 text-sm border-b border-gray-100 pb-2">Patient Information</h3>
+            <div className="bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-3xl p-5 shadow-sm space-y-4">
+              <h3 className="font-bold text-gray-900 dark:text-white text-sm border-b border-gray-100 dark:border-slate-700 pb-2">Patient Information</h3>
               <div className="grid grid-cols-2 gap-y-3 text-xs">
                 <div>
-                  <p className="text-gray-400">Patient Name</p>
-                  <p className="font-bold text-gray-800 mt-1">Rahul Patil</p>
+                  <p className="text-gray-400 dark:text-slate-455">Patient Name</p>
+                  <p className="font-bold text-gray-800 dark:text-slate-200 mt-1">Rahul Patil</p>
                 </div>
                 <div>
-                  <p className="text-gray-400">Patient ID</p>
-                  <p className="font-bold text-gray-800 mt-1">MCGM-8921-X</p>
+                  <p className="text-gray-400 dark:text-slate-455">Patient ID</p>
+                  <p className="font-bold text-gray-800 dark:text-slate-200 mt-1">MCGM-8921-X</p>
                 </div>
                 <div>
-                  <p className="text-gray-400">Age / Gender</p>
-                  <p className="font-bold text-gray-800 mt-1">28Y / Male</p>
+                  <p className="text-gray-400 dark:text-slate-455">Age / Gender</p>
+                  <p className="font-bold text-gray-800 dark:text-slate-200 mt-1">28Y / Male</p>
                 </div>
                 <div>
-                  <p className="text-gray-400">Ref. Doctor</p>
-                  <p className="font-bold text-gray-800 mt-1">{selectedRecord.doctorName || 'Dr. S. Kulkarni'}</p>
+                  <p className="text-gray-400 dark:text-slate-455">Ref. Doctor</p>
+                  <p className="font-bold text-gray-800 dark:text-slate-200 mt-1">{selectedRecord.doctorName || 'Dr. S. Kulkarni'}</p>
                 </div>
               </div>
             </div>
 
             {/* Location card */}
-            <div className="bg-white border border-gray-100 rounded-3xl p-5 shadow-sm flex items-start space-x-4">
-              <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-[#0050cc]">
+            <div className="bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-3xl p-5 shadow-sm flex items-start space-x-4">
+              <div className="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-950/20 flex items-center justify-center text-[#0050cc] dark:text-blue-400">
                 <MapPin className="w-5 h-5" />
               </div>
               <div className="flex-1 text-xs">
-                <h4 className="font-bold text-gray-900">{selectedRecord.source}</h4>
-                <p className="text-gray-500 mt-1 leading-normal">402, Sunshine Plaza, Dadar East, Mumbai - 400014</p>
+                <h4 className="font-bold text-gray-900 dark:text-white">{selectedRecord.source}</h4>
+                <p className="text-gray-500 dark:text-slate-400 mt-1 leading-normal">402, Sunshine Plaza, Dadar East, Mumbai - 400014</p>
                 <button 
                   onClick={() => setToast({
                     title: 'Map Loading',
                     message: 'Loading secure hospital map view...',
                     type: 'info'
                   })} 
-                  className="text-[#0050cc] font-bold mt-2 hover:underline inline-block"
+                  className="text-[#0050cc] dark:text-blue-400 font-bold mt-2 hover:underline inline-block"
                 >
                   View Map Location
                 </button>
@@ -337,9 +337,9 @@ export default function HealthRecordsTab({ records, onAddRecord }: HealthRecords
             </div>
 
             {/* Interactive Clinical Interpretation card with Gemini AI summary trigger */}
-            <div className="bg-white border border-gray-100 rounded-3xl p-5 shadow-sm space-y-4">
+            <div className="bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-3xl p-5 shadow-sm space-y-4">
               <div className="flex justify-between items-center">
-                <h3 className="font-bold text-gray-900 text-sm">Clinical Interpretation</h3>
+                <h3 className="font-bold text-gray-900 dark:text-white text-sm">Clinical Interpretation</h3>
                 <button
                   onClick={() => triggerGeminiAnalysis(selectedRecord)}
                   disabled={isGeneratingAi || !selectedRecord.isBloodReport}
@@ -352,34 +352,34 @@ export default function HealthRecordsTab({ records, onAddRecord }: HealthRecords
 
               {isGeneratingAi ? (
                 <div className="space-y-3 py-2 animate-pulse">
-                  <div className="h-3.5 bg-gray-100 rounded w-full" />
-                  <div className="h-3.5 bg-gray-100 rounded w-5/6" />
-                  <div className="h-3.5 bg-gray-100 rounded w-4/5" />
+                  <div className="h-3.5 bg-gray-100 dark:bg-slate-700 rounded w-full" />
+                  <div className="h-3.5 bg-gray-100 dark:bg-slate-700 rounded w-5/6" />
+                  <div className="h-3.5 bg-gray-100 dark:bg-slate-700 rounded w-4/5" />
                 </div>
               ) : aiInterpretation ? (
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="p-4 bg-purple-50/30 rounded-2xl border border-purple-100 text-xs text-gray-800 leading-relaxed space-y-3"
+                  className="p-4 bg-purple-50/30 dark:bg-purple-950/10 rounded-2xl border border-purple-100 dark:border-purple-900/30 text-xs text-gray-800 dark:text-slate-200 leading-relaxed space-y-3"
                 >
-                  <div className="flex items-center space-x-1.5 font-bold text-purple-900 mb-1">
-                    <Sparkles className="w-4 h-4 text-purple-700" />
+                  <div className="flex items-center space-x-1.5 font-bold text-purple-900 dark:text-purple-300 mb-1">
+                    <Sparkles className="w-4 h-4 text-purple-700 dark:text-purple-400" />
                     <span>Gemini AI Professional interpretation:</span>
                   </div>
                   <p className="whitespace-pre-line">{aiInterpretation}</p>
                 </motion.div>
               ) : (
-                <p className="text-xs text-gray-600 leading-relaxed whitespace-pre-line">
+                <p className="text-xs text-gray-600 dark:text-slate-350 leading-relaxed whitespace-pre-line">
                   {selectedRecord.clinicalInterpretation || 'No static clinical interpretation is pre-recorded for this document. Use the "Generate Clinical AI Summary" tool above to run diagnosis analysis via Gemini.'}
                 </p>
               )}
 
               {/* Patient Alert Note */}
-              <div className="bg-red-50 border-l-4 border-[#ba1a1a] rounded-r-2xl p-4 flex items-start space-y-0 space-x-3">
+              <div className="bg-red-50 dark:bg-red-950/20 border-l-4 border-[#ba1a1a] rounded-r-2xl p-4 flex items-start space-y-0 space-x-3">
                 <ShieldAlert className="w-5 h-5 text-[#ba1a1a] flex-shrink-0 mt-0.5" />
                 <div>
-                  <h4 className="text-xs font-bold text-red-900">Recommendation</h4>
-                  <p className="text-[11px] text-red-800 leading-normal mt-1">
+                  <h4 className="text-xs font-bold text-red-900 dark:text-red-400">Recommendation</h4>
+                  <p className="text-[11px] text-red-800 dark:text-red-350 leading-normal mt-1">
                     Please consult with your primary care physician to correlate these findings with clinical symptoms. Avoid self-medication based on these results.
                   </p>
                 </div>
@@ -387,16 +387,16 @@ export default function HealthRecordsTab({ records, onAddRecord }: HealthRecords
             </div>
 
             {/* Supporting Documents */}
-            <div className="bg-white border border-gray-100 rounded-3xl p-5 shadow-sm space-y-3">
-              <h3 className="font-bold text-gray-900 text-sm border-b border-gray-100 pb-2">Supporting Documents</h3>
+            <div className="bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-3xl p-5 shadow-sm space-y-3">
+              <h3 className="font-bold text-gray-900 dark:text-white text-sm border-b border-gray-100 dark:border-slate-700 pb-2">Supporting Documents</h3>
               
               <div className="space-y-2 text-xs">
-                <div className="p-3.5 border border-gray-100 rounded-2xl flex items-center justify-between hover:border-gray-200 transition-all">
+                <div className="p-3.5 border border-gray-100 dark:border-slate-700 rounded-2xl flex items-center justify-between hover:border-gray-200 dark:hover:border-slate-650 transition-all">
                   <div className="flex items-center space-x-3">
-                    <div className="p-2 bg-red-50 rounded-xl text-[#ba1a1a] font-bold">PDF</div>
+                    <div className="p-2 bg-red-50 dark:bg-red-950/20 rounded-xl text-[#ba1a1a] dark:text-red-400 font-bold">PDF</div>
                     <div>
-                      <p className="font-bold text-gray-800">Original_Scan_Report.pdf</p>
-                      <p className="text-[10px] text-gray-400 mt-0.5">1.2 MB</p>
+                      <p className="font-bold text-gray-800 dark:text-slate-200">Original_Scan_Report.pdf</p>
+                      <p className="text-[10px] text-gray-400 dark:text-slate-450 mt-0.5">1.2 MB</p>
                     </div>
                   </div>
                   <button 
@@ -405,18 +405,18 @@ export default function HealthRecordsTab({ records, onAddRecord }: HealthRecords
                       message: 'Downloading Original Scan...',
                       type: 'info'
                     })} 
-                    className="p-2 bg-gray-50 hover:bg-gray-100 rounded-xl"
+                    className="p-2 bg-gray-50 dark:bg-slate-700 hover:bg-gray-100 dark:hover:bg-slate-650 rounded-xl"
                   >
-                    <Download className="w-4 h-4 text-gray-600" />
+                    <Download className="w-4 h-4 text-gray-600 dark:text-slate-300" />
                   </button>
                 </div>
 
-                <div className="p-3.5 border border-gray-100 rounded-2xl flex items-center justify-between hover:border-gray-200 transition-all">
+                <div className="p-3.5 border border-gray-100 dark:border-slate-700 rounded-2xl flex items-center justify-between hover:border-gray-200 dark:hover:border-slate-650 transition-all">
                   <div className="flex items-center space-x-3">
-                    <div className="p-2 bg-blue-50 rounded-xl text-blue-600 font-bold">IMG</div>
+                    <div className="p-2 bg-blue-50 dark:bg-blue-950/20 rounded-xl text-blue-600 dark:text-blue-400 font-bold">IMG</div>
                     <div>
-                      <p className="font-bold text-gray-800">Slide_Microscopy_Image.jpg</p>
-                      <p className="text-[10px] text-gray-400 mt-0.5">4.5 MB</p>
+                      <p className="font-bold text-gray-800 dark:text-slate-200">Slide_Microscopy_Image.jpg</p>
+                      <p className="text-[10px] text-gray-400 dark:text-slate-450 mt-0.5">4.5 MB</p>
                     </div>
                   </div>
                   <button 
@@ -425,9 +425,9 @@ export default function HealthRecordsTab({ records, onAddRecord }: HealthRecords
                       message: 'Opening slide image viewer...',
                       type: 'info'
                     })} 
-                    className="p-2 bg-gray-50 hover:bg-gray-100 rounded-xl"
+                    className="p-2 bg-gray-50 dark:bg-slate-700 hover:bg-gray-100 dark:hover:bg-slate-650 rounded-xl"
                   >
-                    <Heart className="w-4 h-4 text-gray-600" />
+                    <Heart className="w-4 h-4 text-gray-600 dark:text-slate-300" />
                   </button>
                 </div>
               </div>
@@ -447,16 +447,16 @@ export default function HealthRecordsTab({ records, onAddRecord }: HealthRecords
               transition={{ type: 'spring', damping: 25 }}
               className="bg-white rounded-t-3xl w-full max-w-md p-6 pb-8 space-y-6"
             >
-              <div className="flex justify-between items-center border-b border-gray-100 pb-4">
-                <h3 className="text-lg font-bold text-gray-900">Upload New Health Record</h3>
-                <button onClick={() => setShowAddModal(false)} className="p-1 hover:bg-gray-100 rounded-full">
-                  <X className="w-5 h-5 text-gray-500" />
+              <div className="flex justify-between items-center border-b border-gray-100 dark:border-slate-800 pb-4">
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white">Upload New Health Record</h3>
+                <button onClick={() => setShowAddModal(false)} className="p-1 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full">
+                  <X className="w-5 h-5 text-gray-500 dark:text-slate-450" />
                 </button>
               </div>
 
               <form onSubmit={handleAddSubmit} className="space-y-4">
                 <div>
-                  <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
+                  <label className="block text-xs font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-2">
                     Document Title
                   </label>
                   <input
@@ -464,13 +464,13 @@ export default function HealthRecordsTab({ records, onAddRecord }: HealthRecords
                     placeholder="e.g. Tooth Extraction Prescription"
                     value={newTitle}
                     onChange={(e) => setNewTitle(e.target.value)}
-                    className="w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-[#f7fafd] text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#002068]"
+                    className="w-full px-4 py-3.5 rounded-xl border border-gray-200 dark:border-slate-700 bg-[#F8FAFD] dark:bg-slate-800 text-sm text-gray-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#0A5BFF]"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
+                  <label className="block text-xs font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-2">
                     Source / Facility Name
                   </label>
                   <input
@@ -478,13 +478,13 @@ export default function HealthRecordsTab({ records, onAddRecord }: HealthRecords
                     placeholder="e.g. Sion Dental Clinic"
                     value={newSource}
                     onChange={(e) => setNewSource(e.target.value)}
-                    className="w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-[#f7fafd] text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#002068]"
+                    className="w-full px-4 py-3.5 rounded-xl border border-gray-200 dark:border-slate-700 bg-[#F8FAFD] dark:bg-slate-800 text-sm text-gray-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#0A5BFF]"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
+                  <label className="block text-xs font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-2">
                     Document Type
                   </label>
                   <div className="grid grid-cols-3 gap-3">
@@ -495,8 +495,8 @@ export default function HealthRecordsTab({ records, onAddRecord }: HealthRecords
                         onClick={() => setNewType(type)}
                         className={`py-3 rounded-xl border text-xs font-bold tracking-wider uppercase transition-all ${
                           newType === type
-                            ? 'bg-[#002068] border-[#002068] text-white'
-                            : 'bg-white border-gray-200 text-gray-600 hover:border-gray-300'
+                            ? 'bg-[#0A5BFF] border-[#0A5BFF] text-white'
+                            : 'bg-white dark:bg-slate-800 border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-400 hover:border-gray-300 dark:hover:border-slate-650'
                         }`}
                       >
                         {type}
@@ -505,14 +505,14 @@ export default function HealthRecordsTab({ records, onAddRecord }: HealthRecords
                   </div>
                 </div>
 
-                <div className="border-2 border-dashed border-gray-200 rounded-2xl p-6 text-center cursor-pointer hover:border-[#002068] transition-all">
-                  <p className="text-xs font-bold text-[#002068]">Drag and drop file here</p>
-                  <p className="text-[10px] text-gray-400 mt-1">Supports PDF, JPG, PNG up to 10MB</p>
+                <div className="border-2 border-dashed border-gray-200 dark:border-slate-700 rounded-2xl p-6 text-center cursor-pointer hover:border-[#0A5BFF] transition-all">
+                  <p className="text-xs font-bold text-[#0A5BFF]">Drag and drop file here</p>
+                  <p className="text-[10px] text-gray-400 dark:text-slate-500 mt-1">Supports PDF, JPG, PNG up to 10MB</p>
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full bg-[#002068] text-white py-4 rounded-xl font-bold hover:bg-[#00164e] transition-all shadow-md flex items-center justify-center space-x-2"
+                  className="w-full bg-[#0A5BFF] text-white py-4 rounded-xl font-bold hover:bg-[#00164e] transition-all shadow-md flex items-center justify-center space-x-2"
                 >
                   <span>Link Document to ABHA Record</span>
                 </button>

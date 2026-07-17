@@ -48,7 +48,7 @@ export default function Onboarding({ onComplete }: OnboardingProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-[#f7fafd] flex flex-col items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 bg-[#F8FAFD] flex flex-col items-center justify-center p-4">
       <div className="w-full max-w-md bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden flex flex-col h-[90vh] max-h-[850px]">
         <AnimatePresence mode="wait">
           {step === 'LANGUAGE' && (
@@ -60,10 +60,10 @@ export default function Onboarding({ onComplete }: OnboardingProps) {
               className="flex-1 flex flex-col p-6 justify-between"
             >
               <div className="flex flex-col items-center text-center mt-6">
-                <div className="w-16 h-16 bg-[#002068] text-white rounded-2xl flex items-center justify-center shadow-lg mb-6">
+                <div className="w-16 h-16 bg-[#0A5BFF] text-white rounded-2xl flex items-center justify-center shadow-lg mb-6">
                   <Languages className="w-8 h-8" />
                 </div>
-                <h2 className="text-xs font-bold tracking-widest text-[#002068] uppercase mb-1">
+                <h2 className="text-xs font-bold tracking-widest text-[#0A5BFF] uppercase mb-1">
                   MCGM Digital Hospital
                 </h2>
                 <h1 className="text-3xl font-bold text-gray-900 tracking-tight mt-1 mb-2">
@@ -104,7 +104,7 @@ export default function Onboarding({ onComplete }: OnboardingProps) {
               <div className="space-y-4">
                 <button
                   onClick={handleLanguageSubmit}
-                  className="w-full bg-[#002068] text-white py-4 rounded-xl font-semibold hover:bg-[#00164e] transition-colors shadow-md flex items-center justify-center space-x-2"
+                  className="w-full bg-[#0A5BFF] text-white py-4 rounded-xl font-semibold hover:bg-[#00164e] transition-colors shadow-md flex items-center justify-center space-x-2"
                 >
                   <span>Continue</span>
                   <ChevronRight className="w-5 h-5" />
@@ -125,7 +125,7 @@ export default function Onboarding({ onComplete }: OnboardingProps) {
               className="flex-1 flex flex-col p-6 justify-between"
             >
               <div className="flex justify-between items-center mt-2">
-                <span className="text-sm font-bold text-[#002068] tracking-wider uppercase">
+                <span className="text-sm font-bold text-[#0A5BFF] tracking-wider uppercase">
                   🏥 MCGM Digital
                 </span>
                 <button
@@ -147,7 +147,7 @@ export default function Onboarding({ onComplete }: OnboardingProps) {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent" />
                 </div>
 
-                <h1 className="text-2xl font-bold text-[#002068] text-center tracking-tight leading-tight px-4">
+                <h1 className="text-2xl font-bold text-[#0A5BFF] text-center tracking-tight leading-tight px-4">
                   Your Health. Our Priority.
                 </h1>
                 <p className="text-gray-500 text-sm text-center mt-3 max-w-xs leading-relaxed px-2">
@@ -156,7 +156,7 @@ export default function Onboarding({ onComplete }: OnboardingProps) {
 
                 {/* Pagination Indicator */}
                 <div className="flex space-x-1.5 mt-6">
-                  <div className="w-6 h-1.5 bg-[#002068] rounded-full" />
+                  <div className="w-6 h-1.5 bg-[#0A5BFF] rounded-full" />
                   <div className="w-1.5 h-1.5 bg-gray-200 rounded-full" />
                   <div className="w-1.5 h-1.5 bg-gray-200 rounded-full" />
                 </div>
@@ -164,7 +164,7 @@ export default function Onboarding({ onComplete }: OnboardingProps) {
 
               <button
                 onClick={handleOnboardingNext}
-                className="w-full bg-[#002068] text-white py-4 rounded-xl font-semibold hover:bg-[#00164e] transition-colors shadow-md flex items-center justify-center space-x-2"
+                className="w-full bg-[#0A5BFF] text-white py-4 rounded-xl font-semibold hover:bg-[#00164e] transition-colors shadow-md flex items-center justify-center space-x-2"
               >
                 <span>Next</span>
                 <ChevronRight className="w-5 h-5" />
@@ -192,7 +192,7 @@ export default function Onboarding({ onComplete }: OnboardingProps) {
                       e.currentTarget.style.display = 'none';
                     }}
                   />
-                  <ShieldCheck className="w-8 h-8 text-[#002068] absolute" />
+                  <ShieldCheck className="w-8 h-8 text-[#0A5BFF] absolute" />
                 </div>
                 <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Verify Your Identity</h1>
                 <p className="text-gray-500 text-xs mt-2 px-4 leading-relaxed">
@@ -219,7 +219,7 @@ export default function Onboarding({ onComplete }: OnboardingProps) {
                           const formatted = val.match(/.{1,4}/g)?.join(' ') || val;
                           setAadhaarInput(formatted.slice(0, 14));
                         }}
-                        className="w-full pl-12 pr-4 py-4 rounded-xl border border-gray-200 bg-[#f7fafd] font-semibold text-lg tracking-widest text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#002068] focus:border-transparent transition-all"
+                        className="w-full pl-12 pr-4 py-4 rounded-xl border border-gray-200 bg-[#F8FAFD] font-semibold text-lg tracking-widest text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0A5BFF] focus:border-transparent transition-all"
                         required
                       />
                     </div>
@@ -253,7 +253,7 @@ export default function Onboarding({ onComplete }: OnboardingProps) {
                   <button
                     type="submit"
                     disabled={aadhaarInput.replace(/\s/g, '').length !== 12 || isVerifying}
-                    className="w-full bg-[#002068] text-white py-4 rounded-xl font-semibold hover:bg-[#00164e] transition-colors shadow-md flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full bg-[#0A5BFF] text-white py-4 rounded-xl font-semibold hover:bg-[#00164e] transition-colors shadow-md flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isVerifying ? (
                       <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -279,7 +279,7 @@ export default function Onboarding({ onComplete }: OnboardingProps) {
                         placeholder="123456"
                         value={otpInput}
                         onChange={(e) => setOtpInput(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                        className="w-full pl-12 pr-4 py-4 rounded-xl border border-gray-200 bg-[#f7fafd] font-bold text-xl tracking-[0.5em] text-center text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#002068] focus:border-transparent transition-all"
+                        className="w-full pl-12 pr-4 py-4 rounded-xl border border-gray-200 bg-[#F8FAFD] font-bold text-xl tracking-[0.5em] text-center text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0A5BFF] focus:border-transparent transition-all"
                         required
                       />
                     </div>
@@ -291,7 +291,7 @@ export default function Onboarding({ onComplete }: OnboardingProps) {
                   <button
                     type="submit"
                     disabled={otpInput.length !== 6}
-                    className="w-full bg-[#002068] text-white py-4 rounded-xl font-semibold hover:bg-[#00164e] transition-colors shadow-md flex items-center justify-center space-x-2 disabled:opacity-50"
+                    className="w-full bg-[#0A5BFF] text-white py-4 rounded-xl font-semibold hover:bg-[#00164e] transition-colors shadow-md flex items-center justify-center space-x-2 disabled:opacity-50"
                   >
                     <span>Verify & Link ABHA Card</span>
                     <Check className="w-5 h-5" />
@@ -303,7 +303,7 @@ export default function Onboarding({ onComplete }: OnboardingProps) {
                 <button
                   type="button"
                   onClick={() => onComplete(selectedLang, null)}
-                  className="w-full py-3.5 border border-gray-200 hover:border-gray-300 text-[#002068] rounded-xl font-medium text-sm transition-all text-center flex items-center justify-center space-x-2"
+                  className="w-full py-3.5 border border-gray-200 hover:border-gray-300 text-[#0A5BFF] rounded-xl font-medium text-sm transition-all text-center flex items-center justify-center space-x-2"
                 >
                   <span>Skip Aadhaar Link for Now</span>
                 </button>

@@ -208,7 +208,7 @@ export default function MedicalResearchDashboard({
   const [citationsFormat, setCitationsFormat] = useState<'APA' | 'AMA' | 'Harvard'>('APA');
 
   return (
-    <div className={`min-h-screen font-sans ${isDarkMode ? 'bg-[#090d16] text-gray-150' : 'bg-slate-50 text-slate-800'} transition-all`}>
+    <div className={`min-h-screen font-sans ${isDarkMode ? 'bg-[#090d16] text-gray-200' : 'bg-slate-50 text-slate-800'} transition-all`}>
       {/* Top Header Bar */}
       <header className="sticky top-0 z-40 border-b p-4 backdrop-blur-md flex items-center justify-between transition-colors bg-white/95 border-gray-100 dark:bg-[#0c1322]/95 dark:border-gray-800">
         <div className="flex items-center space-x-3">
@@ -232,7 +232,7 @@ export default function MedicalResearchDashboard({
         <div className="flex items-center space-x-2.5">
           <button 
             onClick={() => setIsDarkMode(!isDarkMode)}
-            className="p-2.5 rounded-xl border border-gray-200 hover:bg-slate-100 dark:border-gray-800 dark:hover:bg-slate-900 text-gray-450 cursor-pointer"
+            className="p-2.5 rounded-xl border border-gray-200 hover:bg-slate-100 dark:border-gray-800 dark:hover:bg-slate-900 text-gray-400 cursor-pointer"
           >
             {isDarkMode ? <Sun className="w-4.5 h-4.5 text-yellow-400" /> : <Moon className="w-4.5 h-4.5 text-slate-700" />}
           </button>
@@ -268,7 +268,7 @@ export default function MedicalResearchDashboard({
           </div>
           <div className="bg-white dark:bg-[#111827] border border-gray-100 dark:border-gray-800 rounded-2xl p-4 shadow-sm flex flex-col justify-between">
             <span className="text-[9px] font-black uppercase tracking-wider text-gray-400">Research Grants</span>
-            <h3 className="text-xl font-black text-[#003F8A] mt-1">₹85.4 Lakhs</h3>
+            <h3 className="text-xl font-black text-[#0A5BFF] mt-1">₹85.4 Lakhs</h3>
             <p className="text-[10px] text-gray-400 font-bold mt-1">DBT / ICMR Funded</p>
           </div>
           <div className="col-span-2 md:col-span-1 bg-white dark:bg-[#111827] border border-gray-100 dark:border-gray-800 rounded-2xl p-4 shadow-sm flex flex-col justify-between">
@@ -299,7 +299,7 @@ export default function MedicalResearchDashboard({
                 className={`flex items-center space-x-2 px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${
                   activeTab === tab.id
                     ? 'bg-indigo-650 bg-indigo-600 text-white shadow-md'
-                    : 'text-gray-450 hover:text-slate-800 dark:hover:text-gray-200 hover:bg-slate-100 dark:hover:bg-slate-900/60'
+                    : 'text-gray-400 hover:text-slate-800 dark:hover:text-gray-200 hover:bg-slate-100 dark:hover:bg-slate-900/60'
                 }`}
               >
                 <Icon className="w-4 h-4" />
@@ -422,7 +422,7 @@ export default function MedicalResearchDashboard({
                       <select 
                         value={alpha} 
                         onChange={(e) => setAlpha(parseFloat(e.target.value))}
-                        className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-gray-150 dark:border-gray-800 rounded-xl text-xs outline-none"
+                        className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-gray-200 dark:border-gray-800 rounded-xl text-xs outline-none"
                       >
                         <option value={0.01}>0.01 (99% Confidence)</option>
                         <option value={0.05}>0.05 (95% Confidence)</option>
@@ -435,7 +435,7 @@ export default function MedicalResearchDashboard({
                       <select 
                         value={power} 
                         onChange={(e) => setPower(parseFloat(e.target.value))}
-                        className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-gray-150 dark:border-gray-800 rounded-xl text-xs outline-none"
+                        className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-gray-200 dark:border-gray-800 rounded-xl text-xs outline-none"
                       >
                         <option value={0.95}>0.95 Power</option>
                         <option value={0.90}>0.90 Power</option>
@@ -531,13 +531,13 @@ export default function MedicalResearchDashboard({
 
                   <form onSubmit={handleDigitalSign} className="space-y-4">
                     <div className="space-y-1">
-                      <label className="text-xs text-gray-450 font-bold uppercase">Enter Chief Investigator Passcode (1234)</label>
+                      <label className="text-xs text-gray-400 font-bold uppercase">Enter Chief Investigator Passcode (1234)</label>
                       <input
                         type="password"
                         placeholder="••••"
                         value={passcode}
                         onChange={(e) => setPasscode(e.target.value)}
-                        className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-gray-150 dark:border-gray-800 rounded-xl text-xs outline-none"
+                        className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-gray-200 dark:border-gray-800 rounded-xl text-xs outline-none"
                       />
                     </div>
                     <button
@@ -603,7 +603,7 @@ export default function MedicalResearchDashboard({
                   <div className="bg-white dark:bg-[#111827] border border-gray-100 dark:border-gray-800 rounded-3xl p-5 shadow-sm space-y-4">
                     <h3 className="text-xs font-black uppercase tracking-wider">Participant Block Randomizer</h3>
                     <p className="text-xs text-gray-400">Secure de-identified randomization of next participant cohort matching protocol constraints.</p>
-                    <button className="w-full bg-[#003F8A] hover:bg-[#002f66] text-white py-3 rounded-xl text-xs font-black uppercase tracking-wider cursor-pointer">
+                    <button className="w-full bg-[#0A5BFF] hover:bg-[#002f66] text-white py-3 rounded-xl text-xs font-black uppercase tracking-wider cursor-pointer">
                       Generate Randomization ID
                     </button>
                   </div>
@@ -642,7 +642,7 @@ export default function MedicalResearchDashboard({
                     </div>
 
                     <div className="overflow-x-auto">
-                      <table className="w-full text-left text-xs text-slate-650 dark:text-slate-300">
+                      <table className="w-full text-left text-xs text-slate-600 dark:text-slate-300">
                         <thead>
                           <tr className="border-b border-gray-100 dark:border-gray-800 text-gray-400 font-extrabold">
                             <th className="py-2">Aadhaar (PII)</th>
@@ -716,7 +716,7 @@ export default function MedicalResearchDashboard({
                           </div>
                         </div>
                         <div className="flex justify-start">
-                          <div className="bg-slate-50 dark:bg-slate-900 border border-gray-100 dark:border-gray-800 p-4 rounded-3xl text-xs leading-relaxed max-w-xl text-slate-700 dark:text-slate-350 font-semibold space-y-1">
+                          <div className="bg-slate-50 dark:bg-slate-900 border border-gray-100 dark:border-gray-800 p-4 rounded-3xl text-xs leading-relaxed max-w-xl text-slate-700 dark:text-slate-400 font-semibold space-y-1">
                             <p>{chat.a}</p>
                             <p className="text-[9.5px] text-orange-500 font-bold italic pt-1">Note: AI-generated text. Peer review mandatory before final IRB submission.</p>
                           </div>
@@ -733,7 +733,7 @@ export default function MedicalResearchDashboard({
                       value={assistantInput}
                       onChange={(e) => setAssistantInput(e.target.value)}
                       onKeyDown={(e) => e.key === 'Enter' && triggerAssistantQuery(assistantInput)}
-                      className="flex-1 px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-gray-150 dark:border-gray-800 rounded-2xl text-xs font-semibold outline-none focus:ring-1 focus:ring-indigo-600"
+                      className="flex-1 px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-gray-200 dark:border-gray-800 rounded-2xl text-xs font-semibold outline-none focus:ring-1 focus:ring-indigo-600"
                     />
                     <button
                       onClick={() => triggerAssistantQuery(assistantInput)}
@@ -756,7 +756,7 @@ export default function MedicalResearchDashboard({
                       <button
                         key={idx}
                         onClick={() => triggerAssistantQuery(query)}
-                        className="text-left p-3 bg-slate-50 dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800/50 rounded-xl text-xs font-black text-slate-700 dark:text-slate-350 transition-all cursor-pointer border border-gray-100 dark:border-gray-850"
+                        className="text-left p-3 bg-slate-50 dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800/50 rounded-xl text-xs font-black text-slate-700 dark:text-slate-400 transition-all cursor-pointer border border-gray-100 dark:border-gray-800"
                       >
                         {query}
                       </button>
@@ -781,8 +781,8 @@ export default function MedicalResearchDashboard({
                     <span className="text-[9px] text-gray-400 font-bold uppercase">Linked to PubMed & MCGM Guidelines</span>
                   </div>
 
-                  <div className="flex items-center space-x-2 bg-slate-50 dark:bg-slate-900 border border-gray-150 dark:border-gray-800 px-4 py-3 rounded-2xl w-full">
-                    <Search className="w-4.5 h-4.5 text-gray-450" />
+                  <div className="flex items-center space-x-2 bg-slate-50 dark:bg-slate-900 border border-gray-200 dark:border-gray-800 px-4 py-3 rounded-2xl w-full">
+                    <Search className="w-4.5 h-4.5 text-gray-400" />
                     <input
                       type="text"
                       placeholder="Search guidelines, journal articles, hospital protocols, drug references, surgical videos..."
@@ -948,7 +948,7 @@ export default function MedicalResearchDashboard({
                     </div>
                   </div>
 
-                  <div className="p-4 bg-slate-50 dark:bg-slate-900 rounded-2xl min-h-[250px] border border-gray-100 dark:border-gray-850 font-semibold text-xs leading-relaxed space-y-4">
+                  <div className="p-4 bg-slate-50 dark:bg-slate-900 rounded-2xl min-h-[250px] border border-gray-100 dark:border-gray-800 font-semibold text-xs leading-relaxed space-y-4">
                     <p className="text-slate-800 dark:text-slate-105">
                       **Introduction:** Diabetic retinopathy remains a leading cause of preventable blindness in urban populations. Early screening is critical, yet access to specialist ophthalmologists in municipal primary clinics remains limited.
                     </p>
@@ -974,7 +974,7 @@ export default function MedicalResearchDashboard({
                     </p>
                   </div>
 
-                  <button className="w-full bg-[#003F8A] hover:bg-[#002f66] text-white py-3 rounded-xl text-xs font-black uppercase tracking-wider cursor-pointer">
+                  <button className="w-full bg-[#0A5BFF] hover:bg-[#002f66] text-white py-3 rounded-xl text-xs font-black uppercase tracking-wider cursor-pointer">
                     Copy Reference to Clipboard
                   </button>
                 </div>
