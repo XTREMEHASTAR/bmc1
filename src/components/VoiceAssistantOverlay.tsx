@@ -27,6 +27,8 @@ export default function VoiceAssistantOverlay({ currentPortal, isDarkMode }: Voi
   const [isOfflineMode, setIsOfflineMode] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [micPermission, setMicPermission] = useState<'unknown' | 'granted' | 'denied'>('unknown');
+  const [hudMessage, setHudMessage] = useState<string | null>(null);
+  const hudTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // States
   const [transcript, setTranscript] = useState('');
@@ -153,10 +155,8 @@ export default function VoiceAssistantOverlay({ currentPortal, isDarkMode }: Voi
       } else {
         setPausedForScribing(false);
         isExplicitlyStopped.current = false;
-        setTimeout(() => {
-          try { startSpeechRecognitionRef.current(); } catch (e) { /* ignore */ }
-        }, 600);
-        const msg = '▶ Voice OS resumed. Listening for commands...';
+        // Do not auto-start speech recognition here—only run when key is pressed
+        const msg = '▶ Voice OS resumed. Hold Spacebar or V to speak.';
         setResponseMessage(msg);
         setFeedbackType('success');
         const st = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -265,9 +265,10 @@ export default function VoiceAssistantOverlay({ currentPortal, isDarkMode }: Voi
         setIsListening(false);
         setInterimTranscript('');
         stopWaveformSimulation();
-        if (!isExplicitlyStopped.current && !document.hidden) {
+        // Only restart automatically if the user is still holding down the command key
+        if (isHoldingKeyRef.current && !isExplicitlyStopped.current && !document.hidden) {
           setTimeout(() => {
-            if (!isExplicitlyStopped.current && !document.hidden) {
+            if (isHoldingKeyRef.current && !isExplicitlyStopped.current && !document.hidden) {
               startSpeechRecognition();
             }
           }, 400);
@@ -290,7 +291,7 @@ export default function VoiceAssistantOverlay({ currentPortal, isDarkMode }: Voi
   useEffect(() => {
     const interval = setInterval(() => {
       if (
-        isOpen &&
+        isHoldingKeyRef.current &&
         !isListeningRef.current &&
         !isStartingRef.current &&
         !isExplicitlyStopped.current &&
@@ -308,13 +309,13 @@ export default function VoiceAssistantOverlay({ currentPortal, isDarkMode }: Voi
     }, 2000); // Check every 2 seconds for aggressive self-healing
 
     return () => clearInterval(interval);
-  }, [isOpen, pausedForScribing, micPermission]);
+  }, [pausedForScribing, micPermission]);
 
   // Auto-resume speech recognition when the tab regains focus or becomes visible
   useEffect(() => {
     const handleFocus = () => {
       if (
-        isOpen &&
+        isHoldingKeyRef.current &&
         !isListeningRef.current &&
         !isStartingRef.current &&
         !isExplicitlyStopped.current &&
@@ -329,7 +330,7 @@ export default function VoiceAssistantOverlay({ currentPortal, isDarkMode }: Voi
     const handleVisibilityChange = () => {
       if (!document.hidden) {
         if (
-          isOpen &&
+          isHoldingKeyRef.current &&
           !isListeningRef.current &&
           !isStartingRef.current &&
           !isExplicitlyStopped.current &&
@@ -365,6 +366,7 @@ export default function VoiceAssistantOverlay({ currentPortal, isDarkMode }: Voi
         try { speechRecognizerRef.current.stop(); } catch (_) {}
       }
       stopWaveformSimulation();
+      if (hudTimeoutRef.current) clearTimeout(hudTimeoutRef.current);
     };
   }, []);
 
@@ -377,6 +379,7 @@ export default function VoiceAssistantOverlay({ currentPortal, isDarkMode }: Voi
       stream.getTracks().forEach(t => t.stop()); // release stream; recognizer manages its own
       setMicPermission('granted');
       isExplicitlyStopped.current = false;
+      isStartingRef.current = false;
       startSpeechRecognition();
     } catch (err: any) {
       console.error('[VoiceOS] getUserMedia denied:', err);
@@ -508,7 +511,9 @@ export default function VoiceAssistantOverlay({ currentPortal, isDarkMode }: Voi
       'doctor', 'hey doctor', 'ok doctor', 'okay doctor'
     ];
 
-    if (!openNow) {
+    const bypassWakeWord = isHoldingKeyRef.current || fromTyping;
+
+    if (!openNow && !bypassWakeWord) {
       const matchedWakeWord = wakeWordVariations.find(v => raw.includes(v));
       if (matchedWakeWord) {
         setIsOpen(true);
@@ -530,7 +535,7 @@ export default function VoiceAssistantOverlay({ currentPortal, isDarkMode }: Voi
       return;
     }
 
-    // Panel is open — use the already-computed orchestrator response
+    // Process the already-computed orchestrator response
     if (response.success && response.intent !== 'THROTTLED') {
       // Map agent type to feedback styling
       const feedbackMap: Record<string, 'success' | 'info'> = {
@@ -544,6 +549,13 @@ export default function VoiceAssistantOverlay({ currentPortal, isDarkMode }: Voi
       const fbType = feedbackMap[response.agent] || 'success';
       pushSystemMsg(response.message, fbType);
       speakResponse(response.message);
+
+      // Display HUD message for visual confirmation
+      if (hudTimeoutRef.current) clearTimeout(hudTimeoutRef.current);
+      setHudMessage(response.message);
+      hudTimeoutRef.current = setTimeout(() => {
+        setHudMessage(null);
+      }, 4000);
 
       if (response.intent === 'GENERATE_SOAP') {
         setSoapDraft({
@@ -567,9 +579,16 @@ export default function VoiceAssistantOverlay({ currentPortal, isDarkMode }: Voi
       return;
     }
 
-    // Unrecognized command — show the agent's response (never chat)
+    // Unrecognized command
     pushSystemMsg(response.message, 'info');
     speakResponse(response.message);
+
+    // Display HUD message for visual confirmation
+    if (hudTimeoutRef.current) clearTimeout(hudTimeoutRef.current);
+    setHudMessage(response.message);
+    hudTimeoutRef.current = setTimeout(() => {
+      setHudMessage(null);
+    }, 4000);
   };
 
   // Legacy wrapper used by simulateVoiceInput and manual form
@@ -601,17 +620,11 @@ export default function VoiceAssistantOverlay({ currentPortal, isDarkMode }: Voi
     }
   };
 
-  // Keyboard shortcut listener for Siri trigger (Ctrl+Space globally) and Push-to-Talk (holding Space or V)
+  // Keyboard shortcut listener for Push-to-Talk (holding Space or V)
+  // NOTE: These shortcuts only control speech recognition — they do NOT open the panel.
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // 1. Ctrl + Space to toggle overlay globally
-      if ((e.ctrlKey || e.metaKey) && e.code === 'Space') {
-        e.preventDefault();
-        setIsOpen(!isOpenRef.current);
-        return;
-      }
-
-      // 2. Push-to-Talk via Space or 'v' (when not focused on inputs)
+      // Push-to-Talk via Space or 'v' (when not focused on inputs)
       const isInput = 
         e.target instanceof HTMLInputElement || 
         e.target instanceof HTMLTextAreaElement || 
@@ -629,13 +642,9 @@ export default function VoiceAssistantOverlay({ currentPortal, isDarkMode }: Voi
         if (!isHoldingKeyRef.current) {
           isHoldingKeyRef.current = true;
           setIsHoldingKey(true);
-          
-          // Open overlay if closed
-          if (!isOpenRef.current) {
-            setIsOpen(true);
-          }
+          isStartingRef.current = false; // Safety reset for push-to-talk activation
 
-          // Start listening
+          // Start listening (panel does NOT open — click the orb to open it)
           setTranscript('');
           setInterimTranscript('');
           isExplicitlyStopped.current = false;
@@ -654,11 +663,15 @@ export default function VoiceAssistantOverlay({ currentPortal, isDarkMode }: Voi
           isHoldingKeyRef.current = false;
           setIsHoldingKey(false);
 
-          // Stop listening and process captured audio
-          isExplicitlyStopped.current = true;
-          try {
-            speechRecognizerRef.current?.stop();
-          } catch (_) {}
+          // Wait a short delay before stopping to ensure speech is fully captured
+          setTimeout(() => {
+            if (!isHoldingKeyRef.current) {
+              isExplicitlyStopped.current = true;
+              try {
+                speechRecognizerRef.current?.stop();
+              } catch (_) {}
+            }
+          }, 800);
         }
       }
     };
@@ -669,7 +682,7 @@ export default function VoiceAssistantOverlay({ currentPortal, isDarkMode }: Voi
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('keyup', handleKeyUp);
     };
-  }, [language]);
+  }, [language, micPermission]);
 
   return (
     <>
@@ -684,7 +697,7 @@ export default function VoiceAssistantOverlay({ currentPortal, isDarkMode }: Voi
               className={`w-96 rounded-3xl border shadow-2xl p-5 flex flex-col space-y-4 z-55 ${
                 isDarkMode 
                   ? 'bg-slate-950/95 border-slate-800 text-white backdrop-blur-md' 
-                  : 'bg-white/95 border-gray-250 text-[#0A5BFF] backdrop-blur-md shadow-slate-200'
+                  : 'bg-white/95 border-gray-200 text-[#0A5BFF] backdrop-blur-md shadow-slate-200'
               }`}
             >
               {/* Header */}
@@ -1046,19 +1059,49 @@ export default function VoiceAssistantOverlay({ currentPortal, isDarkMode }: Voi
                 </div>
               )}
 
-              {/* Help tip */}
-              <div className="text-[10px] text-gray-400 text-center italic border-t border-slate-800/10 dark:border-slate-800/60 pt-2 flex flex-col items-center justify-center gap-1">
-                <div className="flex items-center justify-center space-x-1">
-                  <span>Hold</span>
-                  <span className="bg-slate-800 px-1.5 py-0.5 rounded font-mono text-[9px] font-bold text-indigo-400">Spacebar</span>
-                  <span>or</span>
-                  <span className="bg-slate-800 px-1.5 py-0.5 rounded font-mono text-[9px] font-bold text-indigo-400">V</span>
-                  <span>to speak & release to send.</span>
+
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* HUD Tooltip Feedback Bubble */}
+        <AnimatePresence>
+          {(isListening || hudMessage || micPermission === 'denied') && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 8 }}
+              animate={{ opacity: 1, scale: 1, y: -4 }}
+              exit={{ opacity: 0, scale: 0.95, y: 8 }}
+              className={`max-w-[280px] rounded-2xl px-3.5 py-2 text-[10px] font-bold shadow-xl border backdrop-blur-md transition-all ${
+                micPermission === 'denied'
+                  ? 'bg-red-500/10 border-red-500/30 text-red-650 dark:text-red-400'
+                  : isDarkMode
+                  ? 'bg-slate-900/90 border-slate-800 text-white'
+                  : 'bg-white/95 border-gray-200 text-[#003F8A]'
+              }`}
+            >
+              {micPermission === 'denied' ? (
+                <div className="flex items-center gap-2">
+                  <MicOff className="w-3.5 h-3.5 text-red-500 shrink-0" />
+                  <span className="leading-tight">
+                    Microphone access denied. Please allow mic access in your browser.
+                  </span>
                 </div>
-                <div className="text-[9px] text-slate-500">
-                  Ctrl + Space to toggle assistant panel.
+              ) : isListening ? (
+                <div className="flex items-center gap-2">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                  </span>
+                  <span className="truncate italic">
+                    {interimTranscript || "Listening..."}
+                  </span>
                 </div>
-              </div>
+              ) : (
+                <div className="flex items-start gap-2">
+                  <Check className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" />
+                  <span className="leading-tight">{hudMessage}</span>
+                </div>
+              )}
             </motion.div>
           )}
         </AnimatePresence>
@@ -1072,14 +1115,15 @@ export default function VoiceAssistantOverlay({ currentPortal, isDarkMode }: Voi
         )}
         <button
           onClick={async () => {
-            if (isOpen) {
-              setIsOpen(false);
-              isExplicitlyStopped.current = true;
-              try { speechRecognizerRef.current?.stop(); } catch (_) {}
-            } else {
-              setIsOpen(true);
-              speakResponse('Arogya voice system ready. Speak a command.');
+            if (micPermission !== 'granted') {
               await requestMicAndStart();
+            } else {
+              if (hudTimeoutRef.current) clearTimeout(hudTimeoutRef.current);
+              setHudMessage("Hold Spacebar or V to speak voice commands.");
+              hudTimeoutRef.current = setTimeout(() => {
+                setHudMessage(null);
+              }, 4000);
+              speakResponse("Hold Spacebar or V to speak voice commands.");
             }
           }}
           className={`w-14 h-14 rounded-full shadow-2xl flex items-center justify-center relative overflow-hidden transition-all hover:scale-105 active:scale-95 border-2 border-white/20 cursor-pointer ${

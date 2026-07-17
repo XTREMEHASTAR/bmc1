@@ -376,7 +376,7 @@ export default function SurgeryDashboard({
                   className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all border cursor-pointer ${
                     isActive 
                       ? 'bg-rose-500 text-white border-rose-450 shadow-md' 
-                      : 'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-350 border-transparent'
+                      : 'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 border-transparent'
                   }`}
                 >
                   <Icon className="w-4 h-4" />
@@ -441,7 +441,7 @@ export default function SurgeryDashboard({
                   { label: "Available Recovery Beds", value: "4 / 12 Beds", sub: "8 Occupied, 1 Reserved", color: "border-l-amber-500 text-amber-500" }
                 ].map((stat, i) => (
                   <div key={i} className="bg-white dark:bg-slate-900 p-4 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm border-l-4">
-                    <p className="text-[10px] font-black uppercase text-slate-450 dark:text-slate-500 tracking-wider">{stat.label}</p>
+                    <p className="text-[10px] font-black uppercase text-slate-400 dark:text-slate-500 tracking-wider">{stat.label}</p>
                     <h3 className={`text-lg font-black mt-1 ${stat.color}`}>{stat.value}</h3>
                     <p className="text-[9px] text-gray-400 mt-1 font-semibold">{stat.sub}</p>
                   </div>
@@ -450,7 +450,7 @@ export default function SurgeryDashboard({
 
               {/* OT Room Grid */}
               <div className="space-y-3">
-                <h3 className="text-xs font-black tracking-widest uppercase text-slate-450 dark:text-slate-500">Live Operating Theatres Status</h3>
+                <h3 className="text-xs font-black tracking-widest uppercase text-slate-400 dark:text-slate-500">Live Operating Theatres Status</h3>
                 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                   {[
@@ -478,14 +478,14 @@ export default function SurgeryDashboard({
                         <span className={`text-[8px] font-black uppercase px-2 py-0.5 rounded-full ${
                           ot.status === 'In-Surgery' ? 'bg-rose-100 dark:bg-rose-900 text-rose-600 dark:text-rose-400' :
                           ot.status === 'Available' ? 'bg-emerald-100 dark:bg-emerald-900 text-emerald-600 dark:text-emerald-400' :
-                          'bg-slate-100 dark:bg-slate-850 text-slate-500'
+                          'bg-slate-100 dark:bg-slate-800 text-slate-500'
                         }`}>
                           {ot.status}
                         </span>
                       </div>
 
                       <div className="mt-4 space-y-2">
-                        <div className="flex justify-between text-[9px] text-slate-450 dark:text-slate-500 font-bold">
+                        <div className="flex justify-between text-[9px] text-slate-400 dark:text-slate-500 font-bold">
                           <span>Surgeon: {ot.surgeon}</span>
                           <span>{ot.time}</span>
                         </div>
@@ -526,7 +526,7 @@ export default function SurgeryDashboard({
                       { type: "Warning", text: "Autoclave cycle L-904 shows 14 mins remaining. Major Vascular Tray A required for SURG-201 bypass closure.", time: "15 mins ago" },
                       { type: "Info", text: "CSSD reports complete sterilization of Ortho Knee Set B. Delivered to clean holding bay.", time: "25 mins ago" }
                     ].map((alert, i) => (
-                      <div key={i} className="p-3 bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-850 rounded-2xl flex items-start space-x-3">
+                      <div key={i} className="p-3 bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 rounded-2xl flex items-start space-x-3">
                         <span className={`text-[8px] font-black uppercase px-2 py-0.5 rounded-full shrink-0 ${
                           alert.type === 'Critical' ? 'bg-rose-100 dark:bg-rose-950 text-rose-600 dark:text-rose-400' :
                           alert.type === 'Warning' ? 'bg-amber-100 dark:bg-amber-950 text-amber-600 dark:text-amber-400' :
@@ -535,7 +535,7 @@ export default function SurgeryDashboard({
                           {alert.type}
                         </span>
                         <div className="flex-1 min-w-0">
-                          <p className="text-[10px] text-slate-700 dark:text-slate-350 leading-normal font-semibold">{alert.text}</p>
+                          <p className="text-[10px] text-slate-700 dark:text-slate-400 leading-normal font-semibold">{alert.text}</p>
                           <span className="text-[8px] text-slate-400 font-bold block mt-1">{alert.time}</span>
                         </div>
                       </div>
@@ -550,7 +550,7 @@ export default function SurgeryDashboard({
                     <span>AI Surgical Resource Forecast</span>
                   </h3>
 
-                  <div className="space-y-3 text-[11px] leading-relaxed text-slate-600 dark:text-slate-450">
+                  <div className="space-y-3 text-[11px] leading-relaxed text-slate-600 dark:text-slate-400">
                     <p>
                       <strong>Pre-operative clearance:</strong> Sunshine Appendectomy patient (Sunita Thorat) has not completed pre-anaesthetic air clearance. AI predicts 15 min induction delay if delay is not mitigated now.
                     </p>
@@ -588,7 +588,7 @@ export default function SurgeryDashboard({
                 <ShieldAlert className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
                 <div>
                   <h4 className="text-xs font-black text-amber-800 dark:text-amber-400">Scheduling conflict detected by AI</h4>
-                  <p className="text-[10px] text-slate-500 dark:text-slate-450 leading-relaxed mt-1">
+                  <p className="text-[10px] text-slate-500 dark:text-slate-400 leading-relaxed mt-1">
                     Dr. Rajesh Shah is scheduled for **Total Knee Arthroplasty (Vikram Shinde)** in OT-05 from 13:30 to 15:30. However, Dr. Shah has an Outpatient Consultation shift scheduled at Sion clinic at 14:00. 
                   </p>
                   <div className="flex space-x-3 mt-2">
@@ -604,7 +604,7 @@ export default function SurgeryDashboard({
                       onClick={() => {
                         alert("Reallocating surgery slot to Dr. Maheshwari (Orthopaedic).");
                       }}
-                      className="px-2.5 py-1 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-350 rounded-lg text-[9px] font-black uppercase tracking-wider cursor-pointer transition-all"
+                      className="px-2.5 py-1 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-400 rounded-lg text-[9px] font-black uppercase tracking-wider cursor-pointer transition-all"
                     >
                       Assign Alternate Surgeon
                     </button>
@@ -617,7 +617,7 @@ export default function SurgeryDashboard({
                 <div className="min-w-[700px] space-y-4">
                   
                   {/* Timeline hours */}
-                  <div className="grid grid-cols-8 border-b border-slate-100 dark:border-slate-850 pb-2 text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">
+                  <div className="grid grid-cols-8 border-b border-slate-100 dark:border-slate-800 pb-2 text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">
                     <div className="col-span-2">Theatre</div>
                     <div>08:00 - 10:00</div>
                     <div>10:00 - 12:00</div>
@@ -635,7 +635,7 @@ export default function SurgeryDashboard({
                     { room: "OT-04 (Emergency)", activeCases: [{ time: "11:45 - 12:45", name: "Sunita Thorat (Appendectomy)", duration: "60m", color: "bg-rose-600 text-white animate-pulse" }] },
                     { room: "OT-05 (Orthopaedic)", activeCases: [{ time: "13:30 - 15:30", name: "Vikram Shinde (TKA)", duration: "120m", color: "bg-amber-500 text-white" }] }
                   ].map((row, i) => (
-                    <div key={i} className="grid grid-cols-8 items-center py-3 border-b border-slate-100 dark:border-slate-850/50">
+                    <div key={i} className="grid grid-cols-8 items-center py-3 border-b border-slate-100 dark:border-slate-800/50">
                       <div className="col-span-2 text-xs font-black text-slate-800 dark:text-white pr-2">{row.room}</div>
                       
                       {/* Timeline Block representation */}
@@ -706,7 +706,7 @@ export default function SurgeryDashboard({
                         { label: "Cardiac Clearance (ECG/ECHO)", status: "Cleared", desc: "EF: 55%, rhythm sinus bradycardia", checked: selectedCase.id !== 'SURG-204' },
                         { label: "Coagulation Panel (PT/INR)", status: "Pending review", desc: "INR: 1.1 (Lab report received)", checked: selectedCase.id !== 'SURG-202' }
                       ].map((item, i) => (
-                        <div key={i} className="p-3 bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-850 rounded-2xl flex items-start space-x-3">
+                        <div key={i} className="p-3 bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 rounded-2xl flex items-start space-x-3">
                           <div className={`p-1.5 rounded-lg ${item.checked ? 'bg-emerald-100 dark:bg-emerald-950 text-emerald-600' : 'bg-rose-105 bg-rose-100 dark:bg-rose-950 text-rose-600'}`}>
                             {item.checked ? <Check className="w-4 h-4" /> : <X className="w-4 h-4" />}
                           </div>
@@ -730,8 +730,8 @@ export default function SurgeryDashboard({
                         { test: "Creatinine", value: "0.9 mg/dL", status: "Normal" },
                         { test: "Potassium", value: "4.1 mEq/L", status: "Normal" }
                       ].map((lab, i) => (
-                        <div key={i} className="p-3 bg-slate-50 dark:bg-slate-950 rounded-2xl text-center border border-slate-100 dark:border-slate-850">
-                          <span className="text-[9px] text-gray-450 dark:text-slate-500 font-bold block">{lab.test}</span>
+                        <div key={i} className="p-3 bg-slate-50 dark:bg-slate-950 rounded-2xl text-center border border-slate-100 dark:border-slate-800">
+                          <span className="text-[9px] text-gray-400 dark:text-slate-500 font-bold block">{lab.test}</span>
                           <span className="text-xs font-black text-slate-800 dark:text-white block mt-1">{lab.value}</span>
                           <span className="text-[8px] font-black uppercase text-emerald-500 block mt-0.5">{lab.status}</span>
                         </div>
@@ -817,7 +817,7 @@ export default function SurgeryDashboard({
                   <div key={i} className={`p-3 rounded-2xl border transition-all ${
                     step.checked 
                       ? 'bg-emerald-50/20 dark:bg-emerald-950/10 border-emerald-300 dark:border-emerald-900/60' 
-                      : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-850'
+                      : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800'
                   }`}>
                     <span className="text-xs font-black block">{step.name}</span>
                     <span className="text-[9px] text-gray-400 mt-0.5 block">{step.desc}</span>
@@ -832,7 +832,7 @@ export default function SurgeryDashboard({
                 
                 {/* Sign In Checks Column */}
                 <div className="bg-white dark:bg-slate-900 p-5 rounded-3xl border border-slate-200 dark:border-slate-800 space-y-4">
-                  <h3 className="text-xs font-black tracking-widest uppercase text-slate-400 dark:text-slate-500 border-b border-slate-100 dark:border-slate-850 pb-2">1. Sign In Checks</h3>
+                  <h3 className="text-xs font-black tracking-widest uppercase text-slate-400 dark:text-slate-500 border-b border-slate-100 dark:border-slate-800 pb-2">1. Sign In Checks</h3>
                   
                   <div className="space-y-3">
                     {Object.entries(signInChecks).map(([key, val]) => (
@@ -843,7 +843,7 @@ export default function SurgeryDashboard({
                           onChange={() => setSignInChecks(prev => ({ ...prev, [key]: !val }))}
                           className="h-4 w-4 rounded border-slate-300 text-rose-600 focus:ring-rose-500"
                         />
-                        <span className="text-xs font-semibold text-slate-700 dark:text-slate-350">
+                        <span className="text-xs font-semibold text-slate-700 dark:text-slate-400">
                           {key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
                         </span>
                       </label>
@@ -853,7 +853,7 @@ export default function SurgeryDashboard({
 
                 {/* Time Out Checks Column */}
                 <div className="bg-white dark:bg-slate-900 p-5 rounded-3xl border border-slate-200 dark:border-slate-800 space-y-4">
-                  <h3 className="text-xs font-black tracking-widest uppercase text-slate-400 dark:text-slate-500 border-b border-slate-100 dark:border-slate-850 pb-2">2. Time Out Checks</h3>
+                  <h3 className="text-xs font-black tracking-widest uppercase text-slate-400 dark:text-slate-500 border-b border-slate-100 dark:border-slate-800 pb-2">2. Time Out Checks</h3>
                   
                   <div className="space-y-3">
                     {Object.entries(timeOutChecks).map(([key, val]) => (
@@ -864,7 +864,7 @@ export default function SurgeryDashboard({
                           onChange={() => setTimeOutChecks(prev => ({ ...prev, [key]: !val }))}
                           className="h-4 w-4 rounded border-slate-300 text-rose-600 focus:ring-rose-500"
                         />
-                        <span className="text-xs font-semibold text-slate-700 dark:text-slate-350">
+                        <span className="text-xs font-semibold text-slate-700 dark:text-slate-400">
                           {key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
                         </span>
                       </label>
@@ -874,7 +874,7 @@ export default function SurgeryDashboard({
 
                 {/* Sign Out Checks Column */}
                 <div className="bg-white dark:bg-slate-900 p-5 rounded-3xl border border-slate-200 dark:border-slate-800 space-y-4">
-                  <h3 className="text-xs font-black tracking-widest uppercase text-slate-400 dark:text-slate-500 border-b border-slate-100 dark:border-slate-850 pb-2">3. Sign Out Checks</h3>
+                  <h3 className="text-xs font-black tracking-widest uppercase text-slate-400 dark:text-slate-500 border-b border-slate-100 dark:border-slate-800 pb-2">3. Sign Out Checks</h3>
                   
                   <div className="space-y-3">
                     {Object.entries(signOutChecks).map(([key, val]) => (
@@ -885,7 +885,7 @@ export default function SurgeryDashboard({
                           onChange={() => setSignOutChecks(prev => ({ ...prev, [key]: !val }))}
                           className="h-4 w-4 rounded border-slate-300 text-rose-600 focus:ring-rose-500"
                         />
-                        <span className="text-xs font-semibold text-slate-700 dark:text-slate-350">
+                        <span className="text-xs font-semibold text-slate-700 dark:text-slate-400">
                           {key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
                         </span>
                       </label>
@@ -896,7 +896,7 @@ export default function SurgeryDashboard({
               </div>
 
               {/* digital sign-off */}
-              <div className="p-4 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-850 rounded-3xl flex justify-between items-center">
+              <div className="p-4 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl flex justify-between items-center">
                 <div className="flex items-center space-x-3">
                   <Lock className="w-5 h-5 text-rose-600" />
                   <div>
@@ -955,7 +955,7 @@ export default function SurgeryDashboard({
                   { label: "TEMP", value: `${vitals.temp}°C`, unit: "Body Temp", color: "text-teal-400" },
                   { label: "ETCO2", value: "38", unit: "mmHg", color: "text-purple-400" }
                 ].map((vit, i) => (
-                  <div key={i} className="p-3 bg-slate-900 border border-slate-850 rounded-2xl">
+                  <div key={i} className="p-3 bg-slate-900 border border-slate-800 rounded-2xl">
                     <span className="text-[10px] text-slate-400 block font-bold">{vit.label}</span>
                     <span className={`text-xl font-black block mt-1 ${vit.color}`}>{vit.value}</span>
                     <span className="text-[8px] text-slate-500 block mt-0.5">{vit.unit}</span>
@@ -979,8 +979,8 @@ export default function SurgeryDashboard({
                       { name: "Needles / Sharps", initial: needleCount.initial, current: needleCount.current },
                       { name: "Forceps & Retractors", initial: instrumentCount.initial, current: instrumentCount.current }
                     ].map((count, i) => (
-                      <div key={i} className="flex justify-between items-center p-3 bg-slate-50 dark:bg-slate-950 rounded-2xl border border-slate-100 dark:border-slate-850">
-                        <span className="text-xs font-bold text-slate-700 dark:text-slate-350">{count.name}</span>
+                      <div key={i} className="flex justify-between items-center p-3 bg-slate-50 dark:bg-slate-950 rounded-2xl border border-slate-100 dark:border-slate-800">
+                        <span className="text-xs font-bold text-slate-700 dark:text-slate-400">{count.name}</span>
                         <div className="flex space-x-4 text-xs font-mono">
                           <span className="text-slate-400">In: {count.initial}</span>
                           <span className="text-emerald-500 font-bold">Out: {count.current}</span>
@@ -1022,7 +1022,7 @@ export default function SurgeryDashboard({
                       <span>{isDictating ? "Ambient Listening..." : "Trigger Voice Capture"}</span>
                     </button>
 
-                    <div className="p-3 bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-850 rounded-2xl h-24 overflow-y-auto">
+                    <div className="p-3 bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 rounded-2xl h-24 overflow-y-auto">
                       <p className="text-[10px] leading-relaxed text-slate-500 italic">
                         {dictatedText || "Press the microphone button to simulate ambient surgical transcription..."}
                       </p>
@@ -1039,7 +1039,7 @@ export default function SurgeryDashboard({
 
                   <div className="space-y-2 h-[180px] overflow-y-auto pr-1">
                     {aiSuggestions.map((sug, i) => (
-                      <div key={i} className="p-2.5 bg-slate-50/85 dark:bg-slate-950 border border-slate-100 dark:border-slate-850 rounded-xl text-[9px] leading-normal font-semibold text-slate-600 dark:text-slate-400">
+                      <div key={i} className="p-2.5 bg-slate-50/85 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 rounded-xl text-[9px] leading-normal font-semibold text-slate-600 dark:text-slate-400">
                         {sug}
                       </div>
                     ))}
@@ -1071,16 +1071,16 @@ export default function SurgeryDashboard({
                 
                 {/* Drug Chart / Infusion Log */}
                 <div className="lg:col-span-2 bg-white dark:bg-slate-900 p-5 rounded-3xl border border-slate-200 dark:border-slate-800 space-y-4">
-                  <h3 className="text-xs font-black tracking-widest uppercase text-slate-400 dark:text-slate-500 border-b border-slate-100 dark:border-slate-850 pb-2">
+                  <h3 className="text-xs font-black tracking-widest uppercase text-slate-400 dark:text-slate-500 border-b border-slate-100 dark:border-slate-800 pb-2">
                     Intraoperative Drug Administration Chart
                   </h3>
 
                   <div className="space-y-2 max-h-64 overflow-y-auto pr-2">
                     {anaesthesiaLogs.map((log, i) => (
-                      <div key={i} className="flex justify-between items-center p-3 bg-slate-50 dark:bg-slate-950 rounded-2xl border border-slate-100 dark:border-slate-850">
+                      <div key={i} className="flex justify-between items-center p-3 bg-slate-50 dark:bg-slate-950 rounded-2xl border border-slate-100 dark:border-slate-800">
                         <div className="flex items-center space-x-3">
                           <span className="text-[10px] font-bold text-gray-400">{log.time}</span>
-                          <span className="text-xs font-black text-slate-850 dark:text-slate-200">{log.drug}</span>
+                          <span className="text-xs font-black text-slate-800 dark:text-slate-200">{log.drug}</span>
                         </div>
                         <div className="flex space-x-4 text-xs font-mono">
                           <span className="text-rose-600 font-bold">{log.dose}</span>
@@ -1091,20 +1091,20 @@ export default function SurgeryDashboard({
                   </div>
 
                   {/* Add drug form */}
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-3 border-t border-slate-100 dark:border-slate-850">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-3 border-t border-slate-100 dark:border-slate-800">
                     <input
                       type="text"
                       placeholder="Drug name (e.g. Fentanyl)"
                       value={newDrug.name}
                       onChange={(e) => setNewDrug(prev => ({ ...prev, name: e.target.value }))}
-                      className="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 px-3 py-2 rounded-xl text-xs focus:outline-none text-slate-850 dark:text-slate-200"
+                      className="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 px-3 py-2 rounded-xl text-xs focus:outline-none text-slate-800 dark:text-slate-200"
                     />
                     <input
                       type="text"
                       placeholder="Dose (e.g. 50 mcg)"
                       value={newDrug.dose}
                       onChange={(e) => setNewDrug(prev => ({ ...prev, dose: e.target.value }))}
-                      className="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 px-3 py-2 rounded-xl text-xs focus:outline-none text-slate-850 dark:text-slate-200"
+                      className="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 px-3 py-2 rounded-xl text-xs focus:outline-none text-slate-800 dark:text-slate-200"
                     />
                     <button
                       onClick={() => {
@@ -1122,19 +1122,19 @@ export default function SurgeryDashboard({
 
                 {/* Pre-Anaesthesia assessment indicators */}
                 <div className="bg-white dark:bg-slate-900 p-5 rounded-3xl border border-slate-200 dark:border-slate-800 space-y-4">
-                  <h3 className="text-xs font-black tracking-widest uppercase text-slate-400 dark:text-slate-500 border-b border-slate-100 dark:border-slate-850 pb-2">
+                  <h3 className="text-xs font-black tracking-widest uppercase text-slate-400 dark:text-slate-500 border-b border-slate-100 dark:border-slate-800 pb-2">
                     Airway & Ventilation Score
                   </h3>
 
                   <div className="space-y-3">
                     <div className="p-3 bg-slate-50 dark:bg-slate-950 rounded-2xl">
                       <span className="text-[10px] text-gray-400 block font-bold">Mallampati Classification</span>
-                      <span className="text-xs font-black text-slate-850 dark:text-white block mt-1">Class I (Full visibility of tonsils, uvula, and soft palate)</span>
+                      <span className="text-xs font-black text-slate-800 dark:text-white block mt-1">Class I (Full visibility of tonsils, uvula, and soft palate)</span>
                     </div>
 
                     <div className="p-3 bg-slate-50 dark:bg-slate-950 rounded-2xl">
                       <span className="text-[10px] text-gray-400 block font-bold">Ventilation Mode</span>
-                      <span className="text-xs font-black text-slate-850 dark:text-white block mt-1">Volume Controlled (VCV) • Tidal Volume: 450ml</span>
+                      <span className="text-xs font-black text-slate-800 dark:text-white block mt-1">Volume Controlled (VCV) • Tidal Volume: 450ml</span>
                     </div>
 
                     <div className="p-3 bg-slate-50 dark:bg-slate-950 rounded-2xl">
@@ -1164,7 +1164,7 @@ export default function SurgeryDashboard({
                   
                   <div className="space-y-3">
                     {sterilizationQueue.map((tray, i) => (
-                      <div key={i} className="flex justify-between items-center p-3.5 bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-850 rounded-2xl">
+                      <div key={i} className="flex justify-between items-center p-3.5 bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 rounded-2xl">
                         <div>
                           <div className="flex items-center space-x-2">
                             <span className="text-xs font-black text-slate-800 dark:text-white">{tray.name}</span>
@@ -1176,11 +1176,11 @@ export default function SurgeryDashboard({
                           <span className={`text-[8px] font-black uppercase px-2 py-0.5 rounded-full ${
                             tray.status.startsWith('Sterilized') ? 'bg-emerald-100 dark:bg-emerald-950 text-emerald-600' :
                             tray.status.startsWith('Sterilizing') ? 'bg-rose-100 dark:bg-rose-950 text-rose-600 animate-pulse' :
-                            'bg-slate-100 dark:bg-slate-850 text-slate-500'
+                            'bg-slate-100 dark:bg-slate-800 text-slate-500'
                           }`}>
                             {tray.status}
                           </span>
-                          <span className="text-[9px] text-slate-450 dark:text-slate-500 font-bold block mt-1">{tray.timeLeft}</span>
+                          <span className="text-[9px] text-slate-400 dark:text-slate-500 font-bold block mt-1">{tray.timeLeft}</span>
                         </div>
                       </div>
                     ))}
@@ -1193,7 +1193,7 @@ export default function SurgeryDashboard({
                   
                   <div className="p-6 bg-slate-50 dark:bg-slate-950 rounded-3xl text-center border-2 border-dashed border-slate-200 dark:border-slate-800 space-y-3">
                     <Database className="w-8 h-8 text-rose-500 mx-auto opacity-75" />
-                    <p className="text-xs font-bold text-slate-650 dark:text-slate-350">Place sterile tray package on barcode RFID reader area</p>
+                    <p className="text-xs font-bold text-slate-600 dark:text-slate-400">Place sterile tray package on barcode RFID reader area</p>
                     <button 
                       onClick={() => {
                         alert("Simulating RFID scan. Read package barcode: TRAY-2292 (Laparotomy Set A). Expired check: Passed.");
@@ -1218,16 +1218,16 @@ export default function SurgeryDashboard({
               </div>
 
               <div className="bg-white dark:bg-slate-900 p-5 rounded-3xl border border-slate-200 dark:border-slate-800 space-y-4">
-                <h3 className="text-xs font-black tracking-widest uppercase text-slate-400 dark:text-slate-500 border-b border-slate-100 dark:border-slate-850 pb-2">
+                <h3 className="text-xs font-black tracking-widest uppercase text-slate-400 dark:text-slate-500 border-b border-slate-100 dark:border-slate-800 pb-2">
                   UDI / Lot Catalogue Lookup
                 </h3>
 
                 <div className="space-y-3">
                   {implantCatalog.map((imp, i) => (
-                    <div key={i} className="flex justify-between items-center p-3.5 bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-850 rounded-2xl">
+                    <div key={i} className="flex justify-between items-center p-3.5 bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 rounded-2xl">
                       <div>
                         <div className="flex items-center space-x-2">
-                          <span className="text-xs font-black text-slate-850 dark:text-white">{imp.name}</span>
+                          <span className="text-xs font-black text-slate-800 dark:text-white">{imp.name}</span>
                           <span className="text-[8px] bg-slate-250 bg-slate-200 dark:bg-slate-800 text-slate-500 px-1.5 py-0.5 rounded font-mono">{imp.lot}</span>
                         </div>
                         <p className="text-[9px] text-gray-400 mt-1 font-semibold">UDI Barcode: {imp.udi}</p>
@@ -1274,7 +1274,7 @@ export default function SurgeryDashboard({
                       { metric: "Consciousness", desc: "Fully awake (2), Arousable on calling (1), Unresponsive (0)" },
                       { metric: "Oxygen Saturation (SpO2)", desc: "SpO2 > 92% on room air (2), Requires oxygen supplementation (1), SpO2 < 90% (0)" }
                     ].map((ald, i) => (
-                      <div key={i} className="p-3 bg-slate-50 dark:bg-slate-950 rounded-2xl border border-slate-100 dark:border-slate-850">
+                      <div key={i} className="p-3 bg-slate-50 dark:bg-slate-950 rounded-2xl border border-slate-100 dark:border-slate-800">
                         <div className="flex justify-between items-start">
                           <div>
                             <h4 className="text-xs font-black text-slate-800 dark:text-white">{ald.metric}</h4>
@@ -1295,7 +1295,7 @@ export default function SurgeryDashboard({
                 <div className="bg-white dark:bg-slate-900 p-5 rounded-3xl border border-slate-200 dark:border-slate-800 space-y-4">
                   <h3 className="text-xs font-black tracking-widest uppercase text-slate-400 dark:text-slate-500">Recovery & Ward Transfer</h3>
                   
-                  <div className="space-y-3 text-[11px] leading-relaxed text-slate-600 dark:text-slate-450">
+                  <div className="space-y-3 text-[11px] leading-relaxed text-slate-600 dark:text-slate-400">
                     <p>
                       <strong>Current Score:</strong> 10 / 10 (Aldrete Cleared)
                     </p>
@@ -1330,7 +1330,7 @@ export default function SurgeryDashboard({
                 
                 {/* OT Utilization Chart */}
                 <div className="bg-white dark:bg-slate-900 p-5 rounded-3xl border border-slate-200 dark:border-slate-800 text-center space-y-3">
-                  <h3 className="text-xs font-black tracking-widest uppercase text-slate-450 dark:text-slate-500">Weekly OT Utilization</h3>
+                  <h3 className="text-xs font-black tracking-widest uppercase text-slate-400 dark:text-slate-500">Weekly OT Utilization</h3>
                   
                   {/* Simulated Bar Graph */}
                   <div className="flex justify-between items-end h-32 px-4 pt-4">
@@ -1353,7 +1353,7 @@ export default function SurgeryDashboard({
 
                 {/* Delay reason analysis */}
                 <div className="bg-white dark:bg-slate-900 p-5 rounded-3xl border border-slate-200 dark:border-slate-800 space-y-4">
-                  <h3 className="text-xs font-black tracking-widest uppercase text-slate-450 dark:text-slate-500">Common Delay Causes (This Month)</h3>
+                  <h3 className="text-xs font-black tracking-widest uppercase text-slate-400 dark:text-slate-500">Common Delay Causes (This Month)</h3>
 
                   <div className="space-y-3">
                     {[
@@ -1377,10 +1377,10 @@ export default function SurgeryDashboard({
 
                 {/* Cancel cases */}
                 <div className="bg-white dark:bg-slate-900 p-5 rounded-3xl border border-slate-200 dark:border-slate-800 space-y-3 text-center">
-                  <h3 className="text-xs font-black tracking-widest uppercase text-slate-450 dark:text-slate-500">Cancellation Risk Index</h3>
+                  <h3 className="text-xs font-black tracking-widest uppercase text-slate-400 dark:text-slate-500">Cancellation Risk Index</h3>
                   <div className="py-6">
                     <span className="text-3xl font-black text-rose-500">1.8%</span>
-                    <span className="text-[9px] text-slate-450 dark:text-slate-500 font-bold block mt-1 uppercase">Target limit &lt; 2.5%</span>
+                    <span className="text-[9px] text-slate-400 dark:text-slate-500 font-bold block mt-1 uppercase">Target limit &lt; 2.5%</span>
                   </div>
                   <p className="text-[9px] leading-relaxed text-slate-500">
                     AI recommendation: Optimizing surgery schedules using predictive turnaround buffers has lowered late cancellations by 14% since May.

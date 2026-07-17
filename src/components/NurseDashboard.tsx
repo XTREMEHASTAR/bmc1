@@ -921,7 +921,7 @@ export default function NurseDashboard({
   };
 
   return (
-    <div className={`min-h-screen font-sans flex transition-colors duration-300 ${isDarkMode ? 'bg-[#090d16] text-slate-200' : 'bg-[#F8FAFD] text-slate-850'}`}>
+    <div className={`min-h-screen font-sans flex transition-colors duration-300 ${isDarkMode ? 'bg-[#090d16] text-slate-200' : 'bg-[#F8FAFD] text-slate-800'}`}>
       
       {/* Sidebar Navigation */}
       <aside className={`w-72 flex flex-col justify-between border-r ${isDarkMode ? 'bg-[#0f1524] border-slate-800' : 'bg-white border-[#E8EDF5]'} p-4`}>
@@ -1083,7 +1083,7 @@ export default function NurseDashboard({
               />
             </div>
             <div>
-              <h4 className={`text-xs font-black ${isDarkMode ? 'text-white' : 'text-slate-850'}`}>{nurseName}</h4>
+              <h4 className={`text-xs font-black ${isDarkMode ? 'text-white' : 'text-slate-800'}`}>{nurseName}</h4>
               <p className="text-[10px] text-gray-400">{assignedWard}</p>
             </div>
           </div>
@@ -1127,7 +1127,7 @@ export default function NurseDashboard({
                   key={l}
                   onClick={() => setLang(l)}
                   className={`px-2.5 py-1 text-[10px] font-bold rounded-lg transition-all ${
-                    lang === l ? 'bg-[#0A5BFF] text-white shadow-sm' : (isDarkMode ? 'text-gray-400 hover:text-gray-200' : 'text-slate-500 hover:text-slate-850')
+                    lang === l ? 'bg-[#0A5BFF] text-white shadow-sm' : (isDarkMode ? 'text-gray-400 hover:text-gray-200' : 'text-slate-500 hover:text-slate-800')
                   }`}
                 >
                   {l.toUpperCase()}
@@ -1240,7 +1240,7 @@ export default function NurseDashboard({
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {/* Lab exception 1 */}
-                    <div className={`p-3.5 rounded-2xl border text-xs flex justify-between items-center ${isDarkMode ? 'bg-slate-950 border-slate-850' : 'bg-white border-[#E8EDF5] text-slate-850 shadow-sm'}`}>
+                    <div className={`p-3.5 rounded-2xl border text-xs flex justify-between items-center ${isDarkMode ? 'bg-slate-950 border-slate-800' : 'bg-white border-[#E8EDF5] text-slate-800 shadow-sm'}`}>
                       <div className="space-y-1">
                         <span className="text-[9px] bg-red-650/10 text-red-500 font-black px-1.5 py-0.5 rounded">CRITICAL LAB</span>
                         <h4 className="font-bold text-xs">Bed 403 - Ramesh Joshi</h4>
@@ -1255,7 +1255,7 @@ export default function NurseDashboard({
                     </div>
 
                     {/* Lab exception 2 */}
-                    <div className={`p-3.5 rounded-2xl border text-xs flex justify-between items-center ${isDarkMode ? 'bg-slate-950 border-slate-850' : 'bg-white border-[#E8EDF5] text-slate-850 shadow-sm'}`}>
+                    <div className={`p-3.5 rounded-2xl border text-xs flex justify-between items-center ${isDarkMode ? 'bg-slate-950 border-slate-800' : 'bg-white border-[#E8EDF5] text-slate-800 shadow-sm'}`}>
                       <div className="space-y-1">
                         <span className="text-[9px] bg-red-650/10 text-red-500 font-black px-1.5 py-0.5 rounded">CRITICAL LAB</span>
                         <h4 className="font-bold text-xs">Bed 401 - Rahul Patil</h4>
@@ -1427,7 +1427,7 @@ export default function NurseDashboard({
                             selectedPatientId === wp.id
                               ? 'bg-[#0A5BFF]/10 border-[#0A5BFF] text-[#0A5BFF]'
                               : isDarkMode
-                              ? 'bg-slate-950 border-slate-850 hover:bg-slate-900'
+                              ? 'bg-slate-950 border-slate-800 hover:bg-slate-900'
                               : 'bg-white border-[#E8EDF5] hover:bg-slate-50 shadow-sm text-slate-800'
                           }`}
                         >
@@ -1443,7 +1443,7 @@ export default function NurseDashboard({
                               />
                             </div>
                             <div>
-                              <h4 className={`text-xs font-black ${isDarkMode ? 'text-white' : 'text-slate-850'}`}>{wp.name}</h4>
+                              <h4 className={`text-xs font-black ${isDarkMode ? 'text-white' : 'text-slate-800'}`}>{wp.name}</h4>
                               <p className="text-[10px] text-gray-400">{wp.bedNo} • {wp.diagnosis.split(' - ')[0]}</p>
                             </div>
                           </div>
@@ -1639,7 +1639,7 @@ export default function NurseDashboard({
                           className={`p-3 rounded-2xl border flex items-center justify-between cursor-pointer transition-all ${
                             t.completed 
                               ? (isDarkMode ? 'bg-slate-900/40 border-slate-800 text-gray-500 line-through' : 'bg-slate-50 border-[#E8EDF5] text-slate-400 line-through') 
-                              : (isDarkMode ? 'bg-slate-900 border-slate-800 hover:bg-slate-850 text-white' : 'bg-white border-[#E8EDF5] hover:bg-slate-50 text-slate-800 shadow-sm')
+                              : (isDarkMode ? 'bg-slate-900 border-slate-800 hover:bg-slate-800 text-white' : 'bg-white border-[#E8EDF5] hover:bg-slate-50 text-slate-800 shadow-sm')
                           }`}
                         >
                           <div className="flex items-center space-x-3">
@@ -1668,11 +1668,11 @@ export default function NurseDashboard({
               <div className="xl:sticky xl:top-0 space-y-6">
                 
                 <div className={`p-5 rounded-3xl border ${
-                  isDarkMode ? 'bg-[#0f1524] border-slate-800 text-white' : 'bg-white border-[#E8EDF5] text-slate-850 shadow-lg'
+                  isDarkMode ? 'bg-[#0f1524] border-slate-800 text-white' : 'bg-white border-[#E8EDF5] text-slate-800 shadow-lg'
                 } space-y-5`}>
                   
                   {/* Avatar / Identity header */}
-                  <div className="flex items-center space-x-3.5 pb-4 border-b border-gray-100 dark:border-slate-850">
+                  <div className="flex items-center space-x-3.5 pb-4 border-b border-gray-100 dark:border-slate-800">
                     <div className={`w-14 h-14 rounded-full overflow-hidden border-2 ${
                       activePatient.priority === 'Emergency'
                         ? 'border-red-500'
@@ -1702,7 +1702,7 @@ export default function NurseDashboard({
                   </div>
 
                   {/* SVG ECG Telemetry Wave */}
-                  <div className={`p-3 rounded-2xl border space-y-2 ${isDarkMode ? 'bg-slate-950 border-slate-850' : 'bg-slate-50 border-[#E8EDF5]'}`}>
+                  <div className={`p-3 rounded-2xl border space-y-2 ${isDarkMode ? 'bg-slate-950 border-slate-800' : 'bg-slate-50 border-[#E8EDF5]'}`}>
                     <div className="flex justify-between items-center text-[10px]">
                       <span className={`font-black tracking-widest flex items-center space-x-1 ${isDarkMode ? 'text-emerald-400' : 'text-[#0A5BFF]'}`}>
                         <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping mr-1" />
@@ -1714,7 +1714,7 @@ export default function NurseDashboard({
                       <svg viewBox="0 0 100 40" className="w-full h-full text-[#0A5BFF] stroke-current stroke-2 fill-none">
                         <path d={"M " + ecgLine.map((val, idx) => `${idx * 2.5} ${val / 2.5}`).join(" L ")} />
                       </svg>
-                      <div className="absolute right-2 top-1 flex items-center space-x-1 bg-slate-900/80 px-1.5 py-0.5 rounded border border-slate-850">
+                      <div className="absolute right-2 top-1 flex items-center space-x-1 bg-slate-900/80 px-1.5 py-0.5 rounded border border-slate-800">
                         <Heart className="w-3 h-3 text-red-500 fill-red-500 animate-pulse" />
                         <span className={`text-[10px] font-black font-mono ${isDarkMode ? 'text-emerald-400' : 'text-[#0A5BFF]'}`}>{activePatient.vitals.pulse}</span>
                       </div>
@@ -1723,27 +1723,27 @@ export default function NurseDashboard({
 
                   {/* Vitals grid cards */}
                   <div className="grid grid-cols-2 gap-3">
-                    <div className={`p-3 rounded-xl border ${isDarkMode ? 'bg-slate-900/60 border-slate-850 text-white' : 'bg-white border-[#E8EDF5] text-slate-800 shadow-sm'}`}>
+                    <div className={`p-3 rounded-xl border ${isDarkMode ? 'bg-slate-900/60 border-slate-800 text-white' : 'bg-white border-[#E8EDF5] text-slate-800 shadow-sm'}`}>
                       <p className="text-[9px] text-gray-400 font-bold uppercase">BLOOD PRESSURE</p>
-                      <p className={`text-xs font-black mt-1 ${isDarkMode ? 'text-white' : 'text-slate-850'}`}>{activePatient.vitals.bp} mmHg</p>
+                      <p className={`text-xs font-black mt-1 ${isDarkMode ? 'text-white' : 'text-slate-800'}`}>{activePatient.vitals.bp} mmHg</p>
                     </div>
 
-                    <div className={`p-3 rounded-xl border ${isDarkMode ? 'bg-slate-900/60 border-slate-850 text-white' : 'bg-white border-[#E8EDF5] text-slate-800 shadow-sm'}`}>
+                    <div className={`p-3 rounded-xl border ${isDarkMode ? 'bg-slate-900/60 border-slate-800 text-white' : 'bg-white border-[#E8EDF5] text-slate-800 shadow-sm'}`}>
                       <p className="text-[9px] text-gray-400 font-bold uppercase">HEART RATE</p>
                       <p className="text-xs font-black text-[#0A5BFF] mt-1">{activePatient.vitals.pulse} BPM</p>
                     </div>
 
-                    <div className={`p-3 rounded-xl border ${isDarkMode ? 'bg-slate-900/60 border-slate-850 text-white' : 'bg-white border-[#E8EDF5] text-slate-800 shadow-sm'}`}>
+                    <div className={`p-3 rounded-xl border ${isDarkMode ? 'bg-slate-900/60 border-slate-800 text-white' : 'bg-white border-[#E8EDF5] text-slate-800 shadow-sm'}`}>
                       <p className="text-[9px] text-gray-400 font-bold uppercase">OXYGEN SAT</p>
                       <p className={`text-xs font-black mt-1 ${
                         activePatient.vitals.spo2 < 94 ? 'text-red-500' : 'text-emerald-400'
                       }`}>{activePatient.vitals.spo2}% SpO2</p>
                     </div>
 
-                    <div className={`p-3 rounded-xl border ${isDarkMode ? 'bg-slate-900/60 border-slate-850 text-white' : 'bg-white border-[#E8EDF5] text-slate-800 shadow-sm'}`}>
+                    <div className={`p-3 rounded-xl border ${isDarkMode ? 'bg-slate-900/60 border-slate-800 text-white' : 'bg-white border-[#E8EDF5] text-slate-800 shadow-sm'}`}>
                       <p className="text-[9px] text-gray-400 font-bold uppercase">TEMPERATURE</p>
                       <p className={`text-xs font-black mt-1 ${
-                        activePatient.vitals.temp > 100 ? 'text-red-500' : (isDarkMode ? 'text-white' : 'text-slate-850')
+                        activePatient.vitals.temp > 100 ? 'text-red-500' : (isDarkMode ? 'text-white' : 'text-slate-800')
                       }`}>{activePatient.vitals.temp} °F</p>
                     </div>
                   </div>
@@ -1755,7 +1755,7 @@ export default function NurseDashboard({
                   </div>
 
                   {/* Attending Team / Diagnosis info */}
-                  <div className={`p-3.5 rounded-2xl border space-y-2 text-xs ${isDarkMode ? 'bg-slate-900/40 border-slate-850 text-white' : 'bg-slate-50 border-[#E8EDF5] text-slate-800'}`}>
+                  <div className={`p-3.5 rounded-2xl border space-y-2 text-xs ${isDarkMode ? 'bg-slate-900/40 border-slate-800 text-white' : 'bg-slate-50 border-[#E8EDF5] text-slate-800'}`}>
                     <div className={`flex justify-between items-center ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
                       <span>Attending Doctor:</span>
                       <span className={`font-bold ${isDarkMode ? 'text-white' : 'text-slate-800'}`}>{activePatient.doctorName}</span>
@@ -1767,7 +1767,7 @@ export default function NurseDashboard({
                   </div>
 
                   {/* Medications schedule checklists */}
-                  <div className="space-y-2 pt-2 border-t border-gray-100 dark:border-slate-850">
+                  <div className="space-y-2 pt-2 border-t border-gray-100 dark:border-slate-800">
                     <div className="flex justify-between items-center text-xs">
                       <span className="font-black text-[10px] text-gray-400 uppercase">Medication Schedule</span>
                       <span className="text-[9px] text-orange-400 font-bold">
@@ -1777,9 +1777,9 @@ export default function NurseDashboard({
 
                     <div className="space-y-1.5 max-h-36 overflow-y-auto no-scrollbar">
                       {activePatient.medications.map((m, idx) => (
-                        <div key={idx} className={`p-2.5 rounded-xl border flex justify-between items-center ${isDarkMode ? 'bg-slate-950 border-slate-850 text-white' : 'bg-white border-[#E8EDF5] text-slate-800 shadow-sm'}`}>
+                        <div key={idx} className={`p-2.5 rounded-xl border flex justify-between items-center ${isDarkMode ? 'bg-slate-950 border-slate-800 text-white' : 'bg-white border-[#E8EDF5] text-slate-800 shadow-sm'}`}>
                           <div className="space-y-0.5">
-                            <h5 className={`text-[11px] font-black ${isDarkMode ? 'text-white' : 'text-slate-850'}`}>{m.name}</h5>
+                            <h5 className={`text-[11px] font-black ${isDarkMode ? 'text-white' : 'text-slate-800'}`}>{m.name}</h5>
                             <p className="text-[9px] text-gray-400">{m.dose} • {m.time}</p>
                           </div>
                           {m.status === 'Pending' ? (
@@ -1809,7 +1809,7 @@ export default function NurseDashboard({
                     </button>
                     <button 
                       onClick={() => setActiveTab('handover')}
-                      className={`border py-2.5 rounded-xl text-[10px] font-bold text-center cursor-pointer ${isDarkMode ? 'bg-slate-900 border-slate-800 hover:bg-slate-850 text-gray-300' : 'bg-white border-[#E8EDF5] hover:bg-slate-50 text-slate-700'}`}
+                      className={`border py-2.5 rounded-xl text-[10px] font-bold text-center cursor-pointer ${isDarkMode ? 'bg-slate-900 border-slate-800 hover:bg-slate-800 text-gray-300' : 'bg-white border-[#E8EDF5] hover:bg-slate-50 text-slate-700'}`}
                     >
                       Shift Handover
                     </button>
@@ -1896,7 +1896,7 @@ export default function NurseDashboard({
                             {nurse.workloadScore}%
                           </span>
                         </div>
-                        <div className={`w-full h-1.5 rounded-full overflow-hidden ${isDarkMode ? 'bg-slate-850' : 'bg-slate-200'}`}>
+                        <div className={`w-full h-1.5 rounded-full overflow-hidden ${isDarkMode ? 'bg-slate-800' : 'bg-slate-200'}`}>
                           <div
                             className={`h-full rounded-full transition-all duration-500 ${
                               nurse.workloadScore > 80 ? 'bg-red-500' : nurse.workloadScore > 50 ? 'bg-amber-500' : 'bg-emerald-500'
@@ -1909,7 +1909,7 @@ export default function NurseDashboard({
                             <span
                               key={bed}
                               className={`text-[9px] font-mono font-bold px-2 py-0.5 rounded ${
-                                isDarkMode ? 'bg-slate-950 border border-slate-800 text-gray-400' : 'bg-white border border-[#E8EDF5] text-slate-650'
+                                isDarkMode ? 'bg-slate-950 border border-slate-800 text-gray-400' : 'bg-white border border-[#E8EDF5] text-slate-600'
                               }`}
                             >
                               {bed}
@@ -1929,9 +1929,9 @@ export default function NurseDashboard({
               <div className={`p-6 rounded-3xl border ${isDarkMode ? 'bg-[#0f1524] border-slate-800' : 'bg-white border-[#E8EDF5]'} grid grid-cols-1 md:grid-cols-3 gap-6`}>
                 
                 {/* Room 4 Card */}
-                <div className={`border p-4 rounded-2xl space-y-4 ${isDarkMode ? 'border-slate-800 bg-slate-900/50 text-white' : 'border-[#E8EDF5] bg-[#F8FAFD] text-slate-850'}`}>
+                <div className={`border p-4 rounded-2xl space-y-4 ${isDarkMode ? 'border-slate-800 bg-slate-900/50 text-white' : 'border-[#E8EDF5] bg-[#F8FAFD] text-slate-800'}`}>
                   <div className={`flex justify-between items-center pb-2 border-b ${isDarkMode ? 'border-slate-800' : 'border-[#E8EDF5]'}`}>
-                    <span className={`text-xs font-black ${isDarkMode ? 'text-white' : 'text-slate-850'}`}>Orthopedic Room 4</span>
+                    <span className={`text-xs font-black ${isDarkMode ? 'text-white' : 'text-slate-800'}`}>Orthopedic Room 4</span>
                     <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full ${isDarkMode ? 'bg-emerald-500/10 text-emerald-400' : 'bg-emerald-50 text-emerald-600 border border-emerald-200'}`}>General Ward</span>
                   </div>
                   <div className="grid grid-cols-1 gap-3">
@@ -1983,11 +1983,11 @@ export default function NurseDashboard({
                 </div>
 
                 {/* Room 5 (Isolation / High Risk Room) */}
-                <div className={`border p-4 rounded-2xl space-y-4 relative overflow-hidden ${isDarkMode ? 'border-red-500/20 bg-slate-900/50 text-white' : 'border-red-200 bg-red-50/30 text-slate-850'}`}>
+                <div className={`border p-4 rounded-2xl space-y-4 relative overflow-hidden ${isDarkMode ? 'border-red-500/20 bg-slate-900/50 text-white' : 'border-red-200 bg-red-50/30 text-slate-800'}`}>
                   {/* Subtle red accent stripe */}
                   <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-red-500 via-red-400 to-orange-500" />
                   <div className={`flex justify-between items-center pb-2 border-b ${isDarkMode ? 'border-slate-800' : 'border-red-100'}`}>
-                    <span className={`text-xs font-black ${isDarkMode ? 'text-white' : 'text-slate-850'}`}>Room 5 (Isolation & Triage)</span>
+                    <span className={`text-xs font-black ${isDarkMode ? 'text-white' : 'text-slate-800'}`}>Room 5 (Isolation & Triage)</span>
                     <span className={`text-[9px] font-black px-2 py-0.5 rounded-full flex items-center space-x-1 ${isDarkMode ? 'bg-red-500/15 text-red-400 border border-red-500/20' : 'bg-red-100 text-red-700 border border-red-200'}`}>
                       <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
                       <span>HIGH RISK</span>
@@ -2048,9 +2048,9 @@ export default function NurseDashboard({
                 </div>
 
                 {/* Room 6 (Empty Beds / Admission holding) */}
-                <div className={`border p-4 rounded-2xl space-y-4 ${isDarkMode ? 'border-slate-800 bg-slate-900/50 text-white' : 'border-[#E8EDF5] bg-[#F8FAFD] text-slate-850'}`}>
+                <div className={`border p-4 rounded-2xl space-y-4 ${isDarkMode ? 'border-slate-800 bg-slate-900/50 text-white' : 'border-[#E8EDF5] bg-[#F8FAFD] text-slate-800'}`}>
                   <div className={`flex justify-between items-center pb-2 border-b ${isDarkMode ? 'border-slate-800' : 'border-[#E8EDF5]'}`}>
-                    <span className={`text-xs font-black ${isDarkMode ? 'text-white' : 'text-slate-850'}`}>Room 6 (Holding Area)</span>
+                    <span className={`text-xs font-black ${isDarkMode ? 'text-white' : 'text-slate-800'}`}>Room 6 (Holding Area)</span>
                     <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full ${isDarkMode ? 'bg-[#0A5BFF]/10 text-blue-400' : 'bg-blue-50 text-[#0A5BFF] border border-blue-200'}`}>2 FREE BEDS</span>
                   </div>
                   <div className="grid grid-cols-1 gap-3">
@@ -2255,7 +2255,7 @@ export default function NurseDashboard({
                 <h3 className={`font-extrabold text-sm border-b pb-2 ${isDarkMode ? 'border-slate-800' : 'border-[#E8EDF5] text-slate-800'}`}>Family Communication Updates (SMS/WhatsApp Gateway)</h3>
                 <div className="space-y-3 max-h-[300px] overflow-y-auto no-scrollbar">
                   {familyLogs.filter(log => log.patientId === activePatient.id).map(log => (
-                    <div key={log.id} className={`p-3 rounded-2xl border ${isDarkMode ? 'bg-slate-950 border-slate-850' : 'bg-slate-50 border-[#E8EDF5] text-slate-800'}`}>
+                    <div key={log.id} className={`p-3 rounded-2xl border ${isDarkMode ? 'bg-slate-950 border-slate-800' : 'bg-slate-50 border-[#E8EDF5] text-slate-800'}`}>
                       <div className="flex justify-between items-center text-[10px] mb-1">
                         <span className="font-bold text-emerald-400 flex items-center space-x-1">
                           <Check className="w-3 h-3 text-emerald-400" />
@@ -2263,7 +2263,7 @@ export default function NurseDashboard({
                         </span>
                         <span className="text-gray-500 font-mono">{log.time}</span>
                       </div>
-                      <p className={`text-[11px] leading-relaxed ${isDarkMode ? 'text-gray-300' : 'text-slate-650'}`}>{log.message}</p>
+                      <p className={`text-[11px] leading-relaxed ${isDarkMode ? 'text-gray-300' : 'text-slate-600'}`}>{log.message}</p>
                     </div>
                   ))}
                   {familyLogs.filter(log => log.patientId === activePatient.id).length === 0 && (
@@ -2608,10 +2608,10 @@ export default function NurseDashboard({
 
               <div className={`p-5 rounded-3xl border ${isDarkMode ? 'bg-[#0f1524] border-slate-800' : 'bg-white border-[#E8EDF5]'} space-y-4`}>
                 <div className="space-y-3">
-                  <div className={`p-4 rounded-2xl p-4 rounded-2xl border flex justify-between items-start ${isDarkMode ? 'bg-slate-950 border-slate-850 text-white' : 'bg-slate-50 border-[#E8EDF5] text-slate-850'}`}>
+                  <div className={`p-4 rounded-2xl p-4 rounded-2xl border flex justify-between items-start ${isDarkMode ? 'bg-slate-950 border-slate-800 text-white' : 'bg-slate-50 border-[#E8EDF5] text-slate-800'}`}>
                     <div className="space-y-1">
                       <span className="text-[9px] bg-red-650/20 text-red-400 px-2 py-0.5 rounded font-black uppercase">URGENT</span>
-                      <h4 className={`text-xs font-black ${isDarkMode ? 'text-white' : 'text-slate-850'}`}>IV Paracetamol 1g Slow Infusion</h4>
+                      <h4 className={`text-xs font-black ${isDarkMode ? 'text-white' : 'text-slate-800'}`}>IV Paracetamol 1g Slow Infusion</h4>
                       <p className="text-[10px] text-gray-400">Ordered by Dr. Anil Patil • Bed 403 Ramesh Joshi • For high fever spike</p>
                     </div>
                     <button
@@ -2624,10 +2624,10 @@ export default function NurseDashboard({
                     </button>
                   </div>
 
-                  <div className={`p-4 rounded-2xl p-4 rounded-2xl border flex justify-between items-start ${isDarkMode ? 'bg-slate-950 border-slate-850 text-white' : 'bg-slate-50 border-[#E8EDF5] text-slate-850'}`}>
+                  <div className={`p-4 rounded-2xl p-4 rounded-2xl border flex justify-between items-start ${isDarkMode ? 'bg-slate-950 border-slate-800 text-white' : 'bg-slate-50 border-[#E8EDF5] text-slate-800'}`}>
                     <div className="space-y-1">
                       <span className="text-[9px] bg-slate-800 text-gray-400 px-2 py-0.5 rounded font-black uppercase">ROUTINE</span>
-                      <h4 className={`text-xs font-black ${isDarkMode ? 'text-white' : 'text-slate-850'}`}>Post-op Range of Motion (ROM) assessment</h4>
+                      <h4 className={`text-xs font-black ${isDarkMode ? 'text-white' : 'text-slate-800'}`}>Post-op Range of Motion (ROM) assessment</h4>
                       <p className="text-[10px] text-gray-400">Ordered by Dr. Anil Patil • Bed 401 Rahul Patil • Post-op knee rehabilitation</p>
                     </div>
                     <button
@@ -2671,7 +2671,7 @@ export default function NurseDashboard({
                           return p;
                         }));
                       }}
-                      className={`p-4 rounded-2xl border flex justify-between items-center ${isDarkMode ? 'bg-slate-950 border-slate-850 text-white' : 'bg-slate-50 border-[#E8EDF5] text-slate-800 shadow-sm'} cursor-pointer hover:bg-slate-900 transition-all`}
+                      className={`p-4 rounded-2xl border flex justify-between items-center ${isDarkMode ? 'bg-slate-950 border-slate-800 text-white' : 'bg-slate-50 border-[#E8EDF5] text-slate-800 shadow-sm'} cursor-pointer hover:bg-slate-900 transition-all`}
                     >
                       <div className="flex items-center space-x-3">
                         <div className={`w-5 h-5 rounded-md border flex items-center justify-center ${
@@ -2680,7 +2680,7 @@ export default function NurseDashboard({
                           {t.completed && <Check className="w-3.5 h-3.5 stroke-[3]" />}
                         </div>
                         <div className="space-y-0.5">
-                          <h4 className={`text-xs font-bold ${t.completed ? 'text-gray-400 line-through' : (isDarkMode ? 'text-white' : 'text-slate-850')}`}>{t.title}</h4>
+                          <h4 className={`text-xs font-bold ${t.completed ? 'text-gray-400 line-through' : (isDarkMode ? 'text-white' : 'text-slate-800')}`}>{t.title}</h4>
                           <p className="text-[10px] text-gray-400">Target Time: {t.due} • Patient: {activePatient.name}</p>
                         </div>
                       </div>
@@ -2721,7 +2721,7 @@ export default function NurseDashboard({
                     <p className="text-xs text-gray-400">Press record and summarize the shift verbally. The AI Assistant will auto-parse the summary into structured EMR notes.</p>
                   </div>
 
-                  <div className={`flex flex-col items-center justify-center p-6 rounded-2xl space-y-4 border ${isDarkMode ? 'bg-slate-950 border-slate-850' : 'bg-slate-50 border-[#E8EDF5]'}`}>
+                  <div className={`flex flex-col items-center justify-center p-6 rounded-2xl space-y-4 border ${isDarkMode ? 'bg-slate-950 border-slate-800' : 'bg-slate-50 border-[#E8EDF5]'}`}>
                     <button
                       type="button"
                       onClick={toggleHandoverVoiceRecorder}
@@ -2741,15 +2741,15 @@ export default function NurseDashboard({
                       <textarea
                         value={recordedHandoverText}
                         onChange={(e) => setRecordedHandoverText(e.target.value)}
-                        className={`w-full h-32 border rounded-xl p-3 text-xs focus:outline-none focus:ring-1 focus:ring-[#0A5BFF] mt-4 leading-relaxed ${isDarkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-white border-[#E8EDF5] text-slate-850'}`}
+                        className={`w-full h-32 border rounded-xl p-3 text-xs focus:outline-none focus:ring-1 focus:ring-[#0A5BFF] mt-4 leading-relaxed ${isDarkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-white border-[#E8EDF5] text-slate-800'}`}
                       />
                     )}
                   </div>
 
                   {/* Handover summary checklist */}
-                  <div className={`p-4 rounded-2xl text-xs space-y-2 border ${isDarkMode ? 'bg-slate-950 border-slate-850 text-white' : 'bg-slate-50 border-[#E8EDF5] text-slate-850'}`}>
+                  <div className={`p-4 rounded-2xl text-xs space-y-2 border ${isDarkMode ? 'bg-slate-950 border-slate-800 text-white' : 'bg-slate-50 border-[#E8EDF5] text-slate-800'}`}>
                     <span className="font-black text-[10px] text-emerald-500 dark:text-emerald-400 block uppercase">AI-COMPILED SHIFT OUTCOMES:</span>
-                    <ul className={`list-disc list-inside space-y-1.5 ${isDarkMode ? 'text-gray-300' : 'text-slate-650'}`}>
+                    <ul className={`list-disc list-inside space-y-1.5 ${isDarkMode ? 'text-gray-300' : 'text-slate-600'}`}>
                       <li>Active Ward Occupancy: <strong>{wardPatients.length} Patients</strong> currently admitted.</li>
                       <li>Medication Schedule: <strong>{wardPatients.reduce((sum, p) => sum + p.medications.filter(m => m.status === 'Pending').length, 0)} doses pending</strong>; {wardPatients.reduce((sum, p) => sum + p.medications.filter(m => m.status === 'Administered').length, 0)} administered.</li>
                       <li>Incomplete Care Tasks: <strong>{wardPatients.reduce((sum, p) => sum + p.tasks.filter(t => !t.completed).length, 0)} checklist tasks</strong> outstanding.</li>
@@ -2808,7 +2808,7 @@ export default function NurseDashboard({
                     {signaturePaths.length > 0 && (
                       <button
                         onClick={clearSignature}
-                        className={`absolute bottom-2 right-2 p-2 rounded-lg text-[9px] border ${isDarkMode ? 'bg-slate-800 text-gray-450 hover:text-white border-transparent' : 'bg-white text-slate-600 hover:bg-slate-50 border-[#E8EDF5]'}`}
+                        className={`absolute bottom-2 right-2 p-2 rounded-lg text-[9px] border ${isDarkMode ? 'bg-slate-800 text-gray-400 hover:text-white border-transparent' : 'bg-white text-slate-600 hover:bg-slate-50 border-[#E8EDF5]'}`}
                       >
                         Clear
                       </button>
@@ -2831,7 +2831,7 @@ export default function NurseDashboard({
                 <h3 className={`font-extrabold text-sm border-b pb-2 ${isDarkMode ? 'border-slate-800' : 'border-[#E8EDF5] text-slate-800'}`}>Shift Handover Audit Records</h3>
                 <div className="space-y-3">
                   {handoverLogs.map(hl => (
-                    <div key={hl.id} className={`p-4 rounded-2xl border flex justify-between items-start ${isDarkMode ? 'bg-slate-950 border-slate-850 text-white' : 'bg-slate-50 border-[#E8EDF5] text-slate-800'}`}>
+                    <div key={hl.id} className={`p-4 rounded-2xl border flex justify-between items-start ${isDarkMode ? 'bg-slate-950 border-slate-800 text-white' : 'bg-slate-50 border-[#E8EDF5] text-slate-800'}`}>
                       <div className="space-y-1">
                         <span className="text-[10px] font-black text-emerald-400">{hl.date}</span>
                         <p className={`text-xs leading-relaxed ${isDarkMode ? 'text-gray-300' : 'text-slate-750'}`}>{hl.summary}</p>
@@ -2861,10 +2861,10 @@ export default function NurseDashboard({
               <div className={`p-6 rounded-3xl border ${isDarkMode ? 'bg-[#0f1524] border-slate-800' : 'bg-white border-[#E8EDF5]'} space-y-4`}>
                 <div className="space-y-3">
                   {inventory.map((item, idx) => (
-                    <div key={idx} className={`p-4 rounded-2xl border flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 ${isDarkMode ? 'bg-slate-950 border-slate-850 text-white' : 'bg-slate-50 border-[#E8EDF5] text-slate-850'}`}>
+                    <div key={idx} className={`p-4 rounded-2xl border flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 ${isDarkMode ? 'bg-slate-950 border-slate-800 text-white' : 'bg-slate-50 border-[#E8EDF5] text-slate-800'}`}>
                       <div className="space-y-1">
                         <span className="text-[10px] font-black text-gray-500 uppercase">{item.type}</span>
-                        <h4 className={`text-xs font-black ${isDarkMode ? 'text-white' : 'text-slate-850'}`}>{item.name}</h4>
+                        <h4 className={`text-xs font-black ${isDarkMode ? 'text-white' : 'text-slate-800'}`}>{item.name}</h4>
                         <p className="text-[10px] text-gray-400">Stock: {item.stock} {item.unit} (Min Threshold: {item.minStock} {item.unit})</p>
                       </div>
 
@@ -2913,10 +2913,10 @@ export default function NurseDashboard({
                         key={th}
                         onClick={() => setActiveChatThread(th)}
                         className={`p-3 rounded-2xl border cursor-pointer transition-all ${
-                          activeChatThread === th ? 'bg-[#0A5BFF]/10 border-[#0A5BFF] text-[#0A5BFF]' : isDarkMode ? 'bg-slate-950 border-slate-850 hover:bg-slate-900' : 'bg-slate-50 border-[#E8EDF5] hover:bg-slate-100 text-slate-850'
+                          activeChatThread === th ? 'bg-[#0A5BFF]/10 border-[#0A5BFF] text-[#0A5BFF]' : isDarkMode ? 'bg-slate-950 border-slate-800 hover:bg-slate-900' : 'bg-slate-50 border-[#E8EDF5] hover:bg-slate-100 text-slate-800'
                         }`}
                       >
-                        <h4 className={`text-xs font-black ${isDarkMode ? 'text-white' : 'text-slate-850'}`}>{th}</h4>
+                        <h4 className={`text-xs font-black ${isDarkMode ? 'text-white' : 'text-slate-800'}`}>{th}</h4>
                         <p className="text-[10px] text-gray-500 truncate mt-0.5">
                           {messages.filter(m => m.thread === th).slice(-1)[0]?.text || 'No messages.'}
                         </p>
@@ -2935,7 +2935,7 @@ export default function NurseDashboard({
                         key={msg.id}
                         className={`p-3 rounded-2xl text-xs max-w-[80%] ${
                           msg.sender === 'You'
-                            ? (isDarkMode ? 'bg-[#0A5BFF]/20 border border-[#0A5BFF]/30 text-blue-150 ml-auto' : 'bg-[#0A5BFF] text-white ml-auto')
+                            ? (isDarkMode ? 'bg-[#0A5BFF]/20 border border-[#0A5BFF]/30 text-blue-200 ml-auto' : 'bg-[#0A5BFF] text-white ml-auto')
                             : (isDarkMode ? 'bg-slate-900 border border-slate-800 text-gray-200' : 'bg-slate-50 border border-[#E8EDF5] text-slate-800')
                         }`}
                       >
@@ -2981,7 +2981,7 @@ export default function NurseDashboard({
                       placeholder="Type secure message..."
                       value={chatInput}
                       onChange={(e) => setChatInput(e.target.value)}
-                      className={`flex-1 border rounded-xl px-4 py-3 text-xs focus:outline-none focus:ring-1 focus:ring-[#0A5BFF] ${isDarkMode ? 'bg-slate-950 border-slate-800 text-white' : 'bg-white border-[#E8EDF5] text-slate-850'}`}
+                      className={`flex-1 border rounded-xl px-4 py-3 text-xs focus:outline-none focus:ring-1 focus:ring-[#0A5BFF] ${isDarkMode ? 'bg-slate-950 border-slate-800 text-white' : 'bg-white border-[#E8EDF5] text-slate-800'}`}
                     />
                     <button
                       type="submit"
@@ -3012,9 +3012,9 @@ export default function NurseDashboard({
                     
                     <div className="space-y-4">
                       {/* Biometric toggle */}
-                      <div className={`flex justify-between items-center py-3 border-b ${isDarkMode ? 'border-slate-850' : 'border-[#E8EDF5]'}`}>
+                      <div className={`flex justify-between items-center py-3 border-b ${isDarkMode ? 'border-slate-800' : 'border-[#E8EDF5]'}`}>
                         <div>
-                          <h4 className={`text-xs font-black ${isDarkMode ? 'text-white' : 'text-slate-850'}`}>Biometric Verification Authorization</h4>
+                          <h4 className={`text-xs font-black ${isDarkMode ? 'text-white' : 'text-slate-800'}`}>Biometric Verification Authorization</h4>
                           <p className="text-[10px] text-gray-400 mt-0.5">Require fingerprint signature to authorize medications.</p>
                         </div>
                         <button
@@ -3024,7 +3024,7 @@ export default function NurseDashboard({
                             triggerToast('Biometrics Updated', `Biometric verification is now ${!biometricEnabled ? 'enabled' : 'disabled'}.`, 'success');
                           }}
                           className={`w-12 h-6 rounded-full flex items-center p-0.5 transition-colors duration-200 focus:outline-none ${
-                            biometricEnabled ? 'bg-[#0A5BFF] justify-end' : 'bg-gray-300 dark:bg-slate-850 justify-start'
+                            biometricEnabled ? 'bg-[#0A5BFF] justify-end' : 'bg-gray-300 dark:bg-slate-800 justify-start'
                           }`}
                         >
                           <span className="w-5 h-5 rounded-full bg-white shadow-sm" />
@@ -3032,15 +3032,15 @@ export default function NurseDashboard({
                       </div>
 
                       {/* Offline Mode toggle */}
-                      <div className={`flex justify-between items-center py-3 border-b ${isDarkMode ? 'border-slate-850' : 'border-[#E8EDF5]'}`}>
+                      <div className={`flex justify-between items-center py-3 border-b ${isDarkMode ? 'border-slate-800' : 'border-[#E8EDF5]'}`}>
                         <div>
-                          <h4 className={`text-xs font-black ${isDarkMode ? 'text-white' : 'text-slate-850'}`}>MCGM Offline Mode (Local-First Sync)</h4>
+                          <h4 className={`text-xs font-black ${isDarkMode ? 'text-white' : 'text-slate-800'}`}>MCGM Offline Mode (Local-First Sync)</h4>
                           <p className="text-[10px] text-gray-400 mt-0.5">Suspend central ABHA registry synchronization and enable offline spooler.</p>
                         </div>
                         <button
                           onClick={toggleOfflineMode}
                           className={`w-12 h-6 rounded-full flex items-center p-0.5 transition-colors duration-200 focus:outline-none ${
-                            isOffline ? 'bg-[#0A5BFF] justify-end' : 'bg-gray-300 dark:bg-slate-850 justify-start'
+                            isOffline ? 'bg-[#0A5BFF] justify-end' : 'bg-gray-300 dark:bg-slate-800 justify-start'
                           }`}
                         >
                           <span className="w-5 h-5 rounded-full bg-white shadow-sm" />
@@ -3048,9 +3048,9 @@ export default function NurseDashboard({
                       </div>
 
                       {/* Dark mode toggle */}
-                      <div className={`flex justify-between items-center py-3 border-b ${isDarkMode ? 'border-slate-850' : 'border-[#E8EDF5]'}`}>
+                      <div className={`flex justify-between items-center py-3 border-b ${isDarkMode ? 'border-slate-800' : 'border-[#E8EDF5]'}`}>
                         <div>
-                          <h4 className={`text-xs font-black ${isDarkMode ? 'text-white' : 'text-slate-850'}`}>High Contrast Night-mode</h4>
+                          <h4 className={`text-xs font-black ${isDarkMode ? 'text-white' : 'text-slate-800'}`}>High Contrast Night-mode</h4>
                           <p className="text-[10px] text-gray-400 mt-0.5">Adapt screen colors to zero glare for dark ward settings.</p>
                         </div>
                         <button
@@ -3059,7 +3059,7 @@ export default function NurseDashboard({
                             logSecurityAudit(`Theme Toggle: ${!isDarkMode ? 'Dark' : 'Light'}`, 'Success');
                           }}
                           className={`w-12 h-6 rounded-full flex items-center p-0.5 transition-colors duration-200 focus:outline-none ${
-                            isDarkMode ? 'bg-[#0A5BFF] justify-end' : 'bg-gray-300 dark:bg-slate-850 justify-start'
+                            isDarkMode ? 'bg-[#0A5BFF] justify-end' : 'bg-gray-300 dark:bg-slate-800 justify-start'
                           }`}
                         >
                           <span className="w-5 h-5 rounded-full bg-white shadow-sm" />
@@ -3069,7 +3069,7 @@ export default function NurseDashboard({
                       {/* Nurse ID badging sync */}
                       <div className="flex justify-between items-center py-3">
                         <div>
-                          <h4 className={`text-xs font-black ${isDarkMode ? 'text-white' : 'text-slate-850'}`}>Nurse ID Badging Sync</h4>
+                          <h4 className={`text-xs font-black ${isDarkMode ? 'text-white' : 'text-slate-800'}`}>Nurse ID Badging Sync</h4>
                           <p className="text-[10px] text-gray-400 mt-0.5">Sync RFID badge with Android tablet bluetooth.</p>
                         </div>
                         <span className="text-[10px] font-bold text-[#0A5BFF] uppercase">CONNECTED</span>
@@ -3095,9 +3095,9 @@ export default function NurseDashboard({
                       ) : (
                         <div className="space-y-2 max-h-48 overflow-y-auto pr-2">
                           {offlineQueue.map(item => (
-                            <div key={item.id} className={`p-3 rounded-2xl border flex justify-between items-center ${isDarkMode ? 'bg-slate-900 border-slate-850' : 'bg-slate-50 border-[#E8EDF5]'}`}>
+                            <div key={item.id} className={`p-3 rounded-2xl border flex justify-between items-center ${isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-slate-50 border-[#E8EDF5]'}`}>
                               <div>
-                                <p className={`text-xs font-bold ${isDarkMode ? 'text-white' : 'text-slate-850'}`}>
+                                <p className={`text-xs font-bold ${isDarkMode ? 'text-white' : 'text-slate-800'}`}>
                                   {item.actionType === 'LOG_VITALS' ? 'Log Vitals Metric' : 'Administer Medication'}
                                 </p>
                                 <p className="text-[10px] text-gray-400 mt-0.5">
@@ -3126,7 +3126,7 @@ export default function NurseDashboard({
                     
                     <div className="space-y-3 max-h-[220px] overflow-y-auto pr-1">
                       {securityAudits.map(audit => (
-                        <div key={audit.id} className={`p-3.5 rounded-2xl border text-xs space-y-1.5 ${isDarkMode ? 'bg-slate-900 border-slate-850' : 'bg-slate-50 border-[#E8EDF5]'}`}>
+                        <div key={audit.id} className={`p-3.5 rounded-2xl border text-xs space-y-1.5 ${isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-slate-50 border-[#E8EDF5]'}`}>
                           <div className="flex justify-between items-start">
                             <span className={`font-bold text-[10px] truncate max-w-[130px] ${isDarkMode ? 'text-white' : 'text-slate-800'}`}>{audit.eventType}</span>
                             <span className={`text-[9px] px-1.5 py-0.5 rounded-full font-black uppercase ${
@@ -3141,7 +3141,7 @@ export default function NurseDashboard({
                             <span>{audit.user}</span>
                             <span>IP: {audit.ip}</span>
                           </div>
-                          <div className="text-[9px] text-gray-450 text-right">
+                          <div className="text-[9px] text-gray-400 text-right">
                             {audit.timestamp}
                           </div>
                         </div>
@@ -3158,7 +3158,7 @@ export default function NurseDashboard({
                     
                     <div className="space-y-3 max-h-[220px] overflow-y-auto pr-1">
                       {abhaConsentLogs.map(log => (
-                        <div key={log.id} className={`p-3.5 rounded-2xl border text-xs space-y-1.5 ${isDarkMode ? 'bg-slate-900 border-slate-850' : 'bg-slate-50 border-[#E8EDF5]'}`}>
+                        <div key={log.id} className={`p-3.5 rounded-2xl border text-xs space-y-1.5 ${isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-slate-50 border-[#E8EDF5]'}`}>
                           <div className="flex justify-between items-start">
                             <span className={`font-bold text-[10px] truncate max-w-[130px] ${isDarkMode ? 'text-white' : 'text-slate-800'}`}>{log.actionType}</span>
                             <span className={`text-[9px] px-1.5 py-0.5 rounded-full font-black uppercase ${
@@ -3175,7 +3175,7 @@ export default function NurseDashboard({
                             <span>{log.patientName}</span>
                             <span>GW: {log.gateway}</span>
                           </div>
-                          <div className="text-[9px] text-gray-450 text-right">
+                          <div className="text-[9px] text-gray-400 text-right">
                             {log.timestamp}
                           </div>
                         </div>
@@ -3199,7 +3199,7 @@ export default function NurseDashboard({
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               className={`w-full max-w-md rounded-3xl border p-6 space-y-4 ${
-                isDarkMode ? 'bg-[#0f1524] border-slate-850 text-white' : 'bg-white border-[#E8EDF5] text-slate-850'
+                isDarkMode ? 'bg-[#0f1524] border-slate-800 text-white' : 'bg-white border-[#E8EDF5] text-slate-800'
               }`}
             >
               <div className={`flex justify-between items-center border-b pb-3 ${isDarkMode ? 'border-slate-800' : 'border-[#E8EDF5]'}`}>
@@ -3215,7 +3215,7 @@ export default function NurseDashboard({
                     <QrCode className="w-8 h-8 text-[#0A5BFF]" />
                   </div>
                   <div>
-                    <h4 className={`text-xs font-black ${isDarkMode ? 'text-white' : 'text-slate-850'}`}>Simulating Barcode Laser Scanner</h4>
+                    <h4 className={`text-xs font-black ${isDarkMode ? 'text-white' : 'text-slate-800'}`}>Simulating Barcode Laser Scanner</h4>
                     <p className="text-[10px] text-gray-400 mt-1">Cross-referencing patient ID profile and drug vials against prescription orders...</p>
                   </div>
                 </div>
@@ -3251,7 +3251,7 @@ export default function NurseDashboard({
                       <AlertTriangle className="w-5 h-5" />
                       <span>CRITICAL DRUG-DRUG INTERACTION ALERT (ADE)</span>
                     </div>
-                    <p className="text-gray-350 dark:text-gray-300 leading-relaxed">
+                    <p className="text-gray-400 dark:text-gray-300 leading-relaxed">
                       Therapeutic duplication / Adverse Drug Event threat! The scanned drug <strong>{activeScanMed?.name}</strong> has a moderate-to-severe interaction with:
                       <br />• <strong>Tab. Aceclofenac 100mg</strong> or <strong>Tab. Paracetamol 650mg</strong> already active in patient therapy.
                       <br /><br />
@@ -3287,7 +3287,7 @@ export default function NurseDashboard({
                       <CheckCircle2 className="w-5 h-5" />
                       <span>DOUBLE VERIFICATION MATCHED</span>
                     </div>
-                    <p className={isDarkMode ? 'text-gray-350' : 'text-slate-650'}>
+                    <p className={isDarkMode ? 'text-gray-400' : 'text-slate-600'}>
                       Scanning verified: <strong>{activeScanMed?.name}</strong> matches ABHA prescription orders for <strong>{activePatient.name}</strong> (Bed {activePatient.bedNo}).
                     </p>
                   </div>
@@ -3343,7 +3343,7 @@ export default function NurseDashboard({
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               className={`w-full max-w-md rounded-3xl border p-6 space-y-4 ${
-                isDarkMode ? 'bg-[#0f1524] border-slate-850 text-white' : 'bg-white border-[#E8EDF5] text-slate-850'
+                isDarkMode ? 'bg-[#0f1524] border-slate-800 text-white' : 'bg-white border-[#E8EDF5] text-slate-800'
               }`}
             >
               <div className={`flex justify-between items-center border-b pb-3 ${isDarkMode ? 'border-slate-800' : 'border-[#E8EDF5]'}`}>
@@ -3351,14 +3351,14 @@ export default function NurseDashboard({
                   <Mic className="w-4 h-4 text-orange-500 animate-pulse" />
                   <span>Arogya Voice OS Confirmation</span>
                 </h3>
-                <button onClick={() => setVoiceConfirmation(null)} className="text-gray-400 hover:text-gray-250">
+                <button onClick={() => setVoiceConfirmation(null)} className="text-gray-400 hover:text-gray-200">
                   <X className="w-4 h-4" />
                 </button>
               </div>
 
               <div className="space-y-3">
                 <p className="text-xs text-gray-400">We detected a command with confidence level <strong>{voiceConfirmation.confidence}%</strong>:</p>
-                <div className={`p-4 rounded-2xl border text-xs font-mono ${isDarkMode ? 'bg-slate-950 border-slate-850 text-orange-400' : 'bg-orange-50/50 border-orange-100 text-orange-700'}`}>
+                <div className={`p-4 rounded-2xl border text-xs font-mono ${isDarkMode ? 'bg-slate-950 border-slate-800 text-orange-400' : 'bg-orange-50/50 border-orange-100 text-orange-700'}`}>
                   "{voiceConfirmation.command}"
                 </div>
                 <div className="flex space-x-2 pt-2">
@@ -3389,7 +3389,7 @@ export default function NurseDashboard({
             animate={{ y: 0, opacity: 1, scale: 1 }}
             exit={{ y: -10, opacity: 0, scale: 0.95 }}
             className={`fixed top-6 left-1/2 -translate-x-1/2 z-[99999] max-w-sm w-[90%] border rounded-2xl shadow-2xl p-4 flex items-start space-x-3 ${
-              isDarkMode ? 'bg-[#0f1524] border-slate-800 text-white' : 'bg-white border-[#E8EDF5] text-slate-850'
+              isDarkMode ? 'bg-[#0f1524] border-slate-800 text-white' : 'bg-white border-[#E8EDF5] text-slate-800'
             }`}
           >
             <div className={`p-2 rounded-xl ${
@@ -3398,7 +3398,7 @@ export default function NurseDashboard({
               {toast.type === 'alert' ? <AlertTriangle className="w-5 h-5" /> : toast.type === 'success' ? <Check className="w-5 h-5" /> : <Bell className="w-5 h-5" />}
             </div>
             <div className="flex-1 min-w-0">
-              <h5 className={`text-xs font-black ${isDarkMode ? 'text-white' : 'text-slate-850'}`}>{toast.title}</h5>
+              <h5 className={`text-xs font-black ${isDarkMode ? 'text-white' : 'text-slate-800'}`}>{toast.title}</h5>
               <p className="text-[11px] text-gray-400 leading-normal mt-0.5">{toast.desc}</p>
             </div>
           </motion.div>

@@ -256,6 +256,21 @@ export default function DoctorDashboard({
     assessment: 'Primary Osteoarthritis of Left Knee Joint, early Stage 2.',
     plan: 'Advised quadriceps strengthening exercises, warm compression, and pain management. Scheduled follow-up in 2 weeks.'
   });
+  const [emrDraft, setEmrDraft] = useState({
+    chiefComplaint: '',
+    historyOfPresentIllness: '',
+    pastMedicalHistory: '',
+    surgicalHistory: '',
+    familyHistory: '',
+    socialHistory: '',
+    examinationFindings: '',
+    assessment: '',
+    plan: '',
+    followUp: '',
+    patientInstructions: ''
+  });
+  const [emrActiveSubTab, setEmrActiveSubTab] = useState<'soap' | 'emrDraft'>('soap');
+  const simulationTimeoutsRef = useRef<any[]>([]);
   
   // Voice logs Database
   const [savedVoiceLogs, setSavedVoiceLogs] = useState([
@@ -380,6 +395,14 @@ export default function DoctorDashboard({
     }, 150);
     return () => clearInterval(ecgTimer);
   }, []);
+
+  // Continuous real-time voice-transcription clinical extraction
+  useEffect(() => {
+    if (isScribing && scribingText.trim()) {
+      parseClinicalText(scribingText);
+      runIncrementalExtraction(scribingText);
+    }
+  }, [scribingText, isScribing]);
 
   // Global Voice Command Event listeners for Siri-like Arogya Voice OS
   useEffect(() => {
@@ -912,6 +935,96 @@ export default function DoctorDashboard({
     setSoapNotes({ subjective, objective, assessment, plan });
   };
 
+  function runIncrementalExtraction(text: string) {
+    if (!text.trim()) return;
+
+    const lower = text.toLowerCase();
+    const details = PATIENT_DETAILS_MAP[currentConsultingPatient.id] || PATIENT_DETAILS_MAP['1'];
+
+    setEmrDraft(prev => {
+      const next = { ...prev };
+
+      // 1. Chief Complaint
+      const symptoms: string[] = [];
+      if (lower.includes('pain') || lower.includes('दर्द') || lower.includes('दुखत') || lower.includes('वेदना')) {
+        const joint = lower.includes('knee') || lower.includes('गुडघा') || lower.includes('घुटना') ? 'Left Knee' : 'joint';
+        symptoms.push(`Severe pain in ${joint}`);
+      }
+      if (lower.includes('stiff') || lower.includes('ताठरता') || lower.includes('अकड़न')) {
+        symptoms.push('Joint stiffness');
+      }
+      if (lower.includes('fever') || lower.includes('ताप') || lower.includes('बुखार')) {
+        symptoms.push('Mild fever');
+      }
+      if (symptoms.length > 0) {
+        next.chiefComplaint = symptoms.join(', ');
+      } else if (!next.chiefComplaint) {
+        next.chiefComplaint = 'General joint pain and stiffness';
+      }
+
+      // 2. History of Present Illness (HPI)
+      let durationStr = '4 days';
+      const durationMatch = text.match(/(\d+)\s*(?:days|weeks|months|दिवस|दिवसांपासून|दिन)/i);
+      if (durationMatch) {
+        durationStr = `${durationMatch[1]} days`;
+      }
+      let stiffnessDetails = '';
+      if (lower.includes('morning') || lower.includes('सकाळी') || lower.includes('सुबह')) {
+        stiffnessDetails = ' accompanied by morning stiffness';
+      }
+      let activityDetails = '';
+      if (lower.includes('stairs') || lower.includes('पायऱ्या') || lower.includes('सीढ़ी')) {
+        activityDetails = ' and pain aggravated on climbing stairs';
+      }
+      next.historyOfPresentIllness = `Patient reports ${next.chiefComplaint.toLowerCase()} persisting for ${durationStr}${stiffnessDetails}${activityDetails}.`;
+
+      // 3. Past Medical History
+      if (details?.pastDiagnoses) {
+        next.pastMedicalHistory = details.pastDiagnoses.join(', ');
+      } else {
+        next.pastMedicalHistory = 'Knee Osteoarthritis';
+      }
+
+      // 4. Surgical History
+      if (details?.timelineEvents) {
+        const surgery = details.timelineEvents.find(e => e.type === 'surgery');
+        if (surgery) {
+          next.surgicalHistory = `${surgery.title} at ${surgery.facility} (${surgery.date})`;
+        } else {
+          next.surgicalHistory = 'No major surgical history recorded.';
+        }
+      } else {
+        next.surgicalHistory = 'Left Knee Arthroscopy & Debridement (2018).';
+      }
+
+      // 5. Family History
+      next.familyHistory = 'No family history of joint disorders reported.';
+
+      // 6. Social History
+      next.socialHistory = 'Resides in Dadar East, Mumbai. Occupation: Retired. Non-smoker. Reports light daily walks.';
+
+      // 7. Examination Findings
+      next.examinationFindings = `Vitals: BP ${consultVitals.bp}, Pulse ${consultVitals.pulse} bpm, Temp ${consultVitals.temp}°F, SpO2 ${consultVitals.spo2}%. Tenderness present over the medial joint line of the Left Knee. Active range of motion: flexion limited to 115 degrees.`;
+
+      // 8. Assessment
+      next.assessment = `${provisionalDiagnosis}. Grade II degenerative osteoarthritis of Left Knee.`;
+
+      // 9. Plan
+      const medsPlan = rxMeds.map(m => `${m.name} (${m.dose} for ${m.duration})`).join(', ');
+      const labsPlan = selectedLabTests.length > 0 ? `Labs: ${selectedLabTests.join(', ')}` : '';
+      const radioPlan = selectedRadiologyTests.length > 0 ? `Radiology: ${selectedRadiologyTests.join(', ')}` : '';
+      next.plan = `Medications: ${medsPlan || 'Tab. Paracetamol 650mg BD, Tab. Pantoprazole 40mg OD'}. ${labsPlan} ${radioPlan}`.trim();
+
+      // 10. Follow-up
+      next.followUp = 'Follow up in 2 weeks at SION Hospital Orthopaedic OPD for clinical reassessment.';
+
+      // 11. Patient Instructions
+      next.patientInstructions = '1. Take prescribed medications regularly after meals.\n2. Apply warm compress to left knee twice daily.\n3. Avoid heavy weight bearing and deep squatting.\n4. Perform gentle quadriceps isometric exercises as demonstrated.';
+
+      return next;
+    });
+  };
+
   // Voice Command parser and executor
   function executeVoiceCommand(text: string): boolean {
     VoiceContextManager.setPortal('doctor');
@@ -971,6 +1084,19 @@ export default function DoctorDashboard({
     ]);
     setScribingLogs([]);
     setScribingText('');
+    setEmrDraft({
+      chiefComplaint: '',
+      historyOfPresentIllness: '',
+      pastMedicalHistory: '',
+      surgicalHistory: '',
+      familyHistory: '',
+      socialHistory: '',
+      examinationFindings: '',
+      assessment: '',
+      plan: '',
+      followUp: '',
+      patientInstructions: ''
+    });
     setToast({ id: `t-${Date.now()}`, title: 'Patient Called', message: `${target.name} called to consulting Room #4B.`, type: 'success' });
   };
 
@@ -1010,12 +1136,17 @@ export default function DoctorDashboard({
   const toggleScribing = () => {
     if (isScribing) {
       if (speechRecognizer) speechRecognizer.stop();
+      // Clear any running simulation timeouts
+      simulationTimeoutsRef.current.forEach(clearTimeout);
+      simulationTimeoutsRef.current = [];
+
       setIsScribing(false);
       // Notify Voice OS: scribing stopped → it can resume
       window.dispatchEvent(new CustomEvent('mcgm-scribe-active', { detail: false }));
       // Auto compile SOAP notes from transcript using NLP parser
       if (scribingText.trim()) {
         parseClinicalText(scribingText.trim());
+        runIncrementalExtraction(scribingText.trim());
       }
     } else {
       setScribingText('');
@@ -1046,6 +1177,10 @@ export default function DoctorDashboard({
   }, [toggleScribing]);
 
   const simulateScribingVoice = () => {
+    // Clear any running simulation timeouts first
+    simulationTimeoutsRef.current.forEach(clearTimeout);
+    simulationTimeoutsRef.current = [];
+
     let mockDialogs = [
       { speaker: 'Patient' as const, text: 'Doctor, I have severe pain in my left knee for 4 days now.' },
       { speaker: 'Doctor' as const, text: 'Do you feel stiffness in the morning, or pain when climbing stairs?' },
@@ -1070,22 +1205,25 @@ export default function DoctorDashboard({
     }
 
     mockDialogs.forEach((diag, index) => {
-      setTimeout(() => {
+      const t = setTimeout(() => {
         setScribingLogs(prev => [
           ...prev,
           { speaker: diag.speaker, text: diag.text, time: new Date().toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' }) }
         ]);
         setScribingText(prev => prev + ' ' + diag.text);
       }, (index + 1) * 3000);
+      simulationTimeoutsRef.current.push(t);
     });
 
-    setTimeout(() => {
+    const finalT = setTimeout(() => {
       setIsScribing(false);
       // Run NLP Parser on the full accumulated text
       const compiledText = mockDialogs.map(d => d.text).join(' ');
       parseClinicalText(compiledText);
+      runIncrementalExtraction(compiledText);
       setToast({ id: `t-${Date.now()}`, title: 'Voice Scribing Complete', message: 'Scribed audio compiled into SOAP notes.', type: 'success' });
     }, 15000);
+    simulationTimeoutsRef.current.push(finalT);
   };
 
   // E-Sign PIN validation & dispatch
@@ -1443,7 +1581,7 @@ export default function DoctorDashboard({
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className={`w-full pl-12 pr-24 py-3.5 rounded-xl border text-sm font-semibold outline-none focus:ring-2 focus:ring-[#003F8A] focus:border-transparent transition-all ${
-                    isDarkMode ? 'bg-[#090d16] border-slate-850 text-white placeholder-slate-500' : 'bg-slate-50 border-slate-200 placeholder-slate-400 text-slate-800'
+                    isDarkMode ? 'bg-[#090d16] border-slate-800 text-white placeholder-slate-500' : 'bg-slate-50 border-slate-200 placeholder-slate-400 text-slate-800'
                   }`}
                 />
                 <button className="absolute right-3 top-1/2 -translate-y-1/2 bg-orange-500 text-white text-xs font-bold px-3 py-2 rounded-lg flex items-center space-x-1 hover:bg-orange-600 transition-all shadow-sm">
@@ -1475,7 +1613,7 @@ export default function DoctorDashboard({
                           <div className="flex items-center space-x-3">
                             <img src={patient.photo} alt={patient.name} className="w-8 h-8 rounded-lg object-cover" />
                             <div>
-                              <div className="font-extrabold text-slate-855 dark:text-white">{patient.name}</div>
+                              <div className="font-extrabold text-slate-800 dark:text-white">{patient.name}</div>
                               <div className="text-[10px] text-gray-500">{patient.age} yrs • {patient.gender}</div>
                             </div>
                           </div>
@@ -1514,7 +1652,7 @@ export default function DoctorDashboard({
                               </button>
                               <button 
                                 onClick={() => handleSkip(patient.id)}
-                                className="px-2.5 py-1.5 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-350 rounded-lg font-bold transition-all cursor-pointer"
+                                className="px-2.5 py-1.5 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-400 rounded-lg font-bold transition-all cursor-pointer"
                               >
                                 Skip
                               </button>
@@ -1558,7 +1696,7 @@ export default function DoctorDashboard({
                   <div key={rep.id} className="p-4 bg-slate-50 dark:bg-slate-900 border border-slate-800/5 rounded-2xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                     <div className="space-y-1">
                       <div className="flex items-center space-x-2">
-                        <span className="text-xs font-black text-slate-855 dark:text-white">{rep.patientName}</span>
+                        <span className="text-xs font-black text-slate-800 dark:text-white">{rep.patientName}</span>
                         <span className="text-[9px] bg-[#003F8A]/10 text-[#003F8A] dark:text-blue-400 font-extrabold px-2 py-0.5 rounded-full">{rep.type}</span>
                       </div>
                       <p className="text-[11px] text-gray-500 font-semibold">{rep.values}</p>
@@ -1604,8 +1742,8 @@ export default function DoctorDashboard({
                         <span className="text-[9px] font-extrabold uppercase bg-amber-500/10 text-orange-500 px-2 py-0.5 rounded-full">
                           {currentConsultingPatient.priority}
                         </span>
-                        <h3 className="text-base font-black text-slate-808 dark:text-white mt-1">{currentConsultingPatient.name}</h3>
-                        <p className="text-xs text-gray-550 dark:text-slate-400 font-bold">{currentConsultingPatient.age} Years • {currentConsultingPatient.gender}</p>
+                        <h3 className="text-base font-black text-slate-800 dark:text-white mt-1">{currentConsultingPatient.name}</h3>
+                        <p className="text-xs text-gray-500 dark:text-slate-400 font-bold">{currentConsultingPatient.age} Years • {currentConsultingPatient.gender}</p>
                       </div>
                     </div>
 
@@ -1615,12 +1753,12 @@ export default function DoctorDashboard({
                         <span className="font-extrabold text-[#003F8A] dark:text-blue-400">{currentConsultingPatient.token}</span>
                       </div>
                       <div className="flex justify-between text-xs font-semibold">
-                        <span className="text-gray-550">Wait Duration</span>
+                        <span className="text-gray-500">Wait Duration</span>
                         <span className="font-extrabold text-red-500">{currentConsultingPatient.waitTime} mins ago</span>
                       </div>
                       <div className="flex justify-between text-xs font-semibold border-t border-dashed border-slate-800/10 pt-2">
                         <span className="text-gray-555">Provisional Diagnosis</span>
-                        <span className="font-extrabold text-slate-700 dark:text-slate-350">{currentConsultingPatient.diagnosis}</span>
+                        <span className="font-extrabold text-slate-700 dark:text-slate-400">{currentConsultingPatient.diagnosis}</span>
                       </div>
                     </div>
                   </div>
@@ -1651,7 +1789,7 @@ export default function DoctorDashboard({
               isDarkMode ? 'bg-[#0f172a] border-slate-800' : 'bg-white border-slate-100'
             }`}>
               <div className="flex justify-between items-center">
-                <h3 className="text-sm font-black text-slate-805 dark:text-white uppercase tracking-wider">Clinical Alerts</h3>
+                <h3 className="text-sm font-black text-slate-800 dark:text-white uppercase tracking-wider">Clinical Alerts</h3>
                 <span className="text-[10px] font-bold text-red-500 bg-red-500/10 px-2 py-0.5 rounded-full">
                   {alerts.length} Pending
                 </span>
@@ -1739,7 +1877,7 @@ export default function DoctorDashboard({
             ].map((perf, i) => (
               <div key={i} className="space-y-2">
                 <div className="flex justify-between text-xs">
-                  <span className="font-bold text-slate-700 dark:text-slate-350">{perf.label}</span>
+                  <span className="font-bold text-slate-700 dark:text-slate-400">{perf.label}</span>
                   <span className="font-black text-[#003F8A] dark:text-blue-400">{perf.current} / {perf.target}</span>
                 </div>
                 <div className="w-full h-2.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
@@ -1765,7 +1903,7 @@ export default function DoctorDashboard({
         <div className={`p-6 rounded-3xl border shadow-sm space-y-4 ${
           isDarkMode ? 'bg-[#0f172a] border-slate-800' : 'bg-white border-slate-100'
         }`}>
-          <h3 className="text-sm font-black text-slate-855 dark:text-white uppercase tracking-wider">Queue Analytics & Volume Trends</h3>
+          <h3 className="text-sm font-black text-slate-800 dark:text-white uppercase tracking-wider">Queue Analytics & Volume Trends</h3>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="p-4 bg-orange-500/5 rounded-2xl border border-orange-500/10 text-center">
               <span className="text-[10px] uppercase font-bold text-gray-500">OPD Occupancy Peak</span>
@@ -1826,7 +1964,7 @@ export default function DoctorDashboard({
                     <img src={patient.photo} alt={patient.name} className="w-12 h-12 rounded-xl object-cover shadow" />
                     <div>
                       <h4 className="text-sm font-black text-slate-800 dark:text-white">{patient.name}</h4>
-                      <p className="text-[10px] text-gray-550 font-bold">{patient.age} Y/O • {patient.gender} • ABHA Linked</p>
+                      <p className="text-[10px] text-gray-500 font-bold">{patient.age} Y/O • {patient.gender} • ABHA Linked</p>
                     </div>
                   </div>
 
@@ -1855,7 +1993,7 @@ export default function DoctorDashboard({
                       </button>
                       <button 
                         onClick={() => handleSkip(patient.id)}
-                        className="px-3 py-2 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 text-slate-700 dark:text-slate-350 text-xs font-bold rounded-lg cursor-pointer"
+                        className="px-3 py-2 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 text-slate-700 dark:text-slate-400 text-xs font-bold rounded-lg cursor-pointer"
                       >
                         Defer
                       </button>
@@ -1901,7 +2039,7 @@ export default function DoctorDashboard({
           isDarkMode ? 'bg-[#0f172a] border-slate-800' : 'bg-white border-slate-100'
         }`}>
           <div className="space-y-1">
-            <h3 className="text-base font-black text-slate-808 dark:text-white">Registered Patients</h3>
+            <h3 className="text-base font-black text-slate-800 dark:text-white">Registered Patients</h3>
             <p className="text-xs text-gray-555">ABHA Linked & local medical records</p>
           </div>
           <div className="relative">
@@ -1912,7 +2050,7 @@ export default function DoctorDashboard({
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className={`w-full pl-10 pr-4 py-2.5 rounded-xl border text-xs font-semibold outline-none focus:ring-1 focus:ring-[#003F8A] ${
-                isDarkMode ? 'bg-[#090d16] border-slate-850 text-white' : 'bg-slate-50 border-slate-200 text-slate-800'
+                isDarkMode ? 'bg-[#090d16] border-slate-800 text-white' : 'bg-slate-50 border-slate-200 text-slate-800'
               }`}
             />
           </div>
@@ -1925,11 +2063,11 @@ export default function DoctorDashboard({
                 className={`w-full text-left p-3.5 rounded-2xl border transition-all flex items-center justify-between cursor-pointer ${
                   selectedPatientId === p.id
                     ? 'bg-[#003F8A]/5 border-[#003F8A] dark:bg-blue-900/10'
-                    : isDarkMode ? 'bg-slate-900/50 border-slate-850 hover:bg-slate-800' : 'bg-slate-50 border-slate-100 hover:bg-slate-100'
+                    : isDarkMode ? 'bg-slate-900/50 border-slate-800 hover:bg-slate-800' : 'bg-slate-50 border-slate-100 hover:bg-slate-100'
                 }`}
               >
                 <div className="space-y-1">
-                  <h4 className="text-xs font-black text-slate-808 dark:text-white">{p.name}</h4>
+                  <h4 className="text-xs font-black text-slate-800 dark:text-white">{p.name}</h4>
                   <p className="text-[10px] text-gray-500 font-bold">{p.age} Y • {p.gender} • Token {p.token}</p>
                 </div>
                 <ChevronRight className="w-4 h-4 text-slate-400" />
@@ -1944,7 +2082,7 @@ export default function DoctorDashboard({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             
             {/* ABHA HEALTH CARD */}
-            <div className="bg-gradient-to-br from-orange-500/90 via-white to-green-600/95 p-5 rounded-3xl shadow-xl text-slate-850 relative overflow-hidden border border-white/20 h-48 flex flex-col justify-between">
+            <div className="bg-gradient-to-br from-orange-500/90 via-white to-green-600/95 p-5 rounded-3xl shadow-xl text-slate-800 relative overflow-hidden border border-white/20 h-48 flex flex-col justify-between">
               {/* Overlay graphics */}
               <div className="absolute right-0 top-0 bottom-0 w-1/3 bg-radial-gradient from-white/10 to-transparent pointer-events-none" />
               
@@ -1986,7 +2124,7 @@ export default function DoctorDashboard({
               </div>
 
               <div className="space-y-1 z-10">
-                <span className="text-[8px] font-black uppercase tracking-wider text-slate-350 block">MCGM REGISTERED ACCOUNT</span>
+                <span className="text-[8px] font-black uppercase tracking-wider text-slate-400 block">MCGM REGISTERED ACCOUNT</span>
                 <h3 className="text-sm font-extrabold tracking-tight">{activePatient.name}</h3>
                 <p className="text-[10px] font-mono text-orange-400">{details?.mcgmCardNo || 'MCGM-SION-2026-0812'}</p>
               </div>
@@ -2005,7 +2143,7 @@ export default function DoctorDashboard({
           }`}>
             <div className="flex justify-between items-center pb-4 border-b border-slate-800/10">
               <div>
-                <h3 className="text-sm font-black text-slate-808 dark:text-white uppercase tracking-wider">Clinical Demographics</h3>
+                <h3 className="text-sm font-black text-slate-800 dark:text-white uppercase tracking-wider">Clinical Demographics</h3>
                 <p className="text-xs text-gray-555">Address, phone, and allergy notes</p>
               </div>
               <button 
@@ -2040,7 +2178,7 @@ export default function DoctorDashboard({
 
             {/* VITALS HISTORY SPARKLINE */}
             <div className="space-y-3">
-              <h4 className="text-xs font-black text-slate-855 dark:text-white uppercase tracking-wider">Vitals History Timeline</h4>
+              <h4 className="text-xs font-black text-slate-800 dark:text-white uppercase tracking-wider">Vitals History Timeline</h4>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {details?.vitalsHistory.map((vit, idx) => (
                   <div key={idx} className="p-4 bg-slate-50 dark:bg-slate-900 border border-slate-800/5 rounded-2xl flex justify-between items-center text-xs">
@@ -2058,7 +2196,7 @@ export default function DoctorDashboard({
             <div className="space-y-4 pt-2">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-slate-800/10">
                 <div>
-                  <h4 className="text-xs font-black text-slate-855 dark:text-white uppercase tracking-wider">Unified Medical Timeline</h4>
+                  <h4 className="text-xs font-black text-slate-800 dark:text-white uppercase tracking-wider">Unified Medical Timeline</h4>
                   <p className="text-[10px] text-gray-500">Birth to present consolidated health locker records</p>
                 </div>
                 
@@ -2143,8 +2281,8 @@ export default function DoctorDashboard({
                         </div>
                         
                         <div className="mt-2 space-y-1">
-                          <h5 className="text-xs font-black text-slate-808 dark:text-white">{ev.title}</h5>
-                          <p className="text-[11px] leading-relaxed text-slate-650 dark:text-slate-350 font-medium">{ev.details}</p>
+                          <h5 className="text-xs font-black text-slate-800 dark:text-white">{ev.title}</h5>
+                          <p className="text-[11px] leading-relaxed text-slate-600 dark:text-slate-400 font-medium">{ev.details}</p>
                         </div>
 
                         <div className="mt-2.5 pt-2 border-t border-dashed border-slate-800/10 flex items-center justify-between text-[9px] font-bold text-gray-500">
@@ -2184,7 +2322,7 @@ export default function DoctorDashboard({
                 <img src={currentConsultingPatient.photo} alt={currentConsultingPatient.name} className="w-full h-full object-cover" />
               </div>
               <div>
-                <h3 className="text-sm font-black text-slate-805 dark:text-white">{currentConsultingPatient.name}</h3>
+                <h3 className="text-sm font-black text-slate-800 dark:text-white">{currentConsultingPatient.name}</h3>
                 <p className="text-[10px] text-gray-500 font-bold">{currentConsultingPatient.age} Y • {currentConsultingPatient.gender} • Token {currentConsultingPatient.token}</p>
               </div>
             </div>
@@ -2212,7 +2350,7 @@ export default function DoctorDashboard({
                   <span>80 BPM</span>
                 </span>
               </div>
-              <svg className="w-full h-16 bg-slate-950 rounded-xl p-2 border border-slate-850" viewBox="0 0 40 100" preserveAspectRatio="none">
+              <svg className="w-full h-16 bg-slate-950 rounded-xl p-2 border border-slate-800" viewBox="0 0 40 100" preserveAspectRatio="none">
                 <path
                   d={`M 0 50 ${telemetryECG.map((val, idx) => `L ${idx} ${100 - val}`).join(' ')}`}
                   fill="none"
@@ -2240,7 +2378,7 @@ export default function DoctorDashboard({
                       type="text"
                       value={vit.val}
                       onChange={(e) => setConsultVitals(prev => ({ ...prev, [vit.stateKey]: e.target.value }))}
-                      className="w-full bg-transparent font-black text-slate-805 dark:text-white outline-none"
+                      className="w-full bg-transparent font-black text-slate-800 dark:text-white outline-none"
                     />
                   </div>
                 ))}
@@ -2256,10 +2394,10 @@ export default function DoctorDashboard({
           }`}>
             <div className="flex justify-between items-center pb-3 border-b border-dashed border-slate-800/10">
               <div>
-                <h3 className="text-sm font-black text-slate-805 dark:text-white uppercase tracking-wider">AI Voice Scribing & Dictation</h3>
+                <h3 className="text-sm font-black text-slate-800 dark:text-white uppercase tracking-wider">AI Voice Scribing & Dictation</h3>
                 <p className="text-[10px] text-gray-500">Continuous translation with Web Speech</p>
               </div>
-              <span className={`px-2 py-0.5 rounded text-[8px] font-black uppercase ${isScribing ? 'bg-red-500/10 text-red-500 animate-pulse' : 'bg-slate-150 text-slate-400'}`}>
+              <span className={`px-2 py-0.5 rounded text-[8px] font-black uppercase ${isScribing ? 'bg-red-500/10 text-red-500 animate-pulse' : 'bg-slate-200 text-slate-400'}`}>
                 {isScribing ? 'Live Mic' : 'Standby'}
               </span>
             </div>
@@ -2335,7 +2473,7 @@ export default function DoctorDashboard({
                 onChange={(e) => setScribingText(e.target.value)}
                 placeholder="Doctor's continuous medical notes transcribe here. You can also type directly in this workspace..."
                 className={`w-full h-40 p-4 rounded-2xl border text-xs font-semibold leading-relaxed outline-none focus:ring-1 focus:ring-[#003F8A] resize-none ${
-                  isDarkMode ? 'bg-[#090d16] border-slate-850 text-white' : 'bg-slate-50 border-slate-200 text-slate-800'
+                  isDarkMode ? 'bg-[#090d16] border-slate-800 text-white' : 'bg-slate-50 border-slate-200 text-slate-800'
                 }`}
               />
             </div>
@@ -2350,7 +2488,7 @@ export default function DoctorDashboard({
                     key={drug}
                     type="button"
                     onClick={() => setNewMed(prev => ({ ...prev, name: drug }))}
-                    className="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg text-[9px] font-bold text-slate-650 dark:text-slate-350 transition-all cursor-pointer"
+                    className="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg text-[9px] font-bold text-slate-600 dark:text-slate-400 transition-all cursor-pointer"
                   >
                     + {drug.split(' ').slice(1).join(' ')}
                   </button>
@@ -2364,7 +2502,7 @@ export default function DoctorDashboard({
                   value={newMed.name}
                   onChange={(e) => setNewMed(prev => ({ ...prev, name: e.target.value }))}
                   className={`w-full px-3 py-2.5 rounded-xl border text-xs font-semibold outline-none focus:ring-1 focus:ring-[#003F8A] ${
-                    isDarkMode ? 'bg-[#090d16] border-slate-850 text-white' : 'bg-slate-50 border-slate-200 text-slate-800'
+                    isDarkMode ? 'bg-[#090d16] border-slate-800 text-white' : 'bg-slate-50 border-slate-200 text-slate-800'
                   }`}
                 />
 
@@ -2375,7 +2513,7 @@ export default function DoctorDashboard({
                       value={newMed.dose}
                       onChange={(e) => setNewMed(prev => ({ ...prev, dose: e.target.value }))}
                       className={`w-full px-2 py-2 rounded-xl border text-[10px] font-bold outline-none cursor-pointer ${
-                        isDarkMode ? 'bg-[#090d16] border-slate-855 text-white' : 'bg-slate-50 border-slate-200 text-slate-800'
+                        isDarkMode ? 'bg-[#090d16] border-slate-800 text-white' : 'bg-slate-50 border-slate-200 text-slate-800'
                       }`}
                     >
                       <option value="1-0-1">1-0-1 (BD)</option>
@@ -2390,7 +2528,7 @@ export default function DoctorDashboard({
                       value={newMed.timing}
                       onChange={(e) => setNewMed(prev => ({ ...prev, timing: e.target.value }))}
                       className={`w-full px-2 py-2 rounded-xl border text-[10px] font-bold outline-none cursor-pointer ${
-                        isDarkMode ? 'bg-[#090d16] border-slate-855 text-white' : 'bg-slate-50 border-slate-200 text-slate-800'
+                        isDarkMode ? 'bg-[#090d16] border-slate-800 text-white' : 'bg-slate-50 border-slate-200 text-slate-800'
                       }`}
                     >
                       <option value="After Food">After Food</option>
@@ -2404,7 +2542,7 @@ export default function DoctorDashboard({
                       value={newMed.duration}
                       onChange={(e) => setNewMed(prev => ({ ...prev, duration: e.target.value }))}
                       className={`w-full px-2 py-2 rounded-xl border text-[10px] font-bold outline-none cursor-pointer ${
-                        isDarkMode ? 'bg-[#090d16] border-slate-855 text-white' : 'bg-slate-50 border-slate-200 text-slate-800'
+                        isDarkMode ? 'bg-[#090d16] border-slate-800 text-white' : 'bg-slate-50 border-slate-200 text-slate-800'
                       }`}
                     >
                       <option value="5 Days">5 Days</option>
@@ -2433,10 +2571,10 @@ export default function DoctorDashboard({
                   {rxMeds.map((med, idx) => (
                     <div key={idx} className="p-3 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-800/5 flex justify-between items-center text-xs">
                       <div>
-                        <h5 className="font-extrabold text-slate-855 dark:text-white">{med.name}</h5>
+                        <h5 className="font-extrabold text-slate-800 dark:text-white">{med.name}</h5>
                         <p className="text-[9px] text-gray-500 font-bold">{med.dose} • {med.timing} • {med.duration}</p>
                       </div>
-                      <button onClick={() => handleRemoveMed(idx)} className="p-1 text-slate-450 hover:text-red-500 cursor-pointer">
+                      <button onClick={() => handleRemoveMed(idx)} className="p-1 text-slate-400 hover:text-red-500 cursor-pointer">
                         <X className="w-4 h-4" />
                       </button>
                     </div>
@@ -2470,25 +2608,88 @@ export default function DoctorDashboard({
                 </div>
               </div>
 
-              {/* SOAP notes input */}
+              {/* SOAP / EMR Draft Toggle Sub-tabs */}
               <div className="space-y-2">
-                <span className="text-[9px] font-black uppercase text-gray-500 block">AI Compiled SOAP Notes</span>
-                <textarea
-                  rows={3}
-                  value={`S: ${soapNotes.subjective}\nO: ${soapNotes.objective}\nA: ${soapNotes.assessment}\nP: ${soapNotes.plan}`}
-                  onChange={(e) => {
-                    const lines = e.target.value.split('\n');
-                    setSoapNotes({
-                      subjective: lines[0]?.replace('S: ', '') || '',
-                      objective: lines[1]?.replace('O: ', '') || '',
-                      assessment: lines[2]?.replace('A: ', '') || '',
-                      plan: lines[3]?.replace('P: ', '') || ''
-                    });
-                  }}
-                  className={`w-full p-2 text-[10px] font-semibold border rounded-xl outline-none resize-none no-scrollbar ${
-                    isDarkMode ? 'bg-[#090d16] border-slate-800 text-slate-350' : 'bg-slate-50 border-slate-200 text-slate-700'
-                  }`}
-                />
+                <div className="flex border-b border-slate-800/10 mb-2">
+                  <button
+                    type="button"
+                    onClick={() => setEmrActiveSubTab('soap')}
+                    className={`flex-1 pb-2 text-[10px] font-black uppercase tracking-wider text-center border-b-2 transition-all cursor-pointer ${
+                      emrActiveSubTab === 'soap'
+                        ? 'border-[#003F8A] text-[#003F8A] dark:text-blue-400'
+                        : 'border-transparent text-gray-400 hover:text-gray-500'
+                    }`}
+                  >
+                    SOAP Note
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setEmrActiveSubTab('emrDraft')}
+                    className={`flex-1 pb-2 text-[10px] font-black uppercase tracking-wider text-center border-b-2 transition-all cursor-pointer ${
+                      emrActiveSubTab === 'emrDraft'
+                        ? 'border-[#003F8A] text-[#003F8A] dark:text-blue-400'
+                        : 'border-transparent text-gray-400 hover:text-gray-500'
+                    }`}
+                  >
+                    11-Point EMR Live Draft
+                  </button>
+                </div>
+
+                {emrActiveSubTab === 'soap' ? (
+                  <div className="space-y-2">
+                    <span className="text-[9px] font-black uppercase text-gray-500 block">AI Compiled SOAP Notes</span>
+                    <textarea
+                      rows={4}
+                      value={`S: ${soapNotes.subjective}\nO: ${soapNotes.objective}\nA: ${soapNotes.assessment}\nP: ${soapNotes.plan}`}
+                      onChange={(e) => {
+                        const lines = e.target.value.split('\n');
+                        setSoapNotes({
+                          subjective: lines[0]?.replace('S: ', '') || '',
+                          objective: lines[1]?.replace('O: ', '') || '',
+                          assessment: lines[2]?.replace('A: ', '') || '',
+                          plan: lines[3]?.replace('P: ', '') || ''
+                        });
+                      }}
+                      className={`w-full p-2.5 text-[10px] font-semibold border rounded-xl outline-none resize-none no-scrollbar ${
+                        isDarkMode ? 'bg-[#090d16] border-slate-800 text-slate-400' : 'bg-slate-50 border-slate-200 text-slate-700'
+                      }`}
+                    />
+                  </div>
+                ) : (
+                  <div className="space-y-3 max-h-[300px] overflow-y-auto pr-1 no-scrollbar">
+                    <div className="flex justify-between items-center bg-blue-500/5 p-2 rounded-xl border border-blue-500/10 text-[9px] text-blue-650 dark:text-blue-450 mb-1">
+                      <span className="font-bold">✓ Continuous Auto-Drafting</span>
+                      <span className="font-black bg-blue-500/10 px-1.5 py-0.5 rounded text-[8px]">ACTIVE</span>
+                    </div>
+                    {[
+                      { key: 'chiefComplaint', label: 'Chief Complaint' },
+                      { key: 'historyOfPresentIllness', label: 'History of Present Illness' },
+                      { key: 'pastMedicalHistory', label: 'Past Medical History' },
+                      { key: 'surgicalHistory', label: 'Surgical History' },
+                      { key: 'familyHistory', label: 'Family History' },
+                      { key: 'socialHistory', label: 'Social History' },
+                      { key: 'examinationFindings', label: 'Examination Findings' },
+                      { key: 'assessment', label: 'Assessment' },
+                      { key: 'plan', label: 'Plan' },
+                      { key: 'followUp', label: 'Follow-up' },
+                      { key: 'patientInstructions', label: 'Patient Instructions' }
+                    ].map((field) => (
+                      <div key={field.key} className="space-y-1">
+                        <label className="text-[8px] font-extrabold uppercase text-gray-500 block">{field.label}</label>
+                        <textarea
+                          rows={2}
+                          value={(emrDraft as any)[field.key]}
+                          onChange={(e) => {
+                            setEmrDraft(prev => ({ ...prev, [field.key]: e.target.value }));
+                          }}
+                          className={`w-full p-2 text-[10px] font-semibold border rounded-xl outline-none resize-none no-scrollbar ${
+                            isDarkMode ? 'bg-[#090d16] border-slate-800 text-white' : 'bg-slate-50 border-slate-200 text-slate-800'
+                          }`}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
               {/* Interaction Warning Panel */}
@@ -2540,7 +2741,7 @@ export default function DoctorDashboard({
               <label className="flex items-start space-x-3 p-3 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-800/5 cursor-pointer text-xs font-semibold leading-relaxed">
                 <input type="checkbox" defaultChecked className="rounded border-slate-300 text-[#003F8A] focus:ring-[#003F8A] w-4 h-4 mt-0.5" />
                 <div>
-                  <span className="font-extrabold text-slate-805 dark:text-white">Transmit to ABHA Locker</span>
+                  <span className="font-extrabold text-slate-800 dark:text-white">Transmit to ABHA Locker</span>
                   <p className="text-[10px] text-gray-500 leading-normal">Syncs e-prescription directly to patient ABHA card locker.</p>
                 </div>
               </label>
@@ -2613,7 +2814,7 @@ export default function DoctorDashboard({
           }`}>
             <div className="flex items-center space-x-2 pb-2 border-b border-slate-800/10">
               <Volume2 className="w-5 h-5 text-[#003F8A] dark:text-blue-400" />
-              <h3 className="text-sm font-black text-slate-805 dark:text-white uppercase tracking-wider">Voice Recording Logs</h3>
+              <h3 className="text-sm font-black text-slate-800 dark:text-white uppercase tracking-wider">Voice Recording Logs</h3>
             </div>
             
             <div className="space-y-2 max-h-[30vh] overflow-y-auto no-scrollbar">
@@ -2621,8 +2822,8 @@ export default function DoctorDashboard({
                 <div key={log.id} className="p-3 bg-slate-50 dark:bg-slate-900 border border-slate-800/5 rounded-xl space-y-2">
                   <div className="flex justify-between items-start">
                     <div>
-                      <h5 className="text-[11px] font-black text-slate-855 dark:text-white">{log.patientName}</h5>
-                      <span className="text-[8px] text-gray-550 font-semibold">{log.date} • {log.duration} • {log.size}</span>
+                      <h5 className="text-[11px] font-black text-slate-800 dark:text-white">{log.patientName}</h5>
+                      <span className="text-[8px] text-gray-500 font-semibold">{log.date} • {log.duration} • {log.size}</span>
                     </div>
                     <span className="text-[8px] bg-green-500/10 text-green-600 font-extrabold px-1.5 py-0.5 rounded">
                       {log.encryption}
@@ -2716,7 +2917,7 @@ export default function DoctorDashboard({
                 <tr key={ord.id} className="hover:bg-slate-500/5 transition-colors">
                   <td className="py-4 px-4 font-black text-slate-800 dark:text-slate-200">{ord.id}</td>
                   <td className="py-4 px-4 font-extrabold">{ord.name}</td>
-                  <td className="py-4 px-4 text-slate-650 dark:text-slate-350">{ord.details}</td>
+                  <td className="py-4 px-4 text-slate-600 dark:text-slate-400">{ord.details}</td>
                   <td className="py-4 px-4 text-gray-500">{ord.date}</td>
                   <td className="py-4 px-4">
                     <span className={`px-2 py-0.5 rounded-full text-[9px] font-black uppercase ${
@@ -2753,7 +2954,7 @@ export default function DoctorDashboard({
           }`}>
             <div className="flex justify-between items-center pb-3 border-b border-slate-800/10">
               <div>
-                <h3 className="text-sm font-black text-slate-855 dark:text-white uppercase tracking-wider">DICOM Radiography Web Reader</h3>
+                <h3 className="text-sm font-black text-slate-800 dark:text-white uppercase tracking-wider">DICOM Radiography Web Reader</h3>
                 <p className="text-xs text-gray-555">Knee AP/Lateral Joint Film • Patient Rahul Patil</p>
               </div>
               <div className="flex space-x-2">
@@ -2819,7 +3020,7 @@ export default function DoctorDashboard({
                 />
               </div>
               <div className="space-y-1">
-                <span className="text-gray-550 uppercase text-[9px]">Contrast Intensity</span>
+                <span className="text-gray-500 uppercase text-[9px]">Contrast Intensity</span>
                 <input 
                   type="range" 
                   min={50} 
@@ -2859,7 +3060,7 @@ export default function DoctorDashboard({
               ].map(rad => (
                 <div key={rad.id} className="p-3 bg-slate-50 dark:bg-slate-900 border border-slate-800/5 rounded-xl space-y-1 text-xs">
                   <div className="flex justify-between items-center">
-                    <span className="font-extrabold text-slate-805 dark:text-white">{rad.name}</span>
+                    <span className="font-extrabold text-slate-800 dark:text-white">{rad.name}</span>
                     <span className="text-[8px] font-mono text-gray-500">{rad.id}</span>
                   </div>
                   <p className="font-semibold text-[#003F8A] dark:text-blue-400 text-[11px]">{rad.study}</p>
@@ -2882,7 +3083,7 @@ export default function DoctorDashboard({
         <div className={`lg:col-span-1 p-6 rounded-3xl border shadow-sm space-y-4 flex flex-col ${
           isDarkMode ? 'bg-[#0f172a] border-slate-800' : 'bg-white border-slate-100'
         }`}>
-          <h3 className="text-sm font-black text-slate-805 dark:text-white uppercase tracking-wider">OPD Chat Channels</h3>
+          <h3 className="text-sm font-black text-slate-800 dark:text-white uppercase tracking-wider">OPD Chat Channels</h3>
           <div className="space-y-2">
             {[
               { id: 'Nurse', name: 'Nurse Sneha', role: 'OPD Staff Nurse', status: '🟢 Online', active: chatThread === 'Nurse' },
@@ -2894,12 +3095,12 @@ export default function DoctorDashboard({
                 className={`w-full text-left p-3 rounded-2xl border transition-all flex items-center justify-between cursor-pointer ${
                   ch.active
                     ? 'bg-[#003F8A]/5 border-[#003F8A]'
-                    : 'bg-slate-50 dark:bg-slate-900 border-slate-850 hover:bg-slate-200/5'
+                    : 'bg-slate-50 dark:bg-slate-900 border-slate-800 hover:bg-slate-200/5'
                 }`}
               >
                 <div>
                   <h4 className="text-xs font-black text-slate-800 dark:text-white">{ch.name}</h4>
-                  <span className="text-[9px] text-gray-550 font-bold block">{ch.role}</span>
+                  <span className="text-[9px] text-gray-500 font-bold block">{ch.role}</span>
                 </div>
                 <span className="text-[9px] font-bold text-green-500">{ch.status}</span>
               </button>
@@ -2913,7 +3114,7 @@ export default function DoctorDashboard({
         }`}>
           <div className="flex justify-between items-center pb-3 border-b border-slate-800/10">
             <div>
-              <h4 className="text-xs font-black text-slate-805 dark:text-white">{chatThread === 'Nurse' ? 'Nurse Sneha' : 'Dr. Vinay Joshi'}</h4>
+              <h4 className="text-xs font-black text-slate-800 dark:text-white">{chatThread === 'Nurse' ? 'Nurse Sneha' : 'Dr. Vinay Joshi'}</h4>
               <span className="text-[9px] text-gray-500 font-semibold">{chatThread === 'Nurse' ? 'Staff Nurse Room 4B' : 'Ortho HOD Office'}</span>
             </div>
             <span className="text-[9px] text-green-500 font-bold">🟢 Connected</span>
@@ -2931,7 +3132,7 @@ export default function DoctorDashboard({
                     <p>{m.text}</p>
                   ) : (
                     <div className="space-y-2">
-                      <p className="text-[10px] text-gray-550">{m.text}</p>
+                      <p className="text-[10px] text-gray-500">{m.text}</p>
                       <button 
                         onClick={() => toggleChatVoicePlay(m.id)}
                         className="flex items-center space-x-1 text-orange-500 font-bold hover:underline cursor-pointer"
@@ -2940,7 +3141,7 @@ export default function DoctorDashboard({
                         <span>{m.playing ? 'Pause Voice Note' : `Play Voice Note (${m.duration})`}</span>
                       </button>
                       {m.playing && (
-                        <div className="w-24 h-1 bg-slate-350 dark:bg-slate-700 rounded-full overflow-hidden">
+                        <div className="w-24 h-1 bg-slate-400 dark:bg-slate-700 rounded-full overflow-hidden">
                           <motion.div 
                             initial={{ width: '0%' }}
                             animate={{ width: '100%' }}
@@ -2952,7 +3153,7 @@ export default function DoctorDashboard({
                     </div>
                   )}
                 </div>
-                <span className="text-[8px] text-gray-550 mt-1 font-bold">{m.sender} • {m.time}</span>
+                <span className="text-[8px] text-gray-500 mt-1 font-bold">{m.sender} • {m.time}</span>
               </div>
             ))}
           </div>
@@ -2987,7 +3188,7 @@ export default function DoctorDashboard({
         isDarkMode ? 'bg-[#0f172a] border-slate-800' : 'bg-white border-slate-100'
       }`}>
         <div className="pb-3 border-b border-slate-800/10">
-          <h3 className="text-base font-black text-slate-808 dark:text-white uppercase tracking-wider">Portal Configuration Settings</h3>
+          <h3 className="text-base font-black text-slate-800 dark:text-white uppercase tracking-wider">Portal Configuration Settings</h3>
           <p className="text-xs text-gray-555">Adjust dictation preferences, security & localization</p>
         </div>
 
@@ -3018,8 +3219,8 @@ export default function DoctorDashboard({
               className="rounded border-slate-300 text-[#003F8A] focus:ring-[#003F8A] w-4 h-4 mt-0.5" 
             />
             <div>
-              <span className="font-extrabold text-slate-805 dark:text-white">Enable Biometric Signature seal</span>
-              <p className="text-[10px] text-gray-550 leading-normal">Authenticate prescriptions using system fingerprint sensor/face recognition seal.</p>
+              <span className="font-extrabold text-slate-800 dark:text-white">Enable Biometric Signature seal</span>
+              <p className="text-[10px] text-gray-500 leading-normal">Authenticate prescriptions using system fingerprint sensor/face recognition seal.</p>
             </div>
           </label>
 
@@ -3035,15 +3236,15 @@ export default function DoctorDashboard({
               className="rounded border-slate-300 text-[#003F8A] focus:ring-[#003F8A] w-4 h-4 mt-0.5" 
             />
             <div>
-              <span className="font-extrabold text-slate-805 dark:text-white">Enable Voice Assistant Speech Responses</span>
-              <p className="text-[10px] text-gray-550 leading-normal">Allow the voice assistant to speak response confirmation messages using speech synthesis.</p>
+              <span className="font-extrabold text-slate-800 dark:text-white">Enable Voice Assistant Speech Responses</span>
+              <p className="text-[10px] text-gray-500 leading-normal">Allow the voice assistant to speak response confirmation messages using speech synthesis.</p>
             </div>
           </label>
 
           {/* Font scale adjustment */}
           <div className="space-y-1.5">
             <span className="text-[10px] font-black uppercase text-gray-500 tracking-wider">Adjust Layout Font Scale</span>
-            <div className="flex bg-slate-100 dark:bg-slate-850 p-1 rounded-xl w-64 text-center">
+            <div className="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-xl w-64 text-center">
               {(['Small', 'Normal', 'Large'] as const).map(fs => (
                 <button
                   key={fs}
@@ -3064,7 +3265,7 @@ export default function DoctorDashboard({
               <Lock className="w-4 h-4" />
               <span>Ayushman Bharat E-Signature Code</span>
             </h5>
-            <p className="text-[10px] text-gray-550 leading-relaxed font-semibold">
+            <p className="text-[10px] text-gray-500 leading-relaxed font-semibold">
               Your ABDM registered credentials have e-sign capability enabled. E-sign transactions require pin authorization ("1234").
             </p>
           </div>
@@ -3080,7 +3281,7 @@ export default function DoctorDashboard({
         isDarkMode ? 'bg-[#0f172a] border-slate-800' : 'bg-white border-slate-100'
       }`}>
         <div className="pb-3 border-b border-slate-800/10">
-          <h3 className="text-base font-black text-slate-808 dark:text-white uppercase tracking-wider">Doctor Duty Shift Timeline</h3>
+          <h3 className="text-base font-black text-slate-800 dark:text-white uppercase tracking-wider">Doctor Duty Shift Timeline</h3>
           <p className="text-xs text-gray-555">Sion General Hospital • Orthopaedics department shift roster</p>
         </div>
 
@@ -3108,7 +3309,7 @@ export default function DoctorDashboard({
 
   return (
     <div className={`min-h-screen flex font-sans antialiased transition-colors duration-250 ${
-      isDarkMode ? 'bg-[#090d16] text-white dark' : 'bg-[#F8FAFD] text-slate-808'
+      isDarkMode ? 'bg-[#090d16] text-white dark' : 'bg-[#F8FAFD] text-slate-800'
     } ${
       fontSizeSetting === 'Small' ? 'text-xs' : fontSizeSetting === 'Large' ? 'text-base' : 'text-sm'
     }`}>
@@ -3147,7 +3348,7 @@ export default function DoctorDashboard({
                     ? 'bg-[#003F8A] text-white shadow-sm'
                     : isDarkMode
                     ? 'text-slate-400 hover:bg-slate-800/50 hover:text-white'
-                    : 'text-slate-650 hover:bg-slate-50 hover:text-slate-900'
+                    : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
                 }`}
               >
                 <div className="flex items-center space-x-3">
@@ -3173,7 +3374,7 @@ export default function DoctorDashboard({
               className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-bold transition-all cursor-pointer ${
                 activeTab === 'timeline'
                   ? 'bg-[#003F8A] text-white'
-                  : 'text-slate-400 hover:bg-slate-850/50 hover:text-white'
+                  : 'text-slate-400 hover:bg-slate-800/50 hover:text-white'
               }`}
             >
               <Calendar className="w-5 h-5" />
@@ -3184,7 +3385,7 @@ export default function DoctorDashboard({
               className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-bold transition-all cursor-pointer ${
                 activeTab === 'messages'
                   ? 'bg-[#003F8A] text-white'
-                  : 'text-slate-400 hover:bg-slate-850/50 hover:text-white'
+                  : 'text-slate-400 hover:bg-slate-800/50 hover:text-white'
               }`}
             >
               <MessageSquare className="w-5 h-5" />
@@ -3195,7 +3396,7 @@ export default function DoctorDashboard({
               className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-bold transition-all cursor-pointer ${
                 activeTab === 'settings'
                   ? 'bg-[#003F8A] text-white'
-                  : 'text-slate-400 hover:bg-slate-850/50 hover:text-white'
+                  : 'text-slate-400 hover:bg-slate-800/50 hover:text-white'
               }`}
             >
               <Settings className="w-5 h-5" />
@@ -3228,7 +3429,7 @@ export default function DoctorDashboard({
                 <span className="text-xs uppercase font-extrabold tracking-wider text-orange-500">Sion Municipal Hospital</span>
                 <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
               </div>
-              <h1 className="text-lg font-black tracking-tight text-slate-808 dark:text-white">{dict.title}</h1>
+              <h1 className="text-lg font-black tracking-tight text-slate-800 dark:text-white">{dict.title}</h1>
             </div>
           </div>
 
@@ -3239,7 +3440,7 @@ export default function DoctorDashboard({
               className={`hidden md:flex items-center space-x-2 px-3 py-1.5 rounded-xl border text-xs font-bold transition-all cursor-pointer ${
                 isDarkMode 
                   ? 'bg-slate-900 border-slate-800 text-slate-400 hover:text-white hover:border-slate-700' 
-                  : 'bg-slate-100 border-slate-200 text-slate-550 hover:text-slate-800 hover:border-slate-355'
+                  : 'bg-slate-100 border-slate-200 text-slate-500 hover:text-slate-800 hover:border-slate-400'
               }`}
             >
               <Search className="w-3.5 h-3.5" />
@@ -3263,7 +3464,7 @@ export default function DoctorDashboard({
             {/* Dark Mode */}
             <button
               onClick={() => setIsDarkMode(!isDarkMode)}
-              className="p-2 bg-slate-150 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-xl transition-all cursor-pointer"
+              className="p-2 bg-slate-200 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-xl transition-all cursor-pointer"
             >
               {isDarkMode ? <Sun className="w-5 h-5 text-amber-500" /> : <Moon className="w-5 h-5 text-blue-900" />}
             </button>
@@ -3357,7 +3558,7 @@ export default function DoctorDashboard({
                 />
               </div>
               <div className="text-left hidden md:block">
-                <h4 className="text-xs font-black text-slate-808 dark:text-white">Dr. Anil Patil</h4>
+                <h4 className="text-xs font-black text-slate-800 dark:text-white">Dr. Anil Patil</h4>
                 <p className="text-[10px] text-gray-500 dark:text-slate-400 font-bold uppercase">{dict.dept}</p>
               </div>
             </div>
@@ -3403,7 +3604,7 @@ export default function DoctorDashboard({
 
               <div className="p-3 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-800/5 text-xs font-semibold">
                 <span className="text-gray-500">Patient:</span>
-                <span className="font-extrabold text-slate-855 dark:text-white ml-2">{activeLabPatient?.name} ({activeLabPatient?.token})</span>
+                <span className="font-extrabold text-slate-800 dark:text-white ml-2">{activeLabPatient?.name} ({activeLabPatient?.token})</span>
               </div>
 
               <div className="space-y-2.5">
@@ -3478,7 +3679,7 @@ export default function DoctorDashboard({
               }`}
             >
               <div className="flex justify-between items-center pb-3 border-b border-slate-800/10">
-                <h3 className="text-sm font-black uppercase tracking-wider text-slate-855 dark:text-white">Raise Radiology Order</h3>
+                <h3 className="text-sm font-black uppercase tracking-wider text-slate-800 dark:text-white">Raise Radiology Order</h3>
                 <button onClick={() => setShowRadiologyModal(false)} className="text-gray-400 hover:text-white cursor-pointer">
                   <X className="w-5 h-5" />
                 </button>
@@ -3487,7 +3688,7 @@ export default function DoctorDashboard({
               <div className="space-y-4">
                 <div className="p-3 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-800/5 text-xs font-semibold">
                   <span className="text-gray-500">Patient:</span>
-                  <span className="font-extrabold text-slate-855 dark:text-white ml-2">{activeRadiologyPatient?.name} ({activeRadiologyPatient?.token})</span>
+                  <span className="font-extrabold text-slate-800 dark:text-white ml-2">{activeRadiologyPatient?.name} ({activeRadiologyPatient?.token})</span>
                 </div>
 
                 <div className="grid grid-cols-2 gap-2 text-xs font-bold">
@@ -3497,7 +3698,7 @@ export default function DoctorDashboard({
                       value={radiologyCategory}
                       onChange={(e) => setRadiologyCategory(e.target.value as any)}
                       className={`w-full p-2.5 rounded-xl border outline-none cursor-pointer ${
-                        isDarkMode ? 'bg-[#090d16] border-slate-855 text-white' : 'bg-slate-50 border-slate-200 text-slate-800'
+                        isDarkMode ? 'bg-[#090d16] border-slate-800 text-white' : 'bg-slate-50 border-slate-200 text-slate-800'
                       }`}
                     >
                       <option value="Extremities">Extremities (Knee/Foot/Ankle)</option>
@@ -3511,7 +3712,7 @@ export default function DoctorDashboard({
                     <span className="text-[8px] font-black uppercase text-gray-500 block mb-1">Imaging Type</span>
                     <select
                       className={`w-full p-2.5 rounded-xl border outline-none cursor-pointer ${
-                        isDarkMode ? 'bg-[#090d16] border-slate-855 text-white' : 'bg-slate-50 border-slate-200 text-slate-800'
+                        isDarkMode ? 'bg-[#090d16] border-slate-800 text-white' : 'bg-slate-50 border-slate-200 text-slate-800'
                       }`}
                     >
                       <option>X-Ray (AP & Lateral View)</option>
@@ -3592,11 +3793,11 @@ export default function DoctorDashboard({
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               className={`w-full max-w-md rounded-3xl p-6 shadow-2xl border space-y-6 ${
-                isDarkMode ? 'bg-[#0f172a] border-slate-800 text-white' : 'bg-white border-slate-200 text-slate-850'
+                isDarkMode ? 'bg-[#0f172a] border-slate-800 text-white' : 'bg-white border-slate-200 text-slate-800'
               }`}
             >
               <div className="flex justify-between items-center pb-3 border-b border-slate-800/10">
-                <h3 className="text-sm font-black uppercase tracking-wider text-slate-855 dark:text-white">Generate ABHA Hospital Referral</h3>
+                <h3 className="text-sm font-black uppercase tracking-wider text-slate-800 dark:text-white">Generate ABHA Hospital Referral</h3>
                 <button onClick={() => setShowReferModal(false)} className="text-gray-400 hover:text-white cursor-pointer">
                   <X className="w-5 h-5" />
                 </button>
@@ -3605,7 +3806,7 @@ export default function DoctorDashboard({
               <div className="space-y-4">
                 <div className="p-3 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-800/5 text-xs font-semibold">
                   <span className="text-gray-500">Patient:</span>
-                  <span className="font-extrabold text-slate-855 dark:text-white ml-2">{activeReferPatient?.name} ({activeReferPatient?.token})</span>
+                  <span className="font-extrabold text-slate-800 dark:text-white ml-2">{activeReferPatient?.name} ({activeReferPatient?.token})</span>
                 </div>
 
                 <div className="space-y-3">
@@ -3615,7 +3816,7 @@ export default function DoctorDashboard({
                       value={referHospital}
                       onChange={(e) => setReferHospital(e.target.value)}
                       className={`w-full px-3 py-2.5 rounded-xl border text-xs font-bold outline-none cursor-pointer ${
-                        isDarkMode ? 'bg-[#090d16] border-slate-800 text-white' : 'bg-slate-50 border-slate-200 text-slate-805'
+                        isDarkMode ? 'bg-[#090d16] border-slate-800 text-white' : 'bg-slate-50 border-slate-200 text-slate-800'
                       }`}
                     >
                       <option value="KEM Hospital, Parel">KEM Hospital, Parel (MCGM)</option>
@@ -3631,7 +3832,7 @@ export default function DoctorDashboard({
                       value={referDept}
                       onChange={(e) => setReferDept(e.target.value)}
                       className={`w-full px-3 py-2.5 rounded-xl border text-xs font-bold outline-none cursor-pointer ${
-                        isDarkMode ? 'bg-[#090d16] border-slate-800 text-white' : 'bg-slate-50 border-slate-200 text-slate-805'
+                        isDarkMode ? 'bg-[#090d16] border-slate-800 text-white' : 'bg-slate-50 border-slate-200 text-slate-800'
                       }`}
                     >
                       <option value="Rheumatology & Immunology">Rheumatology & Immunology</option>
@@ -3648,7 +3849,7 @@ export default function DoctorDashboard({
                       value={referReason}
                       onChange={(e) => setReferReason(e.target.value)}
                       className={`w-full px-3 py-2 rounded-xl border text-xs font-semibold outline-none resize-none focus:ring-1 focus:ring-[#003F8A] ${
-                        isDarkMode ? 'bg-[#090d16] border-slate-800 text-white placeholder-slate-650' : 'bg-slate-50 border-slate-200 placeholder-slate-400 text-slate-800'
+                        isDarkMode ? 'bg-[#090d16] border-slate-800 text-white placeholder-slate-600' : 'bg-slate-50 border-slate-200 placeholder-slate-400 text-slate-800'
                       }`}
                       placeholder="Enter referral details..."
                     />
@@ -3662,7 +3863,7 @@ export default function DoctorDashboard({
                     <span>Referral Slip Created</span>
                     <span>{referralSlip.code}</span>
                   </div>
-                  <p className="text-[10px] text-gray-550">Transferred to: {referralSlip.hospital} • {referralSlip.dept}</p>
+                  <p className="text-[10px] text-gray-500">Transferred to: {referralSlip.hospital} • {referralSlip.dept}</p>
                   <p className="text-[10px] text-gray-555 italic">"Reason: {referralSlip.reason}"</p>
                   <div className="flex justify-between items-center pt-2 border-t border-dashed border-slate-800/10">
                     <span className="text-[8px] text-gray-405">ABHA Sync: Compliant</span>
@@ -3694,11 +3895,11 @@ export default function DoctorDashboard({
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               className={`w-full max-w-md rounded-3xl p-6 shadow-2xl border space-y-6 ${
-                isDarkMode ? 'bg-[#0f172a] border-slate-800 text-white' : 'bg-white border-slate-200 text-slate-808'
+                isDarkMode ? 'bg-[#0f172a] border-slate-800 text-white' : 'bg-white border-slate-200 text-slate-800'
               }`}
             >
               <div className="flex justify-between items-center pb-3 border-b border-slate-800/10">
-                <h3 className="text-sm font-black uppercase tracking-wider text-slate-855 dark:text-white">Issue Digital Medical Certificate</h3>
+                <h3 className="text-sm font-black uppercase tracking-wider text-slate-800 dark:text-white">Issue Digital Medical Certificate</h3>
                 <button onClick={() => setShowCertModal(false)} className="text-gray-400 hover:text-white cursor-pointer">
                   <X className="w-5 h-5" />
                 </button>
@@ -3707,7 +3908,7 @@ export default function DoctorDashboard({
               <div className="space-y-4">
                 <div className="p-3 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-800/5 text-xs font-semibold">
                   <span className="text-gray-500">Patient:</span>
-                  <span className="font-extrabold text-slate-855 dark:text-white ml-2">{activeCertPatient?.name} ({activeCertPatient?.token})</span>
+                  <span className="font-extrabold text-slate-800 dark:text-white ml-2">{activeCertPatient?.name} ({activeCertPatient?.token})</span>
                 </div>
 
                 <div className="space-y-3">
@@ -3749,7 +3950,7 @@ export default function DoctorDashboard({
                       value={certDiagnosis}
                       onChange={(e) => setCertDiagnosis(e.target.value)}
                       className={`w-full px-3 py-2.5 rounded-xl border text-xs font-semibold outline-none focus:ring-1 focus:ring-[#003F8A] ${
-                        isDarkMode ? 'bg-[#090d16] border-slate-800 text-white' : 'bg-slate-50 border-slate-200 text-slate-805'
+                        isDarkMode ? 'bg-[#090d16] border-slate-800 text-white' : 'bg-slate-50 border-slate-200 text-slate-800'
                       }`}
                     />
                   </div>
@@ -3787,10 +3988,10 @@ export default function DoctorDashboard({
               {toast.type === 'alert' ? <AlertTriangle className="w-5 h-5" /> : toast.type === 'success' ? <Check className="w-5 h-5" /> : <Bell className="w-5 h-5" />}
             </div>
             <div className="flex-1 min-w-0">
-              <h5 className="text-xs font-black text-slate-855 dark:text-white">{toast.title}</h5>
+              <h5 className="text-xs font-black text-slate-800 dark:text-white">{toast.title}</h5>
               <p className="text-[11px] text-gray-500 leading-normal mt-0.5">{toast.message}</p>
             </div>
-            <button onClick={() => setToast(null)} className="text-slate-450 hover:text-slate-650 cursor-pointer">
+            <button onClick={() => setToast(null)} className="text-slate-400 hover:text-slate-600 cursor-pointer">
               <X className="w-4 h-4" />
             </button>
           </motion.div>

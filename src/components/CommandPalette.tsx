@@ -119,7 +119,7 @@ export default function CommandPalette({
               setQuery(e.target.value);
               setSelectedIndex(0);
             }}
-            className="flex-1 bg-transparent border-none outline-none text-slate-800 dark:text-slate-150 text-xs font-semibold placeholder-gray-400 dark:placeholder-gray-600"
+            className="flex-1 bg-transparent border-none outline-none text-slate-800 dark:text-slate-200 text-xs font-semibold placeholder-gray-400 dark:placeholder-gray-600"
           />
           <span className="hidden sm:inline-block text-[9px] font-black uppercase px-2 py-1 bg-slate-200 dark:bg-slate-800 text-gray-500 rounded-md border border-slate-300/20">ESC</span>
           <button onClick={onClose} className="p-1 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-full transition-all">
@@ -167,7 +167,7 @@ export default function CommandPalette({
               );
             })
           ) : (
-            <div className="py-12 text-center text-gray-450 dark:text-gray-550 text-xs font-bold space-y-1">
+            <div className="py-12 text-center text-gray-400 dark:text-gray-500 text-xs font-bold space-y-1">
               <Terminal className="w-8 h-8 text-gray-400 mx-auto opacity-50 mb-2" />
               <p>No matching commands or navigation endpoints.</p>
               <p className="text-[10px] text-gray-500">Try typing "go to" or "theme"</p>

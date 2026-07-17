@@ -209,7 +209,7 @@ export default function GovernmentHealthIntelligence({
           
           <button 
             onClick={() => setIsDarkMode(!isDarkMode)}
-            className="p-2.5 rounded-xl border border-gray-200 hover:bg-slate-100 dark:border-blue-900/30 dark:hover:bg-slate-900/60 text-gray-450 cursor-pointer"
+            className="p-2.5 rounded-xl border border-gray-200 hover:bg-slate-100 dark:border-blue-900/30 dark:hover:bg-slate-900/60 text-gray-400 cursor-pointer"
           >
             {isDarkMode ? <Sun className="w-4.5 h-4.5 text-yellow-400" /> : <Moon className="w-4.5 h-4.5 text-slate-700" />}
           </button>
@@ -275,7 +275,7 @@ export default function GovernmentHealthIntelligence({
                 className={`flex items-center space-x-2 px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${
                   activeTab === tab.id
                     ? 'bg-[#0A5BFF] text-white shadow-md'
-                    : 'text-gray-400 hover:text-slate-800 dark:hover:text-gray-250 hover:bg-slate-100 dark:hover:bg-slate-900'
+                    : 'text-gray-400 hover:text-slate-800 dark:hover:text-gray-200 hover:bg-slate-100 dark:hover:bg-slate-900'
                 }`}
               >
                 <Icon className="w-4 h-4" />
@@ -507,16 +507,16 @@ export default function GovernmentHealthIntelligence({
                       <g className="transition-all duration-300">
                         {/* Wards Map paths */}
                         <path d="M 50 50 L 150 20 L 250 80 L 120 180 Z" className={`transition-all stroke-2 cursor-pointer ${selectedWard === 'F-North' ? 'fill-red-500/20 stroke-red-500' : 'fill-slate-500/5 stroke-slate-400 hover:fill-slate-500/10'}`} onClick={() => setSelectedWard('F-North')} />
-                        <text x="130" y="80" className="text-[10px] font-extrabold fill-slate-700 dark:fill-slate-350 select-none">F-North</text>
+                        <text x="130" y="80" className="text-[10px] font-extrabold fill-slate-700 dark:fill-slate-400 select-none">F-North</text>
 
                         <path d="M 250 80 L 380 40 L 450 150 L 320 220 Z" className={`transition-all stroke-2 cursor-pointer ${selectedWard === 'K-West' ? 'fill-orange-500/20 stroke-orange-500' : 'fill-slate-500/5 stroke-slate-400 hover:fill-slate-500/10'}`} onClick={() => setSelectedWard('K-West')} />
-                        <text x="330" y="120" className="text-[10px] font-extrabold fill-slate-700 dark:fill-slate-350 select-none">K-West</text>
+                        <text x="330" y="120" className="text-[10px] font-extrabold fill-slate-700 dark:fill-slate-400 select-none">K-West</text>
 
                         <path d="M 120 180 L 320 220 L 250 350 L 80 320 Z" className={`transition-all stroke-2 cursor-pointer ${selectedWard === 'G-South' ? 'fill-orange-500/20 stroke-orange-500' : 'fill-slate-500/5 stroke-slate-400 hover:fill-slate-500/10'}`} onClick={() => setSelectedWard('G-South')} />
-                        <text x="180" y="270" className="text-[10px] font-extrabold fill-slate-700 dark:fill-slate-350 select-none">G-South</text>
+                        <text x="180" y="270" className="text-[10px] font-extrabold fill-slate-700 dark:fill-slate-400 select-none">G-South</text>
 
                         <path d="M 320 220 L 450 150 L 550 280 L 410 350 Z" className={`transition-all stroke-2 cursor-pointer ${selectedWard === 'S-Ward' ? 'fill-yellow-500/20 stroke-yellow-500' : 'fill-slate-500/5 stroke-slate-400 hover:fill-slate-500/10'}`} onClick={() => setSelectedWard('S-Ward')} />
-                        <text x="440" y="250" className="text-[10px] font-extrabold fill-slate-700 dark:fill-slate-350 select-none">S-Ward</text>
+                        <text x="440" y="250" className="text-[10px] font-extrabold fill-slate-700 dark:fill-slate-400 select-none">S-Ward</text>
                       </g>
 
                       {/* Overlays */}
@@ -620,7 +620,7 @@ export default function GovernmentHealthIntelligence({
                       </div>
 
                       <div className="space-y-3 font-semibold text-xs pt-2">
-                        <h4 className="text-[10px] font-black uppercase text-gray-450">Correlative Insights:</h4>
+                        <h4 className="text-[10px] font-black uppercase text-gray-400">Correlative Insights:</h4>
                         <p className="text-[11.5px] text-gray-500 dark:text-gray-400 leading-relaxed">
                           At **{vectorRiskMultiplier}x vector index**, the projected Dengue incubation timeline drops from 12 days to **7 days**, signaling a potential doubling of cases by next Friday.
                         </p>
@@ -656,7 +656,7 @@ export default function GovernmentHealthIntelligence({
                 </div>
 
                 <div className="overflow-x-auto">
-                  <table className="w-full text-left text-xs text-slate-600 dark:text-slate-350">
+                  <table className="w-full text-left text-xs text-slate-600 dark:text-slate-400">
                     <thead>
                       <tr className="border-b border-gray-105 dark:border-blue-900/15 text-gray-400 font-extrabold">
                         <th className="py-2.5">Facility Name</th>
@@ -836,7 +836,7 @@ export default function GovernmentHealthIntelligence({
                       <Sparkles className="w-4.5 h-4.5 animate-pulse" />
                       Government Policy Intelligence Advisor
                     </h3>
-                    <span className="text-[9px] text-gray-450 font-black">ACTIVE AGENT</span>
+                    <span className="text-[9px] text-gray-400 font-black">ACTIVE AGENT</span>
                   </div>
 
                   <div className="space-y-4 max-h-[300px] overflow-y-auto pr-1 no-scrollbar flex flex-col-reverse">
@@ -868,7 +868,7 @@ export default function GovernmentHealthIntelligence({
                       value={copilotQuery}
                       onChange={(e) => setCopilotQuery(e.target.value)}
                       onKeyDown={(e) => e.key === 'Enter' && handleCopilotSubmit(copilotQuery)}
-                      className="flex-1 px-4 py-3 bg-slate-50 dark:bg-slate-950 border border-gray-150 dark:border-blue-900/10 rounded-2xl text-xs font-semibold outline-none focus:ring-1 focus:ring-[#0A5BFF]"
+                      className="flex-1 px-4 py-3 bg-slate-50 dark:bg-slate-950 border border-gray-200 dark:border-blue-900/10 rounded-2xl text-xs font-semibold outline-none focus:ring-1 focus:ring-[#0A5BFF]"
                     />
                     <button
                       onClick={() => handleCopilotSubmit(copilotQuery)}
@@ -891,7 +891,7 @@ export default function GovernmentHealthIntelligence({
                       <button
                         key={idx}
                         onClick={() => handleCopilotSubmit(query)}
-                        className="text-left p-3 bg-slate-50 dark:bg-[#1f2937]/50 hover:bg-slate-100 dark:hover:bg-slate-900 rounded-xl text-xs font-black text-slate-700 dark:text-slate-350 transition-all cursor-pointer border border-gray-100 dark:border-blue-900/10"
+                        className="text-left p-3 bg-slate-50 dark:bg-[#1f2937]/50 hover:bg-slate-100 dark:hover:bg-slate-900 rounded-xl text-xs font-black text-slate-700 dark:text-slate-400 transition-all cursor-pointer border border-gray-100 dark:border-blue-900/10"
                       >
                         {query}
                       </button>

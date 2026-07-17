@@ -583,12 +583,12 @@ export default function RadiologyDashboard({ isDarkMode, setIsDarkMode, onLogout
       {/* Workstation Header */}
       <header className={`border-b ${isDarkMode ? 'border-gray-800 bg-[#0f172a]' : 'border-gray-200 bg-white'} px-6 py-4 flex items-center justify-between`}>
         <div className="flex items-center space-x-3">
-          <div className="bg-sky-650 bg-sky-600 p-2.5 rounded-xl text-white shadow-lg flex items-center justify-center">
+          <div className="bg-sky-600 p-2.5 rounded-xl text-white shadow-lg flex items-center justify-center">
             <Layers className="w-6 h-6 animate-pulse" />
           </div>
           <div>
             <div className="flex items-center space-x-2">
-              <h1 className="text-lg font-black tracking-tight text-white">MCGM Digital PACS & RIS</h1>
+              <h1 className={`text-lg font-black tracking-tight ${isDarkMode ? 'text-white' : 'text-slate-800'}`}>MCGM Digital PACS & RIS</h1>
               <span className="bg-red-500/10 text-red-500 border border-red-500/20 text-[10px] px-2 py-0.5 rounded-md font-bold uppercase tracking-wider">
                 Sion Hospital Node
               </span>
@@ -631,7 +631,7 @@ export default function RadiologyDashboard({ isDarkMode, setIsDarkMode, onLogout
           
           <button
             onClick={onLogout}
-            className="bg-red-650 bg-red-600 hover:bg-red-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl flex items-center space-x-1.5 transition-all shadow-md"
+            className="bg-red-600 hover:bg-red-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl flex items-center space-x-1.5 transition-all shadow-md"
           >
             <LogOut className="w-4 h-4" />
             <span className="hidden sm:inline">Exit Port</span>
@@ -647,7 +647,9 @@ export default function RadiologyDashboard({ isDarkMode, setIsDarkMode, onLogout
             className={`px-4 py-2 rounded-lg font-bold text-xs flex items-center space-x-2 transition-all cursor-pointer ${
               activeTab === 'reporting'
                 ? 'bg-sky-600 text-white shadow-md'
-                : 'text-gray-400 hover:text-gray-200 hover:bg-slate-800/40'
+                : isDarkMode
+                ? 'text-gray-400 hover:text-gray-200 hover:bg-slate-800/40'
+                : 'text-gray-600 hover:text-gray-900 hover:bg-slate-100'
             }`}
           >
             <Tv className="w-4 h-4" />
@@ -658,7 +660,9 @@ export default function RadiologyDashboard({ isDarkMode, setIsDarkMode, onLogout
             className={`px-4 py-2 rounded-lg font-bold text-xs flex items-center space-x-2 transition-all cursor-pointer ${
               activeTab === 'schedule'
                 ? 'bg-sky-600 text-white shadow-md'
-                : 'text-gray-400 hover:text-gray-200 hover:bg-slate-800/40'
+                : isDarkMode
+                ? 'text-gray-400 hover:text-gray-200 hover:bg-slate-800/40'
+                : 'text-gray-600 hover:text-gray-900 hover:bg-slate-100'
             }`}
           >
             <Calendar className="w-4 h-4" />
@@ -669,7 +673,9 @@ export default function RadiologyDashboard({ isDarkMode, setIsDarkMode, onLogout
             className={`px-4 py-2 rounded-lg font-bold text-xs flex items-center space-x-2 transition-all cursor-pointer ${
               activeTab === 'quality'
                 ? 'bg-sky-600 text-white shadow-md'
-                : 'text-gray-400 hover:text-gray-200 hover:bg-slate-800/40'
+                : isDarkMode
+                ? 'text-gray-400 hover:text-gray-200 hover:bg-slate-800/40'
+                : 'text-gray-600 hover:text-gray-900 hover:bg-slate-100'
             }`}
           >
             <ShieldCheck className="w-4 h-4" />
@@ -680,7 +686,9 @@ export default function RadiologyDashboard({ isDarkMode, setIsDarkMode, onLogout
             className={`px-4 py-2 rounded-lg font-bold text-xs flex items-center space-x-2 transition-all cursor-pointer ${
               activeTab === 'analytics'
                 ? 'bg-sky-600 text-white shadow-md'
-                : 'text-gray-400 hover:text-gray-200 hover:bg-slate-800/40'
+                : isDarkMode
+                ? 'text-gray-400 hover:text-gray-200 hover:bg-slate-800/40'
+                : 'text-gray-600 hover:text-gray-900 hover:bg-slate-100'
             }`}
           >
             <BarChart2 className="w-4 h-4" />
@@ -702,7 +710,9 @@ export default function RadiologyDashboard({ isDarkMode, setIsDarkMode, onLogout
             className={`px-4 py-2 rounded-lg font-bold text-xs flex items-center space-x-2 transition-all cursor-pointer ${
               activeTab === 'machines'
                 ? 'bg-sky-600 text-white shadow-md'
-                : 'text-gray-400 hover:text-gray-200 hover:bg-slate-800/40'
+                : isDarkMode
+                ? 'text-gray-400 hover:text-gray-200 hover:bg-slate-800/40'
+                : 'text-gray-600 hover:text-gray-900 hover:bg-slate-100'
             }`}
           >
             <Server className="w-4 h-4" />
@@ -713,7 +723,9 @@ export default function RadiologyDashboard({ isDarkMode, setIsDarkMode, onLogout
             className={`px-4 py-2 rounded-lg font-bold text-xs flex items-center space-x-2 transition-all cursor-pointer ${
               activeTab === 'sharing'
                 ? 'bg-sky-600 text-white shadow-md'
-                : 'text-gray-400 hover:text-gray-200 hover:bg-slate-800/40'
+                : isDarkMode
+                ? 'text-gray-400 hover:text-gray-200 hover:bg-slate-800/40'
+                : 'text-gray-600 hover:text-gray-900 hover:bg-slate-100'
             }`}
           >
             <Share2 className="w-4 h-4" />
@@ -728,7 +740,11 @@ export default function RadiologyDashboard({ isDarkMode, setIsDarkMode, onLogout
             placeholder="Search patient, modality, ABHA..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-slate-800/60 text-xs px-3.5 py-1.5 pl-9 rounded-xl border border-gray-700 text-white focus:outline-none focus:border-sky-500 placeholder-gray-400"
+            className={`w-full text-xs px-3.5 py-1.5 pl-9 rounded-xl border focus:outline-none focus:border-sky-500 ${
+              isDarkMode
+                ? 'bg-slate-800/60 border-gray-700 text-white placeholder-gray-400'
+                : 'bg-slate-100 border-gray-300 text-slate-800 placeholder-gray-500'
+            }`}
           />
           <Search className="w-4 h-4 text-gray-400 absolute left-3 top-2" />
         </div>
@@ -743,9 +759,9 @@ export default function RadiologyDashboard({ isDarkMode, setIsDarkMode, onLogout
             {/* Left Column: RIS Worklist / Study Queue */}
             <section className="w-full lg:w-80 flex flex-col space-y-4 flex-shrink-0">
               <div className={`p-4 rounded-2xl border flex flex-col h-[580px] ${isDarkMode ? 'bg-[#0f172a]/95 border-gray-800' : 'bg-white border-gray-200 shadow-sm'}`}>
-                <div className="flex items-center justify-between pb-3 border-b border-gray-800">
-                  <h3 className="text-xs font-black uppercase text-gray-400 tracking-wider">Patient Worklist</h3>
-                  <span className="bg-slate-800 text-[10px] px-2 py-0.5 rounded-full font-bold text-sky-400">
+                <div className={`flex items-center justify-between pb-3 border-b ${isDarkMode ? 'border-gray-800' : 'border-gray-100'}`}>
+                  <h3 className={`text-xs font-black uppercase tracking-wider ${isDarkMode ? 'text-gray-400' : 'text-slate-500'}`}>Patient Worklist</h3>
+                  <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold ${isDarkMode ? 'bg-slate-800 text-sky-400' : 'bg-sky-50 text-sky-600'}`}>
                     {filteredStudies.length} Cases
                   </span>
                 </div>
@@ -758,7 +774,7 @@ export default function RadiologyDashboard({ isDarkMode, setIsDarkMode, onLogout
                   <button className="bg-red-500/10 text-red-500 text-[9px] font-black rounded py-1 uppercase text-center">
                     Emergency
                   </button>
-                  <button className="bg-slate-800 text-gray-400 text-[9px] font-black rounded py-1 uppercase text-center">
+                  <button className={`text-[9px] font-black rounded py-1 uppercase text-center ${isDarkMode ? 'bg-slate-800 text-gray-400' : 'bg-gray-100 text-slate-600'}`}>
                     Pending
                   </button>
                 </div>
@@ -772,10 +788,12 @@ export default function RadiologyDashboard({ isDarkMode, setIsDarkMode, onLogout
                         ? 'bg-red-500/10 text-red-500 border-red-500/20'
                         : st.priority === 'URGENT'
                         ? 'bg-amber-500/10 text-amber-500 border-amber-500/20'
-                        : 'bg-slate-800 text-gray-400 border-gray-700';
+                        : isDarkMode
+                        ? 'bg-slate-800 text-gray-400 border-gray-700'
+                        : 'bg-slate-100 text-slate-600 border-slate-200';
 
                     const statusLabels: Record<Study['status'], { text: string; bg: string }> = {
-                      SCHEDULED: { text: 'Scheduled', bg: 'text-gray-400 bg-gray-800' },
+                      SCHEDULED: { text: 'Scheduled', bg: isDarkMode ? 'text-gray-400 bg-gray-800' : 'text-gray-600 bg-gray-100' },
                       ACQUIRING: { text: 'Acquiring', bg: 'text-blue-400 bg-blue-500/10' },
                       QC_PENDING: { text: 'QC Pending', bg: 'text-purple-400 bg-purple-500/10' },
                       AI_PROCESSED: { text: 'AI Processed', bg: 'text-pink-400 bg-pink-500/10' },
@@ -795,12 +813,16 @@ export default function RadiologyDashboard({ isDarkMode, setIsDarkMode, onLogout
                         className={`p-3 rounded-xl border transition-all cursor-pointer hover:-translate-y-0.5 ${
                           isSelected
                             ? 'border-sky-500 bg-sky-500/5 shadow-inner'
-                            : 'border-slate-800 hover:border-slate-700 bg-slate-900/40'
+                            : isDarkMode
+                            ? 'border-slate-800 hover:border-slate-700 bg-slate-900/40'
+                            : 'border-slate-200 hover:border-slate-300 bg-slate-50'
                         }`}
                       >
                         <div className="flex justify-between items-start">
                           <div>
-                            <span className="bg-slate-800 text-gray-300 text-[9px] px-1.5 py-0.5 rounded font-mono font-bold">
+                            <span className={`text-[9px] px-1.5 py-0.5 rounded font-mono font-bold ${
+                              isDarkMode ? 'bg-slate-800 text-gray-300' : 'bg-slate-200 text-slate-700'
+                            }`}>
                               {st.modality}
                             </span>
                             <span className={`ml-1.5 border text-[8px] px-1.5 py-0.5 rounded-full font-bold ${priorityColors}`}>
@@ -812,8 +834,8 @@ export default function RadiologyDashboard({ isDarkMode, setIsDarkMode, onLogout
                           </span>
                         </div>
 
-                        <h4 className="text-xs font-black mt-2 text-white line-clamp-1">{st.patientName}</h4>
-                        <p className="text-[10px] text-gray-400 mt-0.5">
+                        <h4 className={`text-xs font-black mt-2 line-clamp-1 ${isDarkMode ? 'text-white' : 'text-slate-800'}`}>{st.patientName}</h4>
+                        <p className={`text-[10px] mt-0.5 ${isDarkMode ? 'text-gray-400' : 'text-slate-500'}`}>
                           {st.age}Y • {st.gender} • {st.accessionNumber}
                         </p>
 
@@ -830,8 +852,8 @@ export default function RadiologyDashboard({ isDarkMode, setIsDarkMode, onLogout
                 </div>
 
                 {/* Queue Summary / Machine Status panel */}
-                <div className="mt-4 pt-3 border-t border-gray-800 flex items-center justify-between text-[10px]">
-                  <span className="text-gray-400">Total Radiation Dose:</span>
+                <div className={`mt-4 pt-3 border-t flex items-center justify-between text-[10px] ${isDarkMode ? 'border-gray-800' : 'border-gray-100'}`}>
+                  <span className={isDarkMode ? 'text-gray-400' : 'text-slate-500'}>Total Radiation Dose:</span>
                   <span className="font-bold text-amber-500">
                     {studies.reduce((acc, curr) => acc + curr.doseMsv, 0).toFixed(2)} mSv today
                   </span>
@@ -1092,32 +1114,34 @@ export default function RadiologyDashboard({ isDarkMode, setIsDarkMode, onLogout
             <section className="w-full lg:w-96 flex flex-col space-y-4 flex-shrink-0">
               {/* AI Findings Summary Card */}
               <div className={`p-4 rounded-2xl border ${isDarkMode ? 'bg-[#0f172a]/95 border-gray-800' : 'bg-white border-gray-200 shadow-sm'}`}>
-                <div className="flex items-center space-x-2 pb-3 border-b border-gray-800">
+                <div className={`flex items-center space-x-2 pb-3 border-b ${isDarkMode ? 'border-gray-800' : 'border-gray-100'}`}>
                   <Brain className="w-5 h-5 text-purple-400" />
-                  <h4 className="text-xs font-black uppercase text-gray-200">AI Medical Assistant</h4>
+                  <h4 className={`text-xs font-black uppercase ${isDarkMode ? 'text-gray-200' : 'text-slate-700'}`}>AI Medical Assistant</h4>
                 </div>
 
                 <div className="mt-3 space-y-2.5">
                   <div className="flex justify-between items-center bg-purple-500/5 border border-purple-500/20 p-3 rounded-xl">
                     <div>
                       <span className="text-[10px] uppercase font-bold text-purple-400">Primary AI Suggestion</span>
-                      <h5 className="text-xs font-black text-white mt-0.5">{selectedStudy.aiFindings.label}</h5>
+                      <h5 className={`text-xs font-black mt-0.5 ${isDarkMode ? 'text-white' : 'text-slate-800'}`}>{selectedStudy.aiFindings.label}</h5>
                     </div>
                     <span className="bg-purple-600 text-white font-mono text-xs font-bold px-2 py-1 rounded-lg">
                       {selectedStudy.aiFindings.confidence.toFixed(1)}%
                     </span>
                   </div>
 
-                  <p className="text-[11px] text-gray-400 leading-normal">
+                  <p className={`text-[11px] leading-normal ${isDarkMode ? 'text-gray-400' : 'text-slate-650'}`}>
                     {selectedStudy.aiFindings.description}
                   </p>
 
                   {/* Previous Study Reference info if available */}
                   {selectedStudy.previousStudyDate && (
-                    <div className="bg-slate-900 border border-slate-800 p-2.5 rounded-xl flex items-center justify-between text-[10px]">
+                    <div className={`p-2.5 border rounded-xl flex items-center justify-between text-[10px] ${
+                      isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-slate-50 border-slate-200'
+                    }`}>
                       <div>
                         <span className="text-gray-400 block uppercase text-[8px] font-bold">Previous Study Ref</span>
-                        <span className="text-white font-bold">{selectedStudy.modality} Study on {selectedStudy.previousStudyDate}</span>
+                        <span className={`font-bold ${isDarkMode ? 'text-white' : 'text-slate-800'}`}>{selectedStudy.modality} Study on {selectedStudy.previousStudyDate}</span>
                       </div>
                       <button
                         onClick={() => {
@@ -1135,15 +1159,15 @@ export default function RadiologyDashboard({ isDarkMode, setIsDarkMode, onLogout
 
               {/* Dictation & Report Drafting Card */}
               <div className={`p-4 rounded-2xl border flex-1 flex flex-col ${isDarkMode ? 'bg-[#0f172a]/95 border-gray-800' : 'bg-white border-gray-200 shadow-sm'}`}>
-                <div className="flex items-center justify-between pb-3 border-b border-gray-800">
+                <div className={`flex items-center justify-between pb-3 border-b ${isDarkMode ? 'border-gray-800' : 'border-gray-100'}`}>
                   <div className="flex items-center space-x-2">
                     <Mic className="w-5 h-5 text-sky-400" />
-                    <h4 className="text-xs font-black uppercase text-gray-200">Structured Dictation Desk</h4>
+                    <h4 className={`text-xs font-black uppercase ${isDarkMode ? 'text-gray-200' : 'text-slate-700'}`}>Structured Dictation Desk</h4>
                   </div>
                   <button
                     onClick={handleDictateSimulate}
                     className={`flex items-center space-x-1 px-3 py-1.5 rounded-lg text-[10px] font-bold transition-all cursor-pointer ${
-                      isDictating ? 'bg-red-500 text-white animate-pulse' : 'bg-slate-800 text-gray-300 hover:text-white'
+                      isDictating ? 'bg-red-500 text-white animate-pulse' : isDarkMode ? 'bg-slate-800 text-gray-300 hover:text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200 hover:text-slate-900'
                     }`}
                   >
                     {isDictating ? <MicOff className="w-3.5 h-3.5" /> : <Mic className="w-3.5 h-3.5" />}
@@ -1156,11 +1180,15 @@ export default function RadiologyDashboard({ isDarkMode, setIsDarkMode, onLogout
                     value={dictationText}
                     onChange={(e) => setDictationText(e.target.value)}
                     placeholder="Enter or dictate radiologist clinical findings report..."
-                    className="w-full flex-1 min-h-[140px] bg-slate-950 text-[11px] p-3 border border-gray-800 rounded-xl text-gray-100 placeholder-gray-500 focus:outline-none focus:border-sky-500 resize-none font-mono"
+                    className={`w-full flex-1 min-h-[140px] text-[11px] p-3 border rounded-xl resize-none font-mono focus:outline-none focus:border-sky-500 ${
+                      isDarkMode ? 'bg-slate-950 border-gray-800 text-gray-100 placeholder-gray-500' : 'bg-white border-gray-300 text-slate-800 placeholder-gray-400'
+                    }`}
                   />
 
                   {/* Sign & Authentication Action */}
-                  <div className="bg-slate-900/60 p-3 border border-slate-800 rounded-xl space-y-3">
+                  <div className={`p-3 border rounded-xl space-y-3 ${
+                    isDarkMode ? 'bg-slate-900/60 border-slate-800' : 'bg-slate-50 border-slate-200'
+                  }`}>
                     <div className="flex justify-between items-center">
                       <span className="text-[10px] font-bold text-gray-400 flex items-center space-x-1">
                         <Lock className="w-3 h-3 text-emerald-400" />
@@ -1175,7 +1203,9 @@ export default function RadiologyDashboard({ isDarkMode, setIsDarkMode, onLogout
                         placeholder="PIN Code"
                         value={pathologistPIN}
                         onChange={(e) => setPathologistPIN(e.target.value)}
-                        className="w-24 bg-slate-950 text-center font-bold text-xs p-2.5 rounded-lg border border-gray-800 text-white focus:outline-none focus:border-sky-500"
+                        className={`w-24 text-center font-bold text-xs p-2.5 rounded-lg border focus:outline-none focus:border-sky-500 ${
+                          isDarkMode ? 'bg-slate-950 border-gray-800 text-white' : 'bg-white border-gray-300 text-slate-800'
+                        }`}
                       />
                       <button
                         onClick={handleSignRelease}
@@ -1202,31 +1232,37 @@ export default function RadiologyDashboard({ isDarkMode, setIsDarkMode, onLogout
           <section className="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Left: Book Scan Form */}
             <div className={`p-6 rounded-2xl border flex flex-col ${isDarkMode ? 'bg-[#0f172a] border-gray-800' : 'bg-white border-gray-200'}`}>
-              <h3 className="text-sm font-black text-white uppercase border-b border-gray-800 pb-3 flex items-center space-x-2">
+              <h3 className={`text-sm font-black uppercase border-b pb-3 flex items-center space-x-2 ${
+                isDarkMode ? 'text-white border-gray-800' : 'text-slate-800 border-gray-200'
+              }`}>
                 <Calendar className="w-5 h-5 text-sky-400" />
                 <span>Schedule New Patient Scan</span>
               </h3>
 
               <form onSubmit={handleScheduleAppt} className="mt-4 space-y-4 flex-1">
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-gray-400 mb-1.5">Patient Full Name</label>
+                  <label className={`block text-[10px] uppercase font-bold mb-1.5 ${isDarkMode ? 'text-gray-400' : 'text-slate-500'}`}>Patient Full Name</label>
                   <input
                     type="text"
                     required
                     placeholder="e.g. Ramesh Govind Rao"
                     value={newApptName}
                     onChange={(e) => setNewApptName(e.target.value)}
-                    className="w-full bg-slate-950 text-xs px-3.5 py-2.5 rounded-xl border border-gray-800 text-white focus:outline-none focus:border-sky-500"
+                    className={`w-full text-xs px-3.5 py-2.5 rounded-xl border focus:outline-none focus:border-sky-500 ${
+                      isDarkMode ? 'bg-slate-950 text-white border-gray-800' : 'bg-white text-slate-800 border-gray-300'
+                    }`}
                   />
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-[10px] uppercase font-bold text-gray-400 mb-1.5">Imaging Modality</label>
+                    <label className={`block text-[10px] uppercase font-bold mb-1.5 ${isDarkMode ? 'text-gray-400' : 'text-slate-500'}`}>Imaging Modality</label>
                     <select
                       value={newApptModality}
                       onChange={(e) => setNewApptModality(e.target.value as any)}
-                      className="w-full bg-slate-950 text-xs px-3.5 py-2.5 rounded-xl border border-gray-800 text-white focus:outline-none focus:border-sky-500"
+                      className={`w-full text-xs px-3.5 py-2.5 rounded-xl border focus:outline-none focus:border-sky-500 ${
+                        isDarkMode ? 'bg-slate-950 text-white border-gray-800' : 'bg-white text-slate-800 border-gray-300'
+                      }`}
                     >
                       <option value="CT">CT Scan</option>
                       <option value="MRI">MRI Scan</option>
@@ -1235,11 +1271,13 @@ export default function RadiologyDashboard({ isDarkMode, setIsDarkMode, onLogout
                     </select>
                   </div>
                   <div>
-                    <label className="block text-[10px] uppercase font-bold text-gray-400 mb-1.5">Priority Classification</label>
+                    <label className={`block text-[10px] uppercase font-bold mb-1.5 ${isDarkMode ? 'text-gray-400' : 'text-slate-500'}`}>Priority Classification</label>
                     <select
                       value={newApptPriority}
                       onChange={(e) => setNewApptPriority(e.target.value as any)}
-                      className="w-full bg-slate-950 text-xs px-3.5 py-2.5 rounded-xl border border-gray-800 text-white focus:outline-none focus:border-sky-500"
+                      className={`w-full text-xs px-3.5 py-2.5 rounded-xl border focus:outline-none focus:border-sky-500 ${
+                        isDarkMode ? 'bg-slate-950 text-white border-gray-800' : 'bg-white text-slate-800 border-gray-300'
+                      }`}
                     >
                       <option value="ROUTINE">Routine</option>
                       <option value="URGENT">Urgent</option>
@@ -1249,18 +1287,22 @@ export default function RadiologyDashboard({ isDarkMode, setIsDarkMode, onLogout
                 </div>
 
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-gray-400 mb-1.5">Clinical History / Indication</label>
+                  <label className={`block text-[10px] uppercase font-bold mb-1.5 ${isDarkMode ? 'text-gray-400' : 'text-slate-500'}`}>Clinical History / Indication</label>
                   <textarea
                     placeholder="Provide details of clinical symptoms or surgical history..."
                     value={newApptHistory}
                     onChange={(e) => setNewApptHistory(e.target.value)}
-                    className="w-full bg-slate-950 text-xs p-3.5 border border-gray-800 rounded-xl text-white focus:outline-none focus:border-sky-500 h-28 resize-none"
+                    className={`w-full text-xs p-3.5 border rounded-xl focus:outline-none focus:border-sky-500 h-28 resize-none ${
+                      isDarkMode ? 'bg-slate-950 text-white border-gray-800' : 'bg-white text-slate-800 border-gray-300'
+                    }`}
                   />
                 </div>
 
                 {/* Pre-prep instructions hint */}
-                <div className="bg-slate-900 border border-slate-800 p-3.5 rounded-xl text-[10px] text-gray-400">
-                  <span className="font-bold text-sky-400 block mb-1">Pre-Procedure Preparation</span>
+                <div className={`p-3.5 rounded-xl text-[10px] border ${
+                  isDarkMode ? 'bg-slate-900 border-slate-800 text-gray-400' : 'bg-slate-50 border-slate-200 text-slate-600'
+                }`}>
+                  <span className="font-bold text-sky-655 text-sky-600 block mb-1">Pre-Procedure Preparation</span>
                   Fasting instructions, contrast consent forms, and pregnancy screening forms will be dispatched automatically via ABDM / SMS.
                 </div>
 
@@ -1275,17 +1317,23 @@ export default function RadiologyDashboard({ isDarkMode, setIsDarkMode, onLogout
 
             {/* Center: Live Modality Check-In Queue & Checklist */}
             <div className={`p-6 rounded-2xl border lg:col-span-2 flex flex-col ${isDarkMode ? 'bg-[#0f172a] border-gray-800' : 'bg-white border-gray-200'}`}>
-              <h3 className="text-sm font-black text-white uppercase border-b border-gray-800 pb-3 flex justify-between items-center">
+              <h3 className={`text-sm font-black uppercase border-b pb-3 flex justify-between items-center ${
+                isDarkMode ? 'text-white border-gray-800' : 'text-slate-800 border-gray-200'
+              }`}>
                 <span>Modality Check-in & Acquisition Checklist</span>
-                <span className="text-xs bg-slate-800 text-sky-400 px-2.5 py-0.5 rounded font-mono font-bold">SION-CT-02 Active</span>
+                <span className={`text-xs px-2.5 py-0.5 rounded font-mono font-bold ${
+                  isDarkMode ? 'bg-slate-800 text-sky-400' : 'bg-slate-100 text-sky-600'
+                }`}>SION-CT-02 Active</span>
               </h3>
 
               <div className="mt-4 space-y-4 flex-1 overflow-y-auto custom-scrollbar pr-1">
                 {studies.filter(st => st.status === 'SCHEDULED' || st.status === 'ACQUIRING').map(st => (
-                  <div key={st.id} className="p-4 rounded-xl border border-slate-800 bg-slate-900/40 grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+                  <div key={st.id} className={`p-4 rounded-xl border grid grid-cols-1 md:grid-cols-3 gap-4 items-center ${
+                    isDarkMode ? 'border-slate-800 bg-slate-900/40' : 'border-slate-200 bg-slate-50'
+                  }`}>
                     <div>
-                      <h4 className="text-xs font-black text-white">{st.patientName}</h4>
-                      <p className="text-[10px] text-gray-400">{st.modality} • {st.procedureName}</p>
+                      <h4 className={`text-xs font-black ${isDarkMode ? 'text-white' : 'text-slate-800'}`}>{st.patientName}</h4>
+                      <p className={`text-[10px] ${isDarkMode ? 'text-gray-400' : 'text-slate-500'}`}>{st.modality} • {st.procedureName}</p>
                       <p className="text-[9px] text-gray-500 font-mono mt-1">Accession: {st.accessionNumber}</p>
                     </div>
 
@@ -1296,8 +1344,10 @@ export default function RadiologyDashboard({ isDarkMode, setIsDarkMode, onLogout
                           const updated = studies.map(s => s.id === st.id ? { ...s, consentSigned: !s.consentSigned } : s);
                           setStudies(updated);
                         }}
-                        className={`flex items-center space-x-1.5 p-1.5 rounded transition-all ${
-                          st.consentSigned ? 'bg-emerald-500/10 text-emerald-400' : 'bg-slate-800 text-gray-400'
+                        className={`flex items-center space-x-1.5 p-1.5 rounded transition-all border ${
+                          st.consentSigned 
+                            ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' 
+                            : isDarkMode ? 'bg-slate-800 text-gray-400 border-slate-700' : 'bg-slate-100 text-slate-500 border-slate-200'
                         }`}
                       >
                         <CheckSquare className="w-3.5 h-3.5" />
@@ -1308,8 +1358,10 @@ export default function RadiologyDashboard({ isDarkMode, setIsDarkMode, onLogout
                           const updated = studies.map(s => s.id === st.id ? { ...s, metalImplantChecked: !s.metalImplantChecked } : s);
                           setStudies(updated);
                         }}
-                        className={`flex items-center space-x-1.5 p-1.5 rounded transition-all ${
-                          st.metalImplantChecked ? 'bg-emerald-500/10 text-emerald-400' : 'bg-slate-800 text-gray-400'
+                        className={`flex items-center space-x-1.5 p-1.5 rounded transition-all border ${
+                          st.metalImplantChecked 
+                            ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' 
+                            : isDarkMode ? 'bg-slate-800 text-gray-400 border-slate-700' : 'bg-slate-100 text-slate-500 border-slate-200'
                         }`}
                       >
                         <CheckSquare className="w-3.5 h-3.5" />
@@ -1320,8 +1372,10 @@ export default function RadiologyDashboard({ isDarkMode, setIsDarkMode, onLogout
                           const updated = studies.map(s => s.id === st.id ? { ...s, contrastAllergyChecked: !s.contrastAllergyChecked } : s);
                           setStudies(updated);
                         }}
-                        className={`flex items-center space-x-1.5 p-1.5 rounded transition-all ${
-                          st.contrastAllergyChecked ? 'bg-emerald-500/10 text-emerald-400' : 'bg-slate-800 text-gray-400'
+                        className={`flex items-center space-x-1.5 p-1.5 rounded transition-all border ${
+                          st.contrastAllergyChecked 
+                            ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' 
+                            : isDarkMode ? 'bg-slate-800 text-gray-400 border-slate-700' : 'bg-slate-100 text-slate-500 border-slate-200'
                         }`}
                       >
                         <CheckSquare className="w-3.5 h-3.5" />
@@ -1332,8 +1386,10 @@ export default function RadiologyDashboard({ isDarkMode, setIsDarkMode, onLogout
                           const updated = studies.map(s => s.id === st.id ? { ...s, fastingConfirmed: !s.fastingConfirmed } : s);
                           setStudies(updated);
                         }}
-                        className={`flex items-center space-x-1.5 p-1.5 rounded transition-all ${
-                          st.fastingConfirmed ? 'bg-emerald-500/10 text-emerald-400' : 'bg-slate-800 text-gray-400'
+                        className={`flex items-center space-x-1.5 p-1.5 rounded transition-all border ${
+                          st.fastingConfirmed 
+                            ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' 
+                            : isDarkMode ? 'bg-slate-800 text-gray-400 border-slate-700' : 'bg-slate-100 text-slate-500 border-slate-200'
                         }`}
                       >
                         <CheckSquare className="w-3.5 h-3.5" />

@@ -245,7 +245,7 @@ export default function WalletTab({ balance, transactions, onAddMoney, onPayBill
                     Enter Amount (₹)
                   </label>
                   <div className="relative">
-                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-2xl font-bold text-gray-400 dark:text-gray-650">
+                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-2xl font-bold text-gray-400 dark:text-gray-600">
                       ₹
                     </span>
                     <input
@@ -266,7 +266,7 @@ export default function WalletTab({ balance, transactions, onAddMoney, onPayBill
                       type="button"
                       key={preset}
                       onClick={() => setAmountInput(preset.toString())}
-                      className="py-2.5 px-3 border border-gray-200 dark:border-slate-800 hover:border-[#0050cc] dark:hover:border-blue-550 hover:bg-[#0050cc]/5 dark:hover:bg-[#0050cc]/10 text-gray-700 dark:text-gray-300 hover:text-[#0050cc] dark:hover:text-blue-400 rounded-xl font-semibold text-sm transition-all"
+                      className="py-2.5 px-3 border border-gray-200 dark:border-slate-800 hover:border-[#0050cc] dark:hover:border-blue-500 hover:bg-[#0050cc]/5 dark:hover:bg-[#0050cc]/10 text-gray-700 dark:text-gray-300 hover:text-[#0050cc] dark:hover:text-blue-400 rounded-xl font-semibold text-sm transition-all"
                     >
                       + ₹{preset}
                     </button>
@@ -368,7 +368,7 @@ export default function WalletTab({ balance, transactions, onAddMoney, onPayBill
               <h3 className="text-base font-extrabold tracking-wide uppercase">Scan OPD Receipt QR</h3>
               <button 
                 onClick={() => setShowScanModal(false)}
-                className="p-2 bg-slate-900 border border-slate-800 rounded-xl hover:bg-slate-850"
+                className="p-2 bg-slate-900 border border-slate-800 rounded-xl hover:bg-slate-800"
               >
                 <X className="w-5 h-5 text-gray-400" />
               </button>

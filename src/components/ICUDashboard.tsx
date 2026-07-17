@@ -535,7 +535,7 @@ export default function ICUDashboard({
             className={`px-3 py-1.5 rounded-xl border text-[10px] font-bold uppercase flex items-center space-x-1.5 transition-all cursor-pointer ${
               !isAlarmMuted 
                 ? 'bg-rose-600 text-white border-rose-500 shadow-md animate-bounce' 
-                : 'bg-slate-150 dark:bg-slate-800 text-slate-600 dark:text-slate-350 border-slate-200 dark:border-slate-700'
+                : 'bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700'
             }`}
           >
             {isAlarmMuted ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5 animate-pulse" />}
@@ -548,7 +548,7 @@ export default function ICUDashboard({
             className={`px-3 py-1.5 rounded-xl border text-[10px] font-bold uppercase flex items-center space-x-1.5 transition-all cursor-pointer ${
               isWallDisplay 
                 ? 'bg-indigo-600 text-white border-indigo-500 shadow-md' 
-                : 'bg-slate-150 dark:bg-slate-800 text-slate-600 dark:text-slate-350 border-slate-200 dark:border-slate-700'
+                : 'bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700'
             }`}
           >
             <Tv className="w-3.5 h-3.5" />
@@ -560,7 +560,7 @@ export default function ICUDashboard({
             className={`px-3 py-1.5 rounded-xl border text-[10px] font-bold uppercase flex items-center space-x-1.5 transition-all cursor-pointer ${
               isTabletView 
                 ? 'bg-purple-600 text-white border-purple-500 shadow-md' 
-                : 'bg-slate-150 dark:bg-slate-800 text-slate-600 dark:text-slate-350 border-slate-200 dark:border-slate-700'
+                : 'bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700'
             }`}
           >
             <Sliders className="w-3.5 h-3.5" />
@@ -618,7 +618,7 @@ export default function ICUDashboard({
                   className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all border cursor-pointer ${
                     isActive 
                       ? 'bg-indigo-600 text-white border-indigo-550 shadow-md' 
-                      : 'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-350 border-transparent'
+                      : 'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 border-transparent'
                   }`}
                   title={tab.label}
                 >
@@ -731,7 +731,7 @@ export default function ICUDashboard({
                           <span className="text-[10px] font-black text-rose-600 dark:text-rose-400">{al.bed}</span>
                           <span className="text-[8px] font-black uppercase bg-rose-600 text-white px-2 py-0.5 rounded-full">{al.severity}</span>
                         </div>
-                        <p className="text-[10px] text-slate-600 dark:text-slate-350 leading-relaxed font-semibold">{al.desc}</p>
+                        <p className="text-[10px] text-slate-600 dark:text-slate-400 leading-relaxed font-semibold">{al.desc}</p>
                         <span className="text-[8px] text-slate-400 font-bold block mt-1">{al.time}</span>
                       </div>
                     ))}
@@ -804,16 +804,16 @@ export default function ICUDashboard({
 
                       <div className="mt-4 grid grid-cols-2 gap-2 text-[9px] font-bold text-slate-600 dark:text-slate-400">
                         <div>
-                          <span className="text-[8px] text-slate-450 dark:text-slate-550 block uppercase">Intensivist</span>
+                          <span className="text-[8px] text-slate-400 dark:text-slate-500 block uppercase">Intensivist</span>
                           <span className="truncate block mt-0.5">{p.doctor}</span>
                         </div>
                         <div>
-                          <span className="text-[8px] text-slate-450 dark:text-slate-550 block uppercase">Primary Nurse</span>
+                          <span className="text-[8px] text-slate-400 dark:text-slate-500 block uppercase">Primary Nurse</span>
                           <span className="truncate block mt-0.5">{p.nurse}</span>
                         </div>
                       </div>
 
-                      <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-850 flex items-center justify-between text-[9px] font-bold">
+                      <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-[9px] font-bold">
                         <div className="flex items-center space-x-1.5">
                           <Activity className="w-3.5 h-3.5 text-rose-500" />
                           <span>NEWS2: <strong className={p.scores.news2 >= 7 ? 'text-rose-500' : 'text-slate-600 dark:text-slate-300'}>{p.scores.news2}</strong></span>
@@ -877,15 +877,15 @@ export default function ICUDashboard({
                 </div>
 
                 <div className="flex gap-2">
-                  <div className="px-3 py-1.5 bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-850 rounded-xl text-center">
+                  <div className="px-3 py-1.5 bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 rounded-xl text-center">
                     <span className="text-[8px] text-gray-400 font-black uppercase block">NEWS2</span>
                     <span className="text-xs font-black text-rose-500">{selectedPatient.scores.news2}</span>
                   </div>
-                  <div className="px-3 py-1.5 bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-850 rounded-xl text-center">
+                  <div className="px-3 py-1.5 bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 rounded-xl text-center">
                     <span className="text-[8px] text-gray-400 font-black uppercase block">SOFA</span>
                     <span className="text-xs font-black text-amber-500">{selectedPatient.scores.sofa}</span>
                   </div>
-                  <div className="px-3 py-1.5 bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-850 rounded-xl text-center">
+                  <div className="px-3 py-1.5 bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 rounded-xl text-center">
                     <span className="text-[8px] text-gray-400 font-black uppercase block">APACHE II</span>
                     <span className="text-xs font-black text-slate-700 dark:text-slate-200">{selectedPatient.scores.apache}</span>
                   </div>
@@ -905,7 +905,7 @@ export default function ICUDashboard({
                   <div key={idx} className="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 text-center">
                     <span className="text-[8px] text-gray-400 font-bold block uppercase">{vit.label}</span>
                     <span className={`text-sm font-black block mt-1 ${vit.color}`}>{vit.value}</span>
-                    <span className="text-[8px] text-gray-450 dark:text-slate-500 font-semibold block mt-0.5">{vit.status}</span>
+                    <span className="text-[8px] text-gray-400 dark:text-slate-500 font-semibold block mt-0.5">{vit.status}</span>
                   </div>
                 ))}
               </div>
@@ -922,12 +922,12 @@ export default function ICUDashboard({
                       { drug: "Propofol (Sedation)", dose: "2.0 mg/kg/h", rate: "12.0 ml/h", volumeLeft: "24.5 ml", priority: "Sedative" },
                       { drug: "Fentanyl (Analgesia)", dose: "50 mcg/h", rate: "2.0 ml/h", volumeLeft: "42.0 ml", priority: "High-Risk" }
                     ].map((inf, i) => (
-                      <div key={i} className="p-3 bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-850 rounded-2xl space-y-1">
+                      <div key={i} className="p-3 bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 rounded-2xl space-y-1">
                         <div className="flex justify-between text-xs font-black">
                           <span className="text-slate-800 dark:text-white">{inf.drug}</span>
                           <span className="text-indigo-600 dark:text-indigo-400">{inf.dose}</span>
                         </div>
-                        <div className="flex justify-between text-[9px] text-slate-450 dark:text-slate-500 font-semibold mt-1">
+                        <div className="flex justify-between text-[9px] text-slate-400 dark:text-slate-500 font-semibold mt-1">
                           <span>Pump rate: {inf.rate}</span>
                           <span>Volume remaining: {inf.volumeLeft}</span>
                         </div>
@@ -940,7 +940,7 @@ export default function ICUDashboard({
                 <div className="bg-white dark:bg-slate-900 p-5 rounded-3xl border border-slate-200 dark:border-slate-800 space-y-4">
                   <h3 className="text-xs font-black tracking-widest uppercase text-slate-400 dark:text-slate-500">Ventilator Status</h3>
                   <div className="space-y-3">
-                    <div className="p-3 bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-850 rounded-2xl flex justify-between items-center">
+                    <div className="p-3 bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 rounded-2xl flex justify-between items-center">
                       <div>
                         <span className="text-[8px] text-gray-400 font-bold block uppercase">VENT MODE</span>
                         <span className="text-xs font-black text-slate-800 dark:text-white">{ventSettings.mode}</span>
@@ -951,7 +951,7 @@ export default function ICUDashboard({
                       </div>
                     </div>
 
-                    <div className="p-3 bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-850 rounded-2xl">
+                    <div className="p-3 bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 rounded-2xl">
                       <div className="flex justify-between items-center text-[10px] font-bold">
                         <span>Weaning Readiness Score</span>
                         <span className="text-emerald-500">{ventSettings.weaningProgress}% Ready</span>
@@ -1025,12 +1025,12 @@ export default function ICUDashboard({
                       { label: "ETCO2 (End-Tidal CO2)", value: `${liveVitals.etco2} mmHg`, range: "Normal: 35-45 mmHg", status: "Low" },
                       { label: "Blood Glucose", value: `${liveVitals.bloodSugar} mg/dL`, range: "Target: 140-180 mg/dL", status: "Elevated" }
                     ].map((param, i) => (
-                      <div key={i} className="p-3 bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-850 rounded-2xl">
+                      <div key={i} className="p-3 bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 rounded-2xl">
                         <div className="flex justify-between text-xs font-black">
                           <span className="text-slate-800 dark:text-white">{param.label}</span>
                           <span className="text-indigo-600 dark:text-indigo-400">{param.value}</span>
                         </div>
-                        <div className="flex justify-between text-[8px] text-slate-450 dark:text-slate-550 font-bold mt-1">
+                        <div className="flex justify-between text-[8px] text-slate-400 dark:text-slate-500 font-bold mt-1">
                           <span>{param.range}</span>
                           <span>{param.status}</span>
                         </div>
@@ -1063,7 +1063,7 @@ export default function ICUDashboard({
                       <select 
                         value={ventSettings.mode} 
                         onChange={(e) => setVentSettings({ ...ventSettings, mode: e.target.value })}
-                        className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 px-3 py-2 rounded-xl text-xs font-bold text-slate-850 dark:text-slate-200 focus:outline-none"
+                        className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 px-3 py-2 rounded-xl text-xs font-bold text-slate-800 dark:text-slate-200 focus:outline-none"
                       >
                         <option value="PRVC">PRVC (Pressure Regulated Volume Control)</option>
                         <option value="SIMV">SIMV-PC (Sychronized Intermittent Mand.)</option>
@@ -1133,8 +1133,8 @@ export default function ICUDashboard({
                     <span>AI Weaning Insights</span>
                   </h3>
                   
-                  <div className="p-3 bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-850 rounded-2xl text-center">
-                    <span className="text-[9px] text-gray-450 dark:text-slate-550 font-bold block uppercase">Rapid Shallow Breathing Index (RSBI)</span>
+                  <div className="p-3 bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 rounded-2xl text-center">
+                    <span className="text-[9px] text-gray-400 dark:text-slate-500 font-bold block uppercase">Rapid Shallow Breathing Index (RSBI)</span>
                     <span className="text-lg font-black text-emerald-500 block mt-1">68</span>
                     <span className="text-[8px] font-black uppercase text-emerald-500 block mt-0.5">Ready for SBT (Target &lt; 105)</span>
                   </div>
@@ -1167,7 +1167,7 @@ export default function ICUDashboard({
                 <div className="lg:col-span-2 bg-white dark:bg-slate-900 p-5 rounded-3xl border border-slate-200 dark:border-slate-800 space-y-4">
                   <h3 className="text-xs font-black tracking-widest uppercase text-slate-400 dark:text-slate-500">Y-Site Drug Compatibility Grid</h3>
                   <div className="overflow-x-auto">
-                    <table className="w-full text-left text-xs font-bold text-slate-650">
+                    <table className="w-full text-left text-xs font-bold text-slate-600">
                       <thead>
                         <tr className="border-b border-slate-100 dark:border-slate-800 text-[10px] text-gray-400 uppercase">
                           <th className="py-2">Infusion Drug</th>
@@ -1205,13 +1205,13 @@ export default function ICUDashboard({
                 </div>
 
                 {/* High risk drug digital witness sign-off */}
-                <div className="bg-white dark:bg-slate-900 p-5 rounded-3xl border border-slate-200 dark:border-slate-850 space-y-4">
+                <div className="bg-white dark:bg-slate-900 p-5 rounded-3xl border border-slate-200 dark:border-slate-800 space-y-4">
                   <h3 className="text-xs font-black tracking-widest uppercase text-slate-400 dark:text-slate-500">Digital Witness Sign-Off</h3>
                   
                   <div className="p-3 bg-rose-500/5 dark:bg-rose-950/10 border border-rose-500/20 rounded-2xl space-y-2">
                     <span className="text-[8px] font-black uppercase bg-rose-500 text-white px-2 py-0.5 rounded-full">HIGH-RISK DRUG</span>
                     <h4 className="text-xs font-black">Potassium Chloride 40mEq IV Infusion</h4>
-                    <p className="text-[10px] text-slate-550 dark:text-slate-400 leading-normal">
+                    <p className="text-[10px] text-slate-500 dark:text-slate-400 leading-normal">
                       Requires two licensed clinicians to sign-off and witness pump connection setup.
                     </p>
                     <button 
@@ -1256,7 +1256,7 @@ export default function ICUDashboard({
                 <div className="bg-white dark:bg-slate-900 p-5 rounded-3xl border border-slate-200 dark:border-slate-800 space-y-4">
                   <h3 className="text-xs font-black tracking-widest uppercase text-slate-400 dark:text-slate-500">2-Hour Turning & Skin Log</h3>
                   
-                  <div className="p-3 bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-850 rounded-2xl flex justify-between items-center">
+                  <div className="p-3 bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 rounded-2xl flex justify-between items-center">
                     <div>
                       <span className="text-[8px] text-gray-400 font-bold block uppercase">CURRENT POSITION</span>
                       <span className="text-xs font-black text-slate-800 dark:text-white">{currentPosition}</span>
@@ -1275,7 +1275,7 @@ export default function ICUDashboard({
                         className={`flex-1 py-1.5 rounded-lg text-[9px] font-black uppercase border transition-all cursor-pointer ${
                           currentPosition === pos 
                             ? 'bg-indigo-600 text-white border-indigo-600'
-                            : 'bg-white dark:bg-slate-900 text-slate-650 hover:bg-slate-50'
+                            : 'bg-white dark:bg-slate-900 text-slate-600 hover:bg-slate-50'
                         }`}
                       >
                         {pos}
@@ -1320,7 +1320,7 @@ export default function ICUDashboard({
 
                   <div className="space-y-1.5 max-h-[150px] overflow-y-auto pt-2">
                     {fluidLog.map((fl, i) => (
-                      <div key={i} className="flex justify-between text-[9px] text-slate-500 dark:text-slate-450 font-semibold border-b border-slate-100 dark:border-slate-850 pb-1">
+                      <div key={i} className="flex justify-between text-[9px] text-slate-500 dark:text-slate-400 font-semibold border-b border-slate-100 dark:border-slate-800 pb-1">
                         <span>{fl.time} • Intake: {fl.intake} • Output: {fl.output}</span>
                         <span className="font-bold">{fl.balance}</span>
                       </div>
@@ -1334,7 +1334,7 @@ export default function ICUDashboard({
                   <textarea 
                     value={nursingNotes}
                     onChange={(e) => setNursingNotes(e.target.value)}
-                    className="w-full h-32 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl p-3 text-[10px] font-bold text-slate-850 dark:text-slate-250 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                    className="w-full h-32 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl p-3 text-[10px] font-bold text-slate-800 dark:text-slate-250 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                   />
                 </div>
 
@@ -1366,7 +1366,7 @@ export default function ICUDashboard({
                           setCalcScores({ ...calcScores, rr: parseInt(e.target.value) || 0 });
                           calculateRiskScores();
                         }}
-                        className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-850 p-2 rounded-xl"
+                        className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2 rounded-xl"
                       />
                     </div>
                     <div>
@@ -1378,7 +1378,7 @@ export default function ICUDashboard({
                           setCalcScores({ ...calcScores, spo2: parseInt(e.target.value) || 0 });
                           calculateRiskScores();
                         }}
-                        className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-850 p-2 rounded-xl"
+                        className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2 rounded-xl"
                       />
                     </div>
                     <div>
@@ -1390,7 +1390,7 @@ export default function ICUDashboard({
                           setCalcScores({ ...calcScores, hr: parseInt(e.target.value) || 0 });
                           calculateRiskScores();
                         }}
-                        className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-850 p-2 rounded-xl"
+                        className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2 rounded-xl"
                       />
                     </div>
                     <div>
@@ -1402,7 +1402,7 @@ export default function ICUDashboard({
                           setCalcScores({ ...calcScores, sbp: parseInt(e.target.value) || 0 });
                           calculateRiskScores();
                         }}
-                        className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-850 p-2 rounded-xl"
+                        className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2 rounded-xl"
                       />
                     </div>
                     <div>
@@ -1414,7 +1414,7 @@ export default function ICUDashboard({
                           setCalcScores({ ...calcScores, platelets: parseInt(e.target.value) || 0 });
                           calculateRiskScores();
                         }}
-                        className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-850 p-2 rounded-xl"
+                        className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2 rounded-xl"
                       />
                     </div>
                     <div>
@@ -1427,7 +1427,7 @@ export default function ICUDashboard({
                           setCalcScores({ ...calcScores, creatinine: parseFloat(e.target.value) || 0 });
                           calculateRiskScores();
                         }}
-                        className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-850 p-2 rounded-xl"
+                        className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2 rounded-xl"
                       />
                     </div>
                   </div>
@@ -1511,7 +1511,7 @@ export default function ICUDashboard({
                     {teleChat.map((msg, i) => (
                       <div key={i} className="text-[10px]">
                         <strong className="text-indigo-600 dark:text-indigo-400">{msg.sender} ({msg.time}):</strong>
-                        <p className="text-slate-650 dark:text-slate-350 mt-0.5 leading-relaxed font-semibold">{msg.text}</p>
+                        <p className="text-slate-600 dark:text-slate-400 mt-0.5 leading-relaxed font-semibold">{msg.text}</p>
                       </div>
                     ))}
                   </div>
@@ -1542,14 +1542,14 @@ export default function ICUDashboard({
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="p-5 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 space-y-3">
-                  <h3 className="text-xs font-black tracking-widest uppercase text-slate-450 dark:text-slate-500">Layperson Status Translation</h3>
+                  <h3 className="text-xs font-black tracking-widest uppercase text-slate-400 dark:text-slate-500">Layperson Status Translation</h3>
                   <p className="text-[10px] text-slate-600 dark:text-slate-400 leading-relaxed font-semibold">
                     "Your father's breathing machine support is currently stable. We are starting to slowly reduce his oxygen support levels (weaning process). His kidney functions are monitored continuously by the clinical team."
                   </p>
                 </div>
 
                 <div className="p-5 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 space-y-3">
-                  <h3 className="text-xs font-black tracking-widest uppercase text-slate-450 dark:text-slate-500">Visit Booking Schedule</h3>
+                  <h3 className="text-xs font-black tracking-widest uppercase text-slate-400 dark:text-slate-500">Visit Booking Schedule</h3>
                   <p className="text-[10px] text-slate-600 dark:text-slate-400 leading-normal font-semibold">
                     ICU Visiting Hours: 16:00 - 18:00 (Max 1 visitor per patient at bedside).
                   </p>
@@ -1562,8 +1562,8 @@ export default function ICUDashboard({
                 </div>
 
                 <div className="p-5 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 space-y-3">
-                  <h3 className="text-xs font-black tracking-widest uppercase text-slate-450 dark:text-slate-500">Consent Management</h3>
-                  <div className="p-3 bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-850 rounded-2xl text-[10px] font-semibold text-slate-650">
+                  <h3 className="text-xs font-black tracking-widest uppercase text-slate-400 dark:text-slate-500">Consent Management</h3>
+                  <div className="p-3 bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 rounded-2xl text-[10px] font-semibold text-slate-600">
                     <span>Active Consent Pending:</span>
                     <strong className="block text-slate-900 dark:text-white mt-1">Surgical tracheostomy consent form</strong>
                     <button 
@@ -1594,7 +1594,7 @@ export default function ICUDashboard({
                   { metric: "Average Alarm Response Time", value: "14 seconds", target: "Target: < 15s" }
                 ].map((met, i) => (
                   <div key={i} className="p-4 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm text-center">
-                    <span className="text-[9px] text-gray-450 dark:text-slate-500 font-bold block uppercase">{met.metric}</span>
+                    <span className="text-[9px] text-gray-400 dark:text-slate-500 font-bold block uppercase">{met.metric}</span>
                     <span className="text-base font-black block mt-1 text-indigo-600 dark:text-indigo-400">{met.value}</span>
                     <span className="text-[8px] text-slate-400 font-semibold block mt-0.5">{met.target}</span>
                   </div>

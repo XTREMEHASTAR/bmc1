@@ -269,7 +269,7 @@ export default function LaboratoryDashboard({
           
           <button 
             onClick={() => setIsDarkMode(!isDarkMode)} 
-            className={`p-2.5 rounded-xl border ${isDarkMode ? 'border-slate-850 bg-slate-900 text-slate-300' : 'border-slate-200 bg-white text-slate-600'} cursor-pointer`}
+            className={`p-2.5 rounded-xl border ${isDarkMode ? 'border-slate-800 bg-slate-900 text-slate-300' : 'border-slate-200 bg-white text-slate-600'} cursor-pointer`}
           >
             <Activity className="w-4 h-4" />
           </button>
@@ -378,8 +378,8 @@ export default function LaboratoryDashboard({
                         ? 'bg-slate-800 border-primary shadow-md shadow-primary/5' 
                         : 'bg-primary-50 border-primary shadow-md'
                       : isDarkMode
-                        ? 'bg-slate-950 border-slate-850 hover:bg-slate-850'
-                        : 'bg-white border-slate-150 hover:bg-slate-50'
+                        ? 'bg-slate-950 border-slate-800 hover:bg-slate-800'
+                        : 'bg-white border-slate-200 hover:bg-slate-50'
                   }`}
                 >
                   <div className="flex justify-between items-start">
@@ -438,7 +438,7 @@ export default function LaboratoryDashboard({
 
                 <div className="text-right">
                   <span className="text-xs text-slate-500">SPECIMEN BARCODE</span>
-                  <div className="bg-slate-100 dark:bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800/10 dark:border-slate-850 mt-1 flex items-center space-x-2">
+                  <div className="bg-slate-100 dark:bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800/10 dark:border-slate-800 mt-1 flex items-center space-x-2">
                     <Barcode className="w-4 h-4 text-primary" />
                     <span className="font-mono text-xs font-bold text-primary">{selectedSpecimen.barcode}</span>
                   </div>
@@ -463,7 +463,7 @@ export default function LaboratoryDashboard({
                             ? isDarkMode
                               ? 'bg-primary-950/20 border-primary/30 text-primary' 
                               : 'bg-primary-50 border-primary text-primary'
-                            : 'bg-transparent border-slate-800/10 dark:border-slate-850 text-slate-500'
+                            : 'bg-transparent border-slate-800/10 dark:border-slate-800 text-slate-500'
                         }`}
                       >
                         <p className="text-[10px] font-bold">{step}</p>
@@ -479,7 +479,7 @@ export default function LaboratoryDashboard({
                 <h4 className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Parameters & Findings</h4>
                 
                 {selectedSpecimen.result ? (
-                  <div className={`p-4 rounded-2xl border ${isDarkMode ? 'bg-slate-950 border-slate-850' : 'bg-slate-50 border-slate-150'} space-y-3`}>
+                  <div className={`p-4 rounded-2xl border ${isDarkMode ? 'bg-slate-950 border-slate-800' : 'bg-slate-50 border-slate-200'} space-y-3`}>
                     <div className="flex justify-between items-center">
                       <div>
                         <span className="text-xs text-slate-500">{selectedSpecimen.testName}</span>
@@ -670,7 +670,7 @@ export default function LaboratoryDashboard({
 
               <div className="space-y-2">
                 {inventory.map((inv) => (
-                  <div key={inv.name} className="flex justify-between items-center p-2 rounded-xl bg-slate-950/20 border border-slate-850/50">
+                  <div key={inv.name} className="flex justify-between items-center p-2 rounded-xl bg-slate-950/20 border border-slate-800/50">
                     <div>
                       <p className="text-xs font-bold">{inv.name}</p>
                       <p className="text-[9px] text-slate-500">Min Threshold: {inv.min} {inv.unit}</p>

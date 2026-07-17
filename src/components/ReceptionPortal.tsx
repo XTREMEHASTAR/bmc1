@@ -371,8 +371,8 @@ export default function ReceptionPortal({
               onClick={() => setActiveTab('dashboard')}
               className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                 activeTab === 'dashboard'
-                  ? 'bg-orange-505 bg-orange-600 text-white shadow-md'
-                  : 'text-gray-400 hover:bg-slate-800/10 dark:hover:bg-slate-800'
+                  ? 'bg-orange-600 text-white shadow-md'
+                  : 'text-slate-500 dark:text-gray-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-gray-200'
               }`}
             >
               <Activity className="w-4 h-4" />
@@ -384,7 +384,7 @@ export default function ReceptionPortal({
               className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                 activeTab === 'registration'
                   ? 'bg-orange-600 text-white shadow-md'
-                  : 'text-gray-400 hover:bg-slate-800/10 dark:hover:bg-slate-800'
+                  : 'text-slate-500 dark:text-gray-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-gray-200'
               }`}
             >
               <UserPlus className="w-4 h-4" />
@@ -396,7 +396,7 @@ export default function ReceptionPortal({
               className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                 activeTab === 'booking'
                   ? 'bg-orange-600 text-white shadow-md'
-                  : 'text-gray-400 hover:bg-slate-800/10 dark:hover:bg-slate-800'
+                  : 'text-slate-500 dark:text-gray-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-gray-200'
               }`}
             >
               <Ticket className="w-4 h-4" />
@@ -408,7 +408,7 @@ export default function ReceptionPortal({
               className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                 activeTab === 'kiosk'
                   ? 'bg-orange-600 text-white shadow-md'
-                  : 'text-gray-400 hover:bg-slate-800/10 dark:hover:bg-slate-800'
+                  : 'text-slate-500 dark:text-gray-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-gray-200'
               }`}
             >
               <Smartphone className="w-4 h-4" />
@@ -420,7 +420,7 @@ export default function ReceptionPortal({
               className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                 activeTab === 'visitor'
                   ? 'bg-orange-600 text-white shadow-md'
-                  : 'text-gray-400 hover:bg-slate-800/10 dark:hover:bg-slate-800'
+                  : 'text-slate-500 dark:text-gray-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-gray-200'
               }`}
             >
               <Users className="w-4 h-4" />
@@ -432,7 +432,7 @@ export default function ReceptionPortal({
               className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                 activeTab === 'billing'
                   ? 'bg-orange-600 text-white shadow-md'
-                  : 'text-gray-400 hover:bg-slate-800/10 dark:hover:bg-slate-800'
+                  : 'text-slate-500 dark:text-gray-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-gray-200'
               }`}
             >
               <CreditCard className="w-4 h-4" />
@@ -444,7 +444,7 @@ export default function ReceptionPortal({
               className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                 activeTab === 'analytics'
                   ? 'bg-orange-600 text-white shadow-md'
-                  : 'text-gray-400 hover:bg-slate-800/10 dark:hover:bg-slate-800'
+                  : 'text-slate-500 dark:text-gray-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-gray-200'
               }`}
             >
               <BarChart3 className="w-4 h-4" />
@@ -471,7 +471,7 @@ export default function ReceptionPortal({
           </div>
           <button
             onClick={onLogout}
-            className="w-full flex items-center justify-center space-x-2 py-3 rounded-xl bg-red-650/10 hover:bg-[#ba1a1a] text-[#ba1a1a] hover:text-white transition-all text-xs font-bold cursor-pointer border border-red-500/10"
+            className="w-full flex items-center justify-center space-x-2 py-3 rounded-xl bg-red-500/10 dark:bg-red-500/20 hover:bg-[#ba1a1a] text-[#ba1a1a] hover:text-white transition-all text-xs font-bold cursor-pointer border border-red-500/10"
           >
             <LogOut className="w-4 h-4" />
             <span>Sign Out Session</span>
@@ -493,11 +493,15 @@ export default function ReceptionPortal({
           <div className="flex items-center space-x-3">
             <button
               onClick={() => setIsDarkMode(!isDarkMode)}
-              className="p-2.5 rounded-xl bg-slate-900 border border-slate-880 text-gray-300 hover:text-white cursor-pointer transition-all"
+              className={`p-2.5 rounded-xl border cursor-pointer transition-all ${
+                isDarkMode ? 'bg-slate-900 border-slate-800 text-gray-300 hover:text-white' : 'bg-gray-100 border-gray-200 text-slate-700 hover:text-slate-900'
+              }`}
             >
               {isDarkMode ? <Sun className="w-4.5 h-4.5" /> : <Moon className="w-4.5 h-4.5" />}
             </button>
-            <div className="text-right text-xs font-mono font-bold px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 hidden sm:block">
+            <div className={`text-right text-xs font-mono font-bold px-3 py-1.5 rounded-xl border hidden sm:block ${
+              isDarkMode ? 'bg-slate-900 border-slate-800 text-gray-300' : 'bg-gray-100 border-gray-200 text-slate-700'
+            }`}>
               {currentTime.toLocaleTimeString()}
             </div>
           </div>
@@ -538,7 +542,7 @@ export default function ReceptionPortal({
                 <div className={`p-4 rounded-2xl border transition-all ${isDarkMode ? 'bg-[#0f1524] border-slate-800' : 'bg-white border-gray-100 shadow-sm'}`}>
                   <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Hospital Occupancy</p>
                   <div className="flex items-baseline space-x-2 mt-1">
-                    <span className="text-2xl font-black text-white">{stats.hospitalOccupancy}%</span>
+                    <span className={`text-2xl font-black ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>{stats.hospitalOccupancy}%</span>
                     <span className="text-xs text-gray-400">12 Beds Left</span>
                   </div>
                 </div>
@@ -549,7 +553,7 @@ export default function ReceptionPortal({
                 
                 {/* AI Reception symptom parse assistant */}
                 <div className={`lg:col-span-2 p-5 rounded-3xl border ${isDarkMode ? 'bg-[#0f1524] border-slate-800' : 'bg-white border-gray-100'} space-y-4`}>
-                  <div className="flex items-center space-x-2 border-b border-slate-800 pb-3">
+                  <div className={`flex items-center space-x-2 border-b pb-3 ${isDarkMode ? 'border-slate-800' : 'border-gray-100'}`}>
                     <Bot className="w-5 h-5 text-orange-500" />
                     <div>
                       <h3 className="font-extrabold text-sm">AI Conversational Receptionist</h3>
@@ -558,14 +562,16 @@ export default function ReceptionPortal({
                   </div>
 
                   {/* Chat interface */}
-                  <div className="h-64 overflow-y-auto space-y-3 p-3 bg-slate-950 border border-slate-850 rounded-2xl no-scrollbar flex flex-col justify-end">
+                  <div className={`h-64 overflow-y-auto space-y-3 p-3 border rounded-2xl no-scrollbar flex flex-col justify-end ${
+                    isDarkMode ? 'bg-slate-950 border-slate-800' : 'bg-gray-50 border-gray-100'
+                  }`}>
                     {aiChat.map((msg, i) => (
                       <div
                         key={i}
                         className={`p-3 rounded-2xl text-xs max-w-[85%] ${
                           msg.sender === 'user' 
-                            ? 'bg-orange-500/10 border border-orange-500/20 text-orange-100 ml-auto'
-                            : 'bg-slate-900 border border-slate-800 text-gray-200'
+                            ? `bg-orange-500/10 border border-orange-500/20 ${isDarkMode ? 'text-orange-100' : 'text-orange-850'} ml-auto`
+                            : `${isDarkMode ? 'bg-slate-900 border-slate-800 text-gray-200' : 'bg-white border-gray-200 text-gray-700'}`
                         }`}
                       >
                         <p className="leading-relaxed">{msg.text}</p>
@@ -573,17 +579,19 @@ export default function ReceptionPortal({
                     ))}
                   </div>
 
-                  <form onSubmit={handleAIChatMessage} className="flex items-center space-x-2 pt-2 border-t border-slate-850">
+                  <form onSubmit={handleAIChatMessage} className={`flex items-center space-x-2 pt-2 border-t ${isDarkMode ? 'border-slate-800' : 'border-gray-100'}`}>
                     <input
                       type="text"
                       placeholder="Type patient complaints (e.g., 'I have back pain' or 'Sardhi khokla')"
                       value={aiText}
                       onChange={(e) => setAiText(e.target.value)}
-                      className="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:ring-1 focus:ring-orange-500"
+                      className={`flex-1 rounded-xl px-4 py-3 text-xs focus:outline-none focus:ring-1 focus:ring-orange-500 ${
+                        isDarkMode ? 'bg-slate-950 border-slate-800 text-white' : 'bg-white border-gray-200 text-gray-800'
+                      }`}
                     />
                     <button
                       type="submit"
-                      className="bg-orange-655 bg-orange-600 hover:bg-orange-700 text-white p-3.5 rounded-xl transition-all cursor-pointer"
+                      className="bg-orange-600 hover:bg-orange-700 text-white p-3.5 rounded-xl transition-all cursor-pointer"
                     >
                       <Send className="w-4 h-4" />
                     </button>
@@ -592,7 +600,7 @@ export default function ReceptionPortal({
 
                 {/* Counters on Duty & Announcements */}
                 <div className={`p-5 rounded-3xl border ${isDarkMode ? 'bg-[#0f1524] border-slate-800' : 'bg-white border-gray-100'} space-y-4`}>
-                  <h3 className="font-extrabold text-sm border-b border-slate-800 pb-2">Entry Desk Status</h3>
+                  <h3 className={`font-extrabold text-sm border-b pb-2 ${isDarkMode ? 'border-slate-800' : 'border-gray-100'}`}>Entry Desk Status</h3>
                   
                   <div className="space-y-3 text-xs">
                     <div className="flex justify-between items-center py-1">
@@ -605,13 +613,13 @@ export default function ReceptionPortal({
                     </div>
                     <div className="flex justify-between items-center py-1">
                       <span className="font-bold">Counter 3 (ABHA Assist)</span>
-                      <span className="text-gray-400 font-bold bg-slate-800 px-2 py-0.5 rounded">CLOSED</span>
+                      <span className={`font-bold px-2 py-0.5 rounded ${isDarkMode ? 'bg-slate-800 text-gray-400' : 'bg-gray-100 text-gray-500'}`}>CLOSED</span>
                     </div>
                   </div>
 
                   <div className="p-3.5 rounded-2xl bg-orange-500/10 border border-orange-500/20 text-xs">
                     <span className="font-black text-[10px] text-orange-500 block uppercase">Peak Hour Warning</span>
-                    <p className="text-gray-300 mt-1 leading-relaxed">
+                    <p className={`mt-1 leading-relaxed ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                       AI Predictor: High walk-in rush expected between 11:30 AM - 01:00 PM today. Recommending opening Counter 3.
                     </p>
                   </div>
@@ -630,13 +638,13 @@ export default function ReceptionPortal({
                   <p className="text-xs text-gray-400">Autofetch verified credentials from Aadhaar/ABHA to minimize registration errors</p>
                 </div>
                 {/* Method selector */}
-                <div className="flex bg-slate-900 border border-slate-800 rounded-xl overflow-hidden p-0.5">
+                <div className={`flex rounded-xl overflow-hidden p-0.5 ${isDarkMode ? 'bg-slate-900 border border-slate-800' : 'bg-gray-100 border border-gray-200'}`}>
                   {(['aadhaar', 'abha', 'manual'] as const).map(type => (
                     <button
                       key={type}
                       onClick={() => setRegType(type)}
                       className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all ${
-                        regType === type ? 'bg-orange-655 bg-orange-600 text-white shadow-sm' : 'text-gray-400 hover:text-gray-200'
+                        regType === type ? 'bg-orange-600 text-white shadow-sm' : (isDarkMode ? 'text-gray-400 hover:text-gray-200' : 'text-gray-500 hover:text-gray-800')
                       }`}
                     >
                       {type.toUpperCase()}
@@ -650,7 +658,7 @@ export default function ReceptionPortal({
                 {/* Input Panel */}
                 <form onSubmit={submitRegistration} className={`lg:col-span-2 p-6 rounded-3xl border ${isDarkMode ? 'bg-[#0f1524] border-slate-800' : 'bg-white border-gray-100'} space-y-4`}>
                   {regType === 'aadhaar' && (
-                    <div className="p-4 rounded-2xl bg-slate-950 border border-slate-850 space-y-3">
+                    <div className={`p-4 rounded-2xl border space-y-3 ${isDarkMode ? 'bg-slate-950 border-slate-800' : 'bg-gray-50 border-gray-100'}`}>
                       <label className="text-[10px] font-bold text-gray-400 uppercase">Enter UIDAI Aadhaar Number</label>
                       <div className="flex space-x-2">
                         <input
@@ -658,7 +666,9 @@ export default function ReceptionPortal({
                           placeholder="e.g. 2201 8890 1234"
                           value={newPatientAadhaar}
                           onChange={(e) => setNewPatientAadhaar(e.target.value)}
-                          className="flex-1 bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:ring-1 focus:ring-orange-500"
+                          className={`flex-1 rounded-xl px-4 py-3 text-xs focus:outline-none focus:ring-1 focus:ring-orange-500 ${
+                            isDarkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-white border-gray-200 text-gray-800'
+                          }`}
                         />
                         <button
                           type="button"
@@ -672,7 +682,7 @@ export default function ReceptionPortal({
                   )}
 
                   {regType === 'abha' && (
-                    <div className="p-4 rounded-2xl bg-slate-950 border border-slate-850 space-y-3">
+                    <div className={`p-4 rounded-2xl border space-y-3 ${isDarkMode ? 'bg-slate-950 border-slate-800' : 'bg-gray-50 border-gray-100'}`}>
                       <label className="text-[10px] font-bold text-gray-400 uppercase">Enter ABHA Health Address / ID</label>
                       <div className="flex space-x-2">
                         <input
@@ -680,7 +690,9 @@ export default function ReceptionPortal({
                           placeholder="e.g. rajesh@abha"
                           value={newPatientABHA}
                           onChange={(e) => setNewPatientABHA(e.target.value)}
-                          className="flex-1 bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:ring-1 focus:ring-orange-500"
+                          className={`flex-1 rounded-xl px-4 py-3 text-xs focus:outline-none focus:ring-1 focus:ring-orange-500 ${
+                            isDarkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-white border-gray-200 text-gray-850'
+                          }`}
                         />
                         <button
                           type="button"
@@ -702,7 +714,9 @@ export default function ReceptionPortal({
                         placeholder="First & Last Name"
                         value={newPatientName}
                         onChange={(e) => setNewPatientName(e.target.value)}
-                        className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:ring-1 focus:ring-orange-500"
+                        className={`w-full rounded-xl px-4 py-3 text-xs focus:outline-none focus:ring-1 focus:ring-orange-500 ${
+                          isDarkMode ? 'bg-slate-950 border-slate-800 text-white' : 'bg-white border-gray-200 text-gray-850'
+                        }`}
                         required
                       />
                     </div>
@@ -714,7 +728,9 @@ export default function ReceptionPortal({
                         placeholder="10-digit number"
                         value={newPatientPhone}
                         onChange={(e) => setNewPatientPhone(e.target.value)}
-                        className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:ring-1 focus:ring-orange-500"
+                        className={`w-full rounded-xl px-4 py-3 text-xs focus:outline-none focus:ring-1 focus:ring-orange-500 ${
+                          isDarkMode ? 'bg-slate-950 border-slate-800 text-white' : 'bg-white border-gray-200 text-gray-850'
+                        }`}
                         required
                       />
                     </div>
@@ -725,7 +741,9 @@ export default function ReceptionPortal({
                         type="date"
                         value={newPatientDOB}
                         onChange={(e) => setNewPatientDOB(e.target.value)}
-                        className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:ring-1 focus:ring-orange-500"
+                        className={`w-full rounded-xl px-4 py-3 text-xs focus:outline-none focus:ring-1 focus:ring-orange-500 ${
+                          isDarkMode ? 'bg-slate-950 border-slate-800 text-white' : 'bg-white border-gray-205 text-gray-850'
+                        }`}
                       />
                     </div>
 
@@ -736,7 +754,9 @@ export default function ReceptionPortal({
                         placeholder="e.g. O+ / B+"
                         value={newPatientBlood}
                         onChange={(e) => setNewPatientBlood(e.target.value)}
-                        className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:ring-1 focus:ring-orange-500"
+                        className={`w-full rounded-xl px-4 py-3 text-xs focus:outline-none focus:ring-1 focus:ring-orange-500 ${
+                          isDarkMode ? 'bg-slate-950 border-slate-800 text-white' : 'bg-white border-gray-200 text-gray-850'
+                        }`}
                       />
                     </div>
                   </div>
@@ -747,7 +767,9 @@ export default function ReceptionPortal({
                       placeholder="Street, Locality, Ward, Pin Code"
                       value={newPatientAddress}
                       onChange={(e) => setNewPatientAddress(e.target.value)}
-                      className="w-full h-20 bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:ring-1 focus:ring-orange-500"
+                      className={`w-full h-20 rounded-xl p-3 text-xs focus:outline-none focus:ring-1 focus:ring-orange-500 ${
+                        isDarkMode ? 'bg-slate-950 border-slate-800 text-white' : 'bg-white border-gray-200 text-gray-850'
+                      }`}
                     />
                   </div>
 
@@ -793,10 +815,12 @@ export default function ReceptionPortal({
                       </div>
                     </div>
                   ) : (
-                    <div className="border border-dashed border-slate-800 bg-slate-900/10 rounded-3xl p-6 text-center text-gray-500 flex flex-col items-center justify-center h-56">
-                      <UserPlus className="w-8 h-8 text-gray-700 mb-2" />
+                    <div className={`border border-dashed rounded-3xl p-6 text-center text-gray-500 flex flex-col items-center justify-center h-56 ${
+                      isDarkMode ? 'border-slate-800 bg-slate-900/10' : 'border-gray-200 bg-gray-50'
+                    }`}>
+                      <UserPlus className="w-8 h-8 text-gray-400 mb-2" />
                       <p className="text-xs font-black">Digital Health ID Preview</p>
-                      <p className="text-[10px] text-gray-400 mt-1">Submit the registration demographics form to issue new digital identity card.</p>
+                      <p className="text-[10px] text-gray-450 mt-1">Submit the registration demographics form to issue new digital identity card.</p>
                     </div>
                   )}
                 </div>
@@ -814,7 +838,7 @@ export default function ReceptionPortal({
               </div>
 
               {/* Returning Patient Lookup bar */}
-              <form onSubmit={handlePatientLookup} className="flex space-x-2 bg-slate-950 p-4 rounded-2xl border border-slate-850">
+              <form onSubmit={handlePatientLookup} className={`flex space-x-2 p-4 rounded-2xl border ${isDarkMode ? 'bg-slate-950 border-slate-800' : 'bg-gray-50 border-gray-150'}`}>
                 <div className="flex-1 relative">
                   <Search className="w-4 h-4 text-gray-500 absolute left-3.5 top-3.5" />
                   <input
@@ -822,7 +846,9 @@ export default function ReceptionPortal({
                     placeholder="Search returning patient profile via Phone, ABHA, Aadhaar or Token..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full bg-slate-900 border border-slate-800 rounded-xl pl-10 pr-4 py-3 text-xs text-white focus:outline-none focus:ring-1 focus:ring-orange-500"
+                    className={`w-full rounded-xl pl-10 pr-4 py-3 text-xs focus:outline-none focus:ring-1 focus:ring-orange-500 ${
+                      isDarkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-white border-gray-200 text-gray-850'
+                    }`}
                   />
                 </div>
                 <button
@@ -843,7 +869,9 @@ export default function ReceptionPortal({
                       <select
                         value={selectedDept}
                         onChange={(e) => setSelectedDept(e.target.value)}
-                        className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:ring-1 focus:ring-orange-500"
+                        className={`w-full rounded-xl px-4 py-3 text-xs focus:outline-none focus:ring-1 focus:ring-orange-500 ${
+                          isDarkMode ? 'bg-slate-950 border-slate-800 text-white' : 'bg-white border-gray-205 text-gray-850'
+                        }`}
                       >
                         <option value="General Medicine">General Medicine</option>
                         <option value="Orthopedics">Orthopedics</option>
@@ -857,7 +885,9 @@ export default function ReceptionPortal({
                       <select
                         value={selectedDoc}
                         onChange={(e) => setSelectedDoc(e.target.value)}
-                        className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:ring-1 focus:ring-orange-500"
+                        className={`w-full rounded-xl px-4 py-3 text-xs focus:outline-none focus:ring-1 focus:ring-orange-500 ${
+                          isDarkMode ? 'bg-slate-950 border-slate-800 text-white' : 'bg-white border-gray-205 text-gray-850'
+                        }`}
                       >
                         <option value="Dr. Anil Patil">Dr. Anil Patil (Available)</option>
                         <option value="Dr. Sunita Deshmukh">Dr. Sunita Deshmukh (In Surgery)</option>
@@ -870,7 +900,9 @@ export default function ReceptionPortal({
                       <select
                         value={priorityType}
                         onChange={(e) => setPriorityType(e.target.value as any)}
-                        className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:ring-1 focus:ring-orange-500"
+                        className={`w-full rounded-xl px-4 py-3 text-xs focus:outline-none focus:ring-1 focus:ring-orange-500 ${
+                          isDarkMode ? 'bg-slate-950 border-slate-800 text-white' : 'bg-white border-gray-205 text-gray-850'
+                        }`}
                       >
                         <option value="Routine">Routine - General Walk-in</option>
                         <option value="Senior Citizen">Senior Citizen - Priority 1</option>
@@ -883,7 +915,7 @@ export default function ReceptionPortal({
 
                   <button
                     type="submit"
-                    className="w-full bg-orange-655 bg-orange-600 hover:bg-orange-700 text-white py-3.5 rounded-xl font-bold text-xs transition-all cursor-pointer active:scale-98"
+                    className="w-full bg-orange-600 hover:bg-orange-700 text-white py-3.5 rounded-xl font-bold text-xs transition-all cursor-pointer active:scale-98"
                   >
                     Confirm Doctor Allocation & Issue Token
                   </button>
@@ -892,13 +924,15 @@ export default function ReceptionPortal({
                 {/* Print token layout preview */}
                 <div className="space-y-4">
                   {bookedToken ? (
-                    <div className="bg-slate-950 border border-slate-800 p-5 rounded-3xl text-white space-y-4 shadow-lg text-center">
+                    <div className={`p-5 rounded-3xl space-y-4 shadow-lg text-center border ${
+                      isDarkMode ? 'bg-slate-950 border-slate-800 text-white' : 'bg-white border-gray-200 text-slate-800'
+                    }`}>
                       <div className="flex items-center justify-center space-x-2 text-emerald-500 font-bold text-xs">
                         <CheckCircle2 className="w-4.5 h-4.5" />
                         <span>TOKEN GENERATED</span>
                       </div>
 
-                      <div className="space-y-1 py-4 border-y border-slate-850">
+                      <div className={`space-y-1 py-4 border-y ${isDarkMode ? 'border-slate-800' : 'border-gray-100'}`}>
                         <h2 className="text-3xl font-black tracking-tight">{bookedToken.tokenNo}</h2>
                         <p className="text-[10px] text-gray-400 uppercase font-black">{bookedToken.department} OPD</p>
                       </div>
@@ -925,17 +959,21 @@ export default function ReceptionPortal({
                       <button
                         type="button"
                         onClick={() => triggerToast('Printing Token', 'Sent print directive to OPD ticket printer.', 'success')}
-                        className="w-full bg-slate-900 hover:bg-slate-800 text-gray-300 py-3 rounded-xl text-xs font-bold flex items-center justify-center space-x-2 border border-slate-800 cursor-pointer"
+                        className={`w-full py-3 rounded-xl text-xs font-bold flex items-center justify-center space-x-2 border cursor-pointer ${
+                          isDarkMode ? 'bg-slate-900 hover:bg-slate-800 text-gray-300 border-slate-800' : 'bg-gray-50 hover:bg-gray-100 text-gray-700 border-gray-200'
+                        }`}
                       >
                         <Printer className="w-4 h-4" />
                         <span>Print Physical Ticket</span>
                       </button>
                     </div>
                   ) : (
-                    <div className="border border-dashed border-slate-800 bg-slate-900/10 rounded-3xl p-6 text-center text-gray-500 flex flex-col items-center justify-center h-56">
-                      <Ticket className="w-8 h-8 text-gray-700 mb-2" />
+                    <div className={`border border-dashed rounded-3xl p-6 text-center text-gray-500 flex flex-col items-center justify-center h-56 ${
+                      isDarkMode ? 'border-slate-800 bg-slate-900/10' : 'border-gray-200 bg-gray-50'
+                    }`}>
+                      <Ticket className="w-8 h-8 text-gray-400 mb-2" />
                       <p className="text-xs font-black">OPD Ticket Preview</p>
-                      <p className="text-[10px] text-gray-400 mt-1">Allocate doctor and confirm booking to display printable token.</p>
+                      <p className="text-[10px] text-gray-450 mt-1">Allocate doctor and confirm booking to display printable token.</p>
                     </div>
                   )}
                 </div>
@@ -947,7 +985,7 @@ export default function ReceptionPortal({
           {/* TAB 4: SELF SERVICE KIOSK VIEW */}
           {activeTab === 'kiosk' && (
             <div className="space-y-6">
-              <div className="flex justify-between items-center pb-3 border-b border-slate-800">
+              <div className={`flex justify-between items-center pb-3 border-b ${isDarkMode ? 'border-slate-800' : 'border-gray-200'}`}>
                 <div>
                   <h2 className="text-xl font-black">Self-Service Touch Kiosk Simulator</h2>
                   <p className="text-xs text-gray-400">Simulate visitor/patient walk-in kiosk terminals</p>
@@ -955,7 +993,7 @@ export default function ReceptionPortal({
                 <button
                   onClick={() => setKioskVoiceActive(!kioskVoiceActive)}
                   className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center space-x-2 transition-all cursor-pointer ${
-                    kioskVoiceActive ? 'bg-orange-600 text-white' : 'bg-slate-900 border border-slate-800 text-gray-400'
+                    kioskVoiceActive ? 'bg-orange-600 text-white' : (isDarkMode ? 'bg-slate-900 border border-slate-800 text-gray-400' : 'bg-gray-100 border border-gray-200 text-gray-700')
                   }`}
                 >
                   <Volume2 className="w-4 h-4" />
@@ -964,12 +1002,12 @@ export default function ReceptionPortal({
               </div>
 
               {/* Kiosk Dashboard simulation */}
-              <div className="bg-[#0f1524] border border-slate-800 rounded-3xl p-6 min-h-[480px] flex flex-col justify-between">
+              <div className={`rounded-3xl p-6 min-h-[480px] flex flex-col justify-between border ${isDarkMode ? 'bg-[#0f1524] border-slate-800' : 'bg-white border-gray-100 shadow-sm'}`}>
                 
                 {kioskTab === 'home' && (
                   <div className="space-y-8 flex-1 flex flex-col justify-center">
                     <div className="text-center space-y-2">
-                      <span className="text-xs font-extrabold uppercase bg-orange-600/10 text-orange-400 border border-orange-500/20 px-3 py-1 rounded-full">
+                      <span className="text-xs font-extrabold uppercase bg-orange-600/10 text-orange-600 border border-orange-500/20 px-3 py-1 rounded-full">
                         MCGM DIGITAL WELCOME DESK
                       </span>
                       <h2 className="text-2xl font-black tracking-tight">Touch to Begin / सुरुवात करा</h2>
@@ -979,7 +1017,9 @@ export default function ReceptionPortal({
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl mx-auto w-full">
                       <button
                         onClick={() => setKioskTab('book')}
-                        className="bg-slate-950 hover:bg-slate-900 border border-slate-850 p-6 rounded-2xl text-center space-y-3 hover:scale-102 transition-all cursor-pointer"
+                        className={`p-6 rounded-2xl text-center space-y-3 hover:scale-102 transition-all cursor-pointer border ${
+                          isDarkMode ? 'bg-slate-950 hover:bg-slate-900 border-slate-800' : 'bg-gray-50 hover:bg-gray-100 border-gray-200 shadow-sm'
+                        }`}
                       >
                         <UserPlus className="w-8 h-8 text-orange-500 mx-auto" />
                         <h4 className="text-xs font-black">Fast Registration / OPD Ticket</h4>
@@ -987,7 +1027,9 @@ export default function ReceptionPortal({
 
                       <button
                         onClick={() => setKioskTab('status')}
-                        className="bg-slate-950 hover:bg-slate-900 border border-slate-850 p-6 rounded-2xl text-center space-y-3 hover:scale-102 transition-all cursor-pointer"
+                        className={`p-6 rounded-2xl text-center space-y-3 hover:scale-102 transition-all cursor-pointer border ${
+                          isDarkMode ? 'bg-slate-950 hover:bg-slate-900 border-slate-800' : 'bg-gray-50 hover:bg-gray-100 border-gray-200 shadow-sm'
+                        }`}
                       >
                         <Ticket className="w-8 h-8 text-blue-500 mx-auto" />
                         <h4 className="text-xs font-black">Print Health Card / Bill Payment</h4>
@@ -995,7 +1037,9 @@ export default function ReceptionPortal({
 
                       <button
                         onClick={() => setKioskTab('wayfinding')}
-                        className="bg-slate-950 hover:bg-slate-900 border border-slate-850 p-6 rounded-2xl text-center space-y-3 hover:scale-102 transition-all cursor-pointer"
+                        className={`p-6 rounded-2xl text-center space-y-3 hover:scale-102 transition-all cursor-pointer border ${
+                          isDarkMode ? 'bg-slate-950 hover:bg-slate-900 border-slate-800' : 'bg-gray-50 hover:bg-gray-100 border-gray-200 shadow-sm'
+                        }`}
                       >
                         <Compass className="w-8 h-8 text-emerald-500 mx-auto" />
                         <h4 className="text-xs font-black">Hospital Indoor Map & Route</h4>
@@ -1008,13 +1052,13 @@ export default function ReceptionPortal({
                   <div className="space-y-6 flex-1">
                     <div className="flex justify-between items-center">
                       <h3 className="font-extrabold text-sm">Self-Service OPD Ticket Booking</h3>
-                      <button onClick={() => setKioskTab('home')} className="text-xs text-gray-400 hover:text-white">Back to Home</button>
+                      <button onClick={() => setKioskTab('home')} className={`text-xs font-bold transition-colors ${isDarkMode ? 'text-gray-400 hover:text-white' : 'text-gray-500 hover:text-gray-900'}`}>Back to Home</button>
                     </div>
 
-                    <div className="p-4 bg-slate-950 border border-slate-850 rounded-2xl space-y-4">
+                    <div className={`p-4 rounded-2xl space-y-4 border ${isDarkMode ? 'bg-slate-950 border-slate-800' : 'bg-gray-50 border-gray-100'}`}>
                       <p className="text-xs text-gray-400">Scan Aadhaar or ABHA Address barcode at the scanner box below.</p>
-                      <div className="h-32 border-2 border-dashed border-slate-800 bg-slate-900/50 rounded-xl flex items-center justify-center">
-                        <span className="text-[10px] text-gray-500 font-bold uppercase animate-pulse">Position Barcode / Phone QR under red laser</span>
+                      <div className={`h-32 border-2 border-dashed rounded-xl flex items-center justify-center ${isDarkMode ? 'border-slate-800 bg-slate-900/50' : 'border-gray-200 bg-white'}`}>
+                        <span className="text-[10px] text-gray-550 font-bold uppercase animate-pulse">Position Barcode / Phone QR under red laser</span>
                       </div>
                     </div>
                   </div>
@@ -1024,19 +1068,21 @@ export default function ReceptionPortal({
                   <div className="space-y-6 flex-1">
                     <div className="flex justify-between items-center">
                       <h3 className="font-extrabold text-sm">Retrieve Status & Print Records</h3>
-                      <button onClick={() => setKioskTab('home')} className="text-xs text-gray-400 hover:text-white">Back to Home</button>
+                      <button onClick={() => setKioskTab('home')} className={`text-xs font-bold transition-colors ${isDarkMode ? 'text-gray-400 hover:text-white' : 'text-gray-500 hover:text-gray-900'}`}>Back to Home</button>
                     </div>
 
-                    <div className="p-4 bg-slate-950 border border-slate-850 rounded-2xl space-y-4">
+                    <div className={`p-4 rounded-2xl space-y-4 border ${isDarkMode ? 'bg-slate-950 border-slate-800' : 'bg-gray-50 border-gray-100'}`}>
                       <div className="flex space-x-2">
                         <input
                           type="text"
                           placeholder="Enter Health ID or registered phone number..."
-                          className="flex-1 bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 text-xs text-white focus:outline-none"
+                          className={`flex-1 rounded-xl px-4 py-3 text-xs focus:outline-none border ${
+                            isDarkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-white border-gray-200 text-gray-850'
+                          }`}
                         />
                         <button
                           onClick={() => triggerToast('Records Synced', 'Active billing logs loaded.', 'success')}
-                          className="bg-orange-600 text-white px-4 rounded-xl text-xs font-bold"
+                          className="bg-orange-600 text-white px-4 rounded-xl text-xs font-bold cursor-pointer"
                         >
                           Find Logs
                         </button>
@@ -1049,15 +1095,15 @@ export default function ReceptionPortal({
                   <div className="space-y-4 flex-1">
                     <div className="flex justify-between items-center">
                       <h3 className="font-extrabold text-sm">Indoor Interactive Hospital Map</h3>
-                      <button onClick={() => setKioskTab('home')} className="text-xs text-gray-400 hover:text-white">Back to Home</button>
+                      <button onClick={() => setKioskTab('home')} className={`text-xs font-bold transition-colors ${isDarkMode ? 'text-gray-400 hover:text-white' : 'text-gray-500 hover:text-gray-900'}`}>Back to Home</button>
                     </div>
 
                     {/* Interactive wayfinding visual layout */}
-                    <div className="relative border border-slate-800 bg-slate-950 rounded-2xl h-64 overflow-hidden flex items-center justify-center p-4">
+                    <div className={`relative border rounded-2xl h-64 overflow-hidden flex items-center justify-center p-4 ${isDarkMode ? 'border-slate-800 bg-slate-950' : 'border-gray-200 bg-gray-50'}`}>
                       {/* Stylized vector SVG wayfinding map */}
-                      <svg className="w-full h-full text-slate-800 stroke-slate-700" viewBox="0 0 400 200">
-                        <rect x="10" y="10" width="100" height="80" rx="8" fill="#1e293b" opacity="0.3" />
-                        <text x="25" y="55" fill="#94a3b8" fontSize="10" fontWeight="bold">LOBBY / WAITING</text>
+                      <svg className={`w-full h-full text-slate-800 ${isDarkMode ? 'stroke-slate-700' : 'stroke-gray-300'}`} viewBox="0 0 400 200">
+                        <rect x="10" y="10" width="100" height="80" rx="8" fill={isDarkMode ? "#1e293b" : "#e2e8f0"} opacity="0.8" />
+                        <text x="25" y="55" fill={isDarkMode ? "#94a3b8" : "#475569"} fontSize="10" fontWeight="bold">LOBBY / WAITING</text>
 
                         <rect x="130" y="10" width="120" height="80" rx="8" fill="#047857" opacity="0.1" stroke="#059669" />
                         <text x="145" y="45" fill="#34d399" fontSize="10" fontWeight="bold">GENERAL MEDICINE</text>
@@ -1073,10 +1119,10 @@ export default function ReceptionPortal({
                         <circle cx="190" cy="90" r="4" fill="#34d399" />
                         <text x="75" y="132" fill="#f97316" fontSize="9" fontWeight="bold">PATHWAY TO OPD 102</text>
 
-                        <rect x="10" y="110" width="100" height="80" rx="8" fill="#1e293b" opacity="0.3" />
-                        <text x="25" y="150" fill="#94a3b8" fontSize="10" fontWeight="bold">PHARMACY DESK</text>
+                        <rect x="10" y="110" width="100" height="80" rx="8" fill={isDarkMode ? "#1e293b" : "#e2e8f0"} opacity="0.8" />
+                        <text x="25" y="150" fill={isDarkMode ? "#94a3b8" : "#475569"} fontSize="10" fontWeight="bold">PHARMACY DESK</text>
                       </svg>
-                      <div className="absolute top-2 right-2 bg-slate-900 border border-slate-800 px-3 py-1 rounded text-[9px] text-orange-400 font-bold uppercase">
+                      <div className={`absolute top-2 right-2 border px-3 py-1 rounded text-[9px] text-orange-400 font-bold uppercase ${isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-gray-200'}`}>
                         Current Location: Lobby Entry kiosk
                       </div>
                     </div>
@@ -1107,7 +1153,9 @@ export default function ReceptionPortal({
                         placeholder="Visitor Name"
                         value={newVisitor.name}
                         onChange={(e) => setNewVisitor({ ...newVisitor, name: e.target.value })}
-                        className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:ring-1 focus:ring-orange-500"
+                        className={`w-full rounded-xl px-4 py-3 text-xs focus:outline-none focus:ring-1 focus:ring-orange-500 ${
+                          isDarkMode ? 'bg-slate-950 border-slate-800 text-white' : 'bg-white border-gray-200 text-gray-850'
+                        }`}
                         required
                       />
                     </div>
@@ -1119,7 +1167,9 @@ export default function ReceptionPortal({
                         placeholder="Contact number"
                         value={newVisitor.phone}
                         onChange={(e) => setNewVisitor({ ...newVisitor, phone: e.target.value })}
-                        className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:ring-1 focus:ring-orange-500"
+                        className={`w-full rounded-xl px-4 py-3 text-xs focus:outline-none focus:ring-1 focus:ring-orange-500 ${
+                          isDarkMode ? 'bg-slate-950 border-slate-800 text-white' : 'bg-white border-gray-200 text-gray-850'
+                        }`}
                         required
                       />
                     </div>
@@ -1129,7 +1179,9 @@ export default function ReceptionPortal({
                       <select
                         value={newVisitor.patientName}
                         onChange={(e) => setNewVisitor({ ...newVisitor, patientName: e.target.value })}
-                        className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:ring-1 focus:ring-orange-500"
+                        className={`w-full rounded-xl px-4 py-3 text-xs focus:outline-none focus:ring-1 focus:ring-orange-500 ${
+                          isDarkMode ? 'bg-slate-950 border-slate-800 text-white' : 'bg-white border-gray-205 text-gray-850'
+                        }`}
                       >
                         <option value="Rahul Anil Patil">Rahul Anil Patil (Bed 401)</option>
                         <option value="Suresh Kumar">Suresh Kumar (Bed 402)</option>
@@ -1142,7 +1194,9 @@ export default function ReceptionPortal({
                       <select
                         value={newVisitor.passType}
                         onChange={(e) => setNewVisitor({ ...newVisitor, passType: e.target.value as any })}
-                        className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:ring-1 focus:ring-orange-500"
+                        className={`w-full rounded-xl px-4 py-3 text-xs focus:outline-none focus:ring-1 focus:ring-orange-500 ${
+                          isDarkMode ? 'bg-slate-950 border-slate-800 text-white' : 'bg-white border-gray-205 text-gray-850'
+                        }`}
                       >
                         <option value="Day Pass">Day Pass (Until 08:00 PM)</option>
                         <option value="Night Stay">Night Stay (Overnight supervisor)</option>
@@ -1160,21 +1214,23 @@ export default function ReceptionPortal({
 
                 {/* Visitor Log index */}
                 <div className={`p-5 rounded-3xl border ${isDarkMode ? 'bg-[#0f1524] border-slate-800' : 'bg-white border-gray-100 shadow-sm'} space-y-4`}>
-                  <h3 className="font-extrabold text-sm border-b border-slate-800 pb-2">Active Visitor Passes</h3>
+                  <h3 className={`font-extrabold text-sm border-b pb-2 ${isDarkMode ? 'border-slate-800' : 'border-gray-150 text-slate-800'}`}>Active Visitor Passes</h3>
 
                   <div className="space-y-3">
                     {visitors.map(v => (
-                      <div key={v.id} className="bg-slate-950 p-4 rounded-2xl border border-slate-850 space-y-2">
+                      <div key={v.id} className={`p-4 rounded-2xl border space-y-2 ${isDarkMode ? 'bg-slate-950 border-slate-800' : 'bg-gray-50 border-gray-100 shadow-sm'}`}>
                         <div className="flex justify-between items-start">
                           <div>
                             <h4 className="text-xs font-black">{v.name}</h4>
                             <p className="text-[10px] text-gray-500">Visiting: {v.patientName}</p>
                           </div>
-                          <span className="text-[9px] bg-slate-900 border border-slate-800 px-2 py-0.5 rounded text-orange-400 font-mono">
+                          <span className={`text-[9px] border px-2 py-0.5 rounded font-mono font-bold ${
+                            isDarkMode ? 'bg-slate-900 border-slate-800 text-orange-400' : 'bg-orange-55 bg-orange-50 border-orange-200 text-orange-600'
+                          }`}>
                             {v.passType}
                           </span>
                         </div>
-                        <div className="flex justify-between text-[10px] text-gray-400 pt-2 border-t border-slate-850">
+                        <div className={`flex justify-between text-[10px] text-gray-400 pt-2 border-t ${isDarkMode ? 'border-slate-800' : 'border-gray-150'}`}>
                           <span>Code: {v.passCode}</span>
                           <span>Valid: {v.validUntil}</span>
                         </div>
@@ -1200,11 +1256,11 @@ export default function ReceptionPortal({
                 {/* Invoice items list */}
                 <div className={`lg:col-span-2 p-5 rounded-3xl border ${isDarkMode ? 'bg-[#0f1524] border-slate-800' : 'bg-white border-gray-100 shadow-sm'} space-y-4 flex flex-col justify-between`}>
                   <div className="space-y-3">
-                    <h3 className="font-extrabold text-sm border-b border-slate-800 pb-2">Invoice Summary for {billingPatientName}</h3>
+                    <h3 className={`font-extrabold text-sm border-b pb-2 ${isDarkMode ? 'border-slate-800' : 'border-gray-150 text-slate-850'}`}>Invoice Summary for {billingPatientName}</h3>
 
                     <div className="space-y-2">
                       {billingItems.map((item, idx) => (
-                        <div key={idx} className="bg-slate-950 p-3.5 rounded-2xl border border-slate-850 flex justify-between items-center">
+                        <div key={idx} className={`p-3.5 rounded-2xl border flex justify-between items-center ${isDarkMode ? 'bg-slate-950 border-slate-800' : 'bg-gray-50 border-gray-100'}`}>
                           <div>
                             <h4 className="text-xs font-black">{item.name}</h4>
                             <p className="text-[10px] text-gray-500">{item.category}</p>
@@ -1228,7 +1284,7 @@ export default function ReceptionPortal({
                       Patient profile matches cashless state healthcare scheme directives. All OPD, pharmacy, and diagnostic fees are fully covered.
                     </p>
 
-                    <label className="flex items-center space-x-3 cursor-pointer pt-2 border-t border-slate-850">
+                    <label className="flex items-center space-x-3 cursor-pointer pt-2 border-t border-slate-800">
                       <input
                         type="checkbox"
                         checked={pmjaySchemeChecked}
@@ -1262,7 +1318,7 @@ export default function ReceptionPortal({
                         <span>INVOICE PAID</span>
                       </div>
 
-                      <div className="space-y-1 py-4 border-y border-slate-850 text-left">
+                      <div className="space-y-1 py-4 border-y border-slate-800 text-left">
                         <p className="text-[10px] text-gray-500">INVOICE NO: {billReceipt.invoiceId}</p>
                         <p className="text-xs font-bold text-white">Patient: {billReceipt.patientName}</p>
                         <p className="text-xs text-gray-400">Date: {billReceipt.date}</p>
@@ -1277,7 +1333,7 @@ export default function ReceptionPortal({
                         ))}
                       </div>
 
-                      <div className="pt-3 border-t border-slate-850 flex justify-between items-center text-xs">
+                      <div className="pt-3 border-t border-slate-800 flex justify-between items-center text-xs">
                         <span className="font-bold">Total Paid:</span>
                         <span className="text-emerald-500 font-black">₹{billReceipt.total}</span>
                       </div>
