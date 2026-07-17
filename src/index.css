@@ -43,6 +43,13 @@
 /* ── Base ─────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; }
 
+html {
+  /* Prevent iOS overscroll bounce / pull-to-refresh */
+  overscroll-behavior: none;
+  /* Ensure safe area CSS env() works */
+  height: 100%;
+}
+
 body {
   font-family: var(--font-sans);
   background-color: #f8fafd;
@@ -51,6 +58,82 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   transition: background-color 0.3s ease, color 0.3s ease;
+  /* Mobile: prevent overscroll bounce */
+  overscroll-behavior-y: none;
+  /* Prevent accidental text selection on touch */
+  -webkit-user-select: none;
+  user-select: none;
+  /* Allow text selection inside inputs/textareas */
+  /* Remove iOS tap highlight */
+  -webkit-tap-highlight-color: transparent;
+  /* Safe area padding for notched devices */
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-left: env(safe-area-inset-left, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
+  /* Mobile viewport height fix */
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* Allow text selection inside interactive elements */
+input, textarea, select, [contenteditable="true"] {
+  -webkit-user-select: auto;
+  user-select: auto;
+}
+
+/* PWA standalone mode adjustments */
+@media (display-mode: standalone) {
+  body {
+    /* Extra top padding for status bar in standalone PWA */
+    padding-top: env(safe-area-inset-top, 20px);
+  }
+}
+
+/* ── Mobile Safe Area Utilities ──────────── */
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.pb-safe {
+  padding-bottom: max(env(safe-area-inset-bottom, 0px), 8px);
+}
+
+/* ── Touch Optimization ──────────────────── */
+button, a, [role="button"] {
+  touch-action: manipulation; /* Disable 300ms delay */
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Ensure minimum touch target for accessibility (44px per WCAG) */
+@media (pointer: coarse) {
+  button:not([class*="p-1"]):not([class*="p-0"]) {
+    min-height: 44px;
+  }
+}
+
+/* ── Mobile Scroll Performance ───────────── */
+.overflow-y-auto, .overflow-x-auto, [class*="overflow-"] {
+  -webkit-overflow-scrolling: touch;
+  will-change: scroll-position;
+}
+
+/* ── Mobile-Specific Layout Helpers ────────── */
+/* Full mobile height using dynamic viewport height */
+.h-screen-safe {
+  height: 100vh;
+  height: 100dvh;
+}
+
+.min-h-screen-safe {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* ── Pull-to-Refresh Prevention ──────────── */
+@media (max-width: 768px) {
+  body {
+    overscroll-behavior-y: contain;
+  }
 }
 
 /* ── Scrollbars ───────────────────────────── */
