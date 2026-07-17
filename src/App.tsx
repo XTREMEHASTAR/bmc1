@@ -531,7 +531,7 @@ export default function App() {
         </div>
 
         {/* Mobile View: Toggleable floating drawer that collapses to avoid overlapping bottom navigation */}
-        <div className="fixed bottom-24 left-4 z-[9999] lg:hidden">
+        <div className="fixed left-4 z-[9999] lg:hidden" style={{ bottom: 'calc(env(safe-area-inset-bottom, 0px) + 80px)' }}>
           {/* Floating trigger button */}
           <button
             onClick={() => setIsSwitcherExpanded(prev => !prev)}
@@ -600,7 +600,7 @@ export default function App() {
 
   if (isAppLoading) {
     return (
-      <div className={`min-h-screen flex items-center justify-center p-4 transition-colors duration-300 ${
+      <div className={`min-h-screen-safe flex items-center justify-center p-4 transition-colors duration-300 ${
         isDarkMode ? 'bg-[#0b0f19] text-white' : 'bg-[#F8FAFD] text-[#0A5BFF]'
       }`}>
         <div className="w-full max-w-md text-center space-y-6 flex flex-col items-center">
@@ -860,11 +860,11 @@ export default function App() {
   const unreadNotifCount = notifications.filter(n => !n.isRead).length;
 
   return (
-    <div className={`min-h-screen bg-[#F8FAFD] dark:bg-slate-950 flex justify-center text-gray-800 dark:text-slate-100 antialiased font-sans ${isDarkMode ? 'dark' : ''}`}>
-      <div className="w-full max-w-md bg-white dark:bg-slate-900 min-h-screen shadow-xl border-x border-gray-100 dark:border-slate-800 flex flex-col justify-between relative">
+    <div className={`min-h-screen-safe bg-[#F8FAFD] dark:bg-slate-950 flex justify-center text-gray-800 dark:text-slate-100 antialiased font-sans ${isDarkMode ? 'dark' : ''}`}>
+      <div className="w-full max-w-lg mx-auto bg-white dark:bg-slate-900 min-h-screen-safe shadow-xl lg:border-x border-gray-100 dark:border-slate-800 flex flex-col relative">
         
         {/* Core Header Navigation Bar */}
-        <header className="sticky top-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md z-40 border-b border-gray-100 dark:border-slate-800 p-4 py-3.5 flex items-center justify-between">
+        <header className="sticky top-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md z-40 border-b border-gray-100 dark:border-slate-800 px-4 py-3.5 flex items-center justify-between" style={{ paddingTop: 'max(env(safe-area-inset-top, 0px), 14px)' }}>
           <div className="flex items-center space-x-2">
             <div className="w-8 h-8 rounded-lg bg-[#0A5BFF] flex items-center justify-center text-white">
               <span className="font-extrabold text-sm tracking-tighter">MC</span>
@@ -877,7 +877,26 @@ export default function App() {
             </div>
           </div>
 
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-2">
+            {/* Dark / Light Theme Toggle */}
+            <button
+              onClick={() => {
+                setIsDarkMode((prev: boolean) => {
+                  const next = !prev;
+                  localStorage.setItem('theme', next ? 'dark' : 'light');
+                  return next;
+                });
+              }}
+              className="p-2 hover:bg-gray-50 dark:hover:bg-slate-800 rounded-xl transition-all active:scale-90"
+              aria-label="Toggle theme"
+            >
+              {isDarkMode ? (
+                <Sun className="w-5 h-5 text-amber-400" />
+              ) : (
+                <Moon className="w-5 h-5 text-gray-600" />
+              )}
+            </button>
+
             {/* Notification Bell Badge */}
             <button
               onClick={() => setShowNotificationsView(true)}
@@ -907,7 +926,7 @@ export default function App() {
         </header>
 
         {/* Dynamic Inner Main Content Panel */}
-        <main className="flex-1 p-4 overflow-y-auto no-scrollbar">
+        <main className="flex-1 px-4 pt-4 pb-24 overflow-y-auto no-scrollbar">
           <AnimatePresence mode="wait">
             {isBookingFlow ? (
               <motion.div
@@ -1297,7 +1316,7 @@ export default function App() {
         </main>
 
         {/* Global Floating Bottom Nav Bar */}
-        <nav className="sticky bottom-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-gray-100 dark:border-slate-800 px-4 py-2 flex justify-between items-center z-40">
+        <nav className="fixed bottom-0 left-0 right-0 max-w-lg mx-auto bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-gray-100 dark:border-slate-800 px-2 pt-2 pb-2 flex justify-around items-center z-40 safe-bottom">
           {[
             { id: 'home' as const, label: 'Home', icon: Home },
             { id: 'appointments' as const, label: 'Appointments', icon: Calendar },
@@ -1347,7 +1366,7 @@ export default function App() {
                 animate={{ x: 0 }}
                 exit={{ x: '100%' }}
                 transition={{ type: 'tween', duration: 0.25 }}
-                className="bg-white dark:bg-slate-900 w-full max-w-sm h-full shadow-2xl flex flex-col justify-between p-6"
+                className="bg-white dark:bg-slate-900 w-full max-w-sm h-full shadow-2xl flex flex-col justify-between p-6" style={{ paddingTop: 'max(env(safe-area-inset-top, 0px), 24px)', paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 24px)' }}
               >
                 <div className="space-y-4 flex-1 overflow-y-auto no-scrollbar">
                   <div className="flex justify-between items-center border-b border-gray-100 dark:border-slate-800 pb-3">
@@ -1479,7 +1498,7 @@ export default function App() {
         {/* Teleconsultation Video Overlay */}
         <AnimatePresence>
           {showTeleconsultView && (
-            <div className="fixed inset-0 z-50 bg-[#020617] flex flex-col justify-between p-4 text-white">
+            <div className="fixed inset-0 z-50 bg-[#020617] flex flex-col justify-between p-4 text-white" style={{ paddingTop: 'max(env(safe-area-inset-top, 0px), 16px)', paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 16px)' }}>
               {teleconsultStep === 'connecting' ? (
                 <div className="flex-1 flex flex-col items-center justify-center space-y-6 text-center">
                   <div className="w-24 h-24 rounded-full bg-[#0A5BFF]/50 border-4 border-blue-500/30 flex items-center justify-center relative">

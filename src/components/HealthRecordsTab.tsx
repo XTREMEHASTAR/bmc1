@@ -178,7 +178,8 @@ export default function HealthRecordsTab({ records, onAddRecord }: HealthRecords
             {/* Floating Action Button */}
             <button
               onClick={() => setShowAddModal(true)}
-              className="fixed bottom-24 right-6 w-14 h-14 bg-[#0A5BFF] text-white rounded-full flex items-center justify-center shadow-xl hover:bg-[#00164e] active:scale-95 transition-all z-40 cursor-pointer border-2 border-white"
+              className="fixed right-6 w-14 h-14 bg-[#0A5BFF] text-white rounded-full flex items-center justify-center shadow-xl hover:bg-[#00164e] active:scale-95 transition-all z-40 cursor-pointer border-2 border-white"
+              style={{ bottom: 'calc(env(safe-area-inset-bottom, 0px) + 80px)' }}
             >
               <Plus className="w-6 h-6 stroke-[3]" />
             </button>

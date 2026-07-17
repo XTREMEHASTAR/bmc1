@@ -686,15 +686,15 @@ export default function VoiceAssistantOverlay({ currentPortal, isDarkMode }: Voi
 
   return (
     <>
-      {/* Floating Activation orb button (bottom-right corner) */}
-      <div className="fixed bottom-6 right-6 z-55 flex flex-col items-end space-y-3">
+      {/* Floating Activation orb button (above bottom nav bar) */}
+      <div className="fixed right-4 z-55 flex flex-col items-end space-y-3" style={{ bottom: 'calc(env(safe-area-inset-bottom, 0px) + 76px)' }}>
         <AnimatePresence>
           {isOpen && (
             <motion.div
               initial={{ opacity: 0, scale: 0.8, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.8, y: 20 }}
-              className={`w-96 rounded-3xl border shadow-2xl p-5 flex flex-col space-y-4 z-55 ${
+              className={`w-[calc(100vw-32px)] max-w-96 max-h-[calc(100dvh-160px)] rounded-3xl border shadow-2xl p-5 flex flex-col space-y-4 z-55 overflow-y-auto ${
                 isDarkMode 
                   ? 'bg-slate-950/95 border-slate-800 text-white backdrop-blur-md' 
                   : 'bg-white/95 border-gray-200 text-[#0A5BFF] backdrop-blur-md shadow-slate-200'

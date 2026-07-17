@@ -362,7 +362,7 @@ export default function WalletTab({ balance, transactions, onAddMoney, onPayBill
       {/* QR Code Scanner Overlay Simulator */}
       <AnimatePresence>
         {showScanModal && (
-          <div className="fixed inset-0 z-50 bg-[#020617] flex flex-col justify-between p-6 text-white">
+          <div className="fixed inset-0 z-50 bg-[#020617] flex flex-col justify-between p-6 text-white" style={{ paddingTop: 'max(env(safe-area-inset-top, 0px), 24px)', paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 24px)' }}>
             {/* Header */}
             <div className="flex justify-between items-center">
               <h3 className="text-base font-extrabold tracking-wide uppercase">Scan OPD Receipt QR</h3>
