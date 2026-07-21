@@ -731,3 +731,200 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER trg_auto_reg_no
   BEFORE INSERT ON emergency_registrations
   FOR EACH ROW EXECUTE FUNCTION fn_auto_registration_no();
+
+-- ============================================================
+-- STAFF ATTENDANCE & ROSTER SYSTEM ADDITIONS
+-- ============================================================
+
+-- 1. Campus Config / Work Locations Table
+CREATE TABLE IF NOT EXISTS work_locations (
+  id              UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  hospital_id     UUID REFERENCES hospitals(id) ON DELETE CASCADE,
+  name            TEXT NOT NULL,
+  lat             DOUBLE PRECISION NOT NULL,
+  lng             DOUBLE PRECISION NOT NULL,
+  radius_meters   DOUBLE PRECISION DEFAULT 150.0,
+  created_at      TIMESTAMPTZ DEFAULT NOW(),
+  updated_at      TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 2. Attendance Exceptions Table
+CREATE TABLE IF NOT EXISTS attendance_exceptions (
+  id              UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  staff_id        UUID REFERENCES staff_profiles(id) ON DELETE CASCADE,
+  event_type      TEXT NOT NULL CHECK (event_type IN ('CLOCK_IN', 'CLOCK_OUT')),
+  timestamp       TIMESTAMPTZ NOT NULL,
+  lat             DOUBLE PRECISION NOT NULL,
+  lng             DOUBLE PRECISION NOT NULL,
+  reason          TEXT NOT NULL,
+  status          TEXT NOT NULL CHECK (status IN ('PENDING', 'APPROVED', 'REJECTED')) DEFAULT 'PENDING',
+  reviewed_by     UUID REFERENCES staff_profiles(id),
+  reviewed_at     TIMESTAMPTZ,
+  comments        TEXT,
+  created_at      TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 3. Attendance Events Table
+CREATE TABLE IF NOT EXISTS attendance_events (
+  id                  UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  staff_id            UUID REFERENCES staff_profiles(id) ON DELETE CASCADE,
+  shift_id            UUID REFERENCES shifts(id) ON DELETE SET NULL,
+  event_type          TEXT NOT NULL CHECK (event_type IN ('CLOCK_IN', 'CLOCK_OUT')),
+  timestamp           TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  lat                 DOUBLE PRECISION NOT NULL,
+  lng                 DOUBLE PRECISION NOT NULL,
+  verified            BOOLEAN DEFAULT FALSE,
+  verification_method TEXT NOT NULL CHECK (verification_method IN ('GEOFENCE', 'EXCEPTION', 'BYPASS')),
+  exception_id        UUID REFERENCES attendance_exceptions(id) ON DELETE SET NULL,
+  created_at          TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 4. Shift Swaps Table
+CREATE TABLE IF NOT EXISTS shift_swaps (
+  id                  UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  requesting_staff_id UUID REFERENCES staff_profiles(id) ON DELETE CASCADE,
+  target_staff_id     UUID REFERENCES staff_profiles(id) ON DELETE CASCADE,
+  requesting_shift_id UUID REFERENCES shifts(id) ON DELETE CASCADE,
+  target_shift_id     UUID REFERENCES shifts(id) ON DELETE CASCADE,
+  status              TEXT NOT NULL CHECK (status IN ('PENDING_APPROVAL', 'APPROVED', 'REJECTED', 'CANCELLED')) DEFAULT 'PENDING_APPROVAL',
+  reviewed_by         UUID REFERENCES staff_profiles(id),
+  reviewed_at         TIMESTAMPTZ,
+  created_at          TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 5. Leave Requests Table
+CREATE TABLE IF NOT EXISTS leave_requests (
+  id              UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  staff_id        UUID REFERENCES staff_profiles(id) ON DELETE CASCADE,
+  start_date      DATE NOT NULL,
+  end_date        DATE NOT NULL,
+  leave_type      TEXT NOT NULL CHECK (leave_type IN ('CASUAL', 'SICK', 'EARNED', 'MATERNITY', 'PATERNITY', 'UNPAID')),
+  reason          TEXT NOT NULL,
+  status          TEXT NOT NULL CHECK (status IN ('PENDING', 'APPROVED', 'REJECTED')) DEFAULT 'PENDING',
+  reviewed_by     UUID REFERENCES staff_profiles(id),
+  reviewed_at     TIMESTAMPTZ,
+  comments        TEXT,
+  created_at      TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Indexes
+CREATE INDEX IF NOT EXISTS idx_attendance_events_staff ON attendance_events(staff_id, timestamp DESC);
+CREATE INDEX IF NOT EXISTS idx_attendance_exceptions_staff ON attendance_exceptions(staff_id, status);
+CREATE INDEX IF NOT EXISTS idx_shift_swaps_requester ON shift_swaps(requesting_staff_id);
+CREATE INDEX IF NOT EXISTS idx_shift_swaps_target ON shift_swaps(target_staff_id);
+CREATE INDEX IF NOT EXISTS idx_leave_requests_staff ON leave_requests(staff_id, start_date);
+
+-- Realtime Publications
+ALTER PUBLICATION supabase_realtime ADD TABLE attendance_events;
+ALTER PUBLICATION supabase_realtime ADD TABLE attendance_exceptions;
+ALTER PUBLICATION supabase_realtime ADD TABLE shift_swaps;
+ALTER PUBLICATION supabase_realtime ADD TABLE leave_requests;
+
+-- ============================================================
+-- CENTRAL STAFF DISPATCH, ALERTS & PROOF OF ARRIVAL SCHEMAS
+-- ============================================================
+
+-- 1. Staff Dispatch Assignments Table
+CREATE TABLE IF NOT EXISTS staff_assignments (
+  id                        UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  priority                  TEXT NOT NULL CHECK (priority IN ('NORMAL', 'HIGH', 'URGENT', 'EMERGENCY')) DEFAULT 'NORMAL',
+  task_type                 TEXT NOT NULL CHECK (task_type IN (
+                              'REPORT_TO_LOCATION', 'PATIENT_ASSISTANCE', 'WARD_ASSIGNMENT', 'EMERGENCY_RESPONSE',
+                              'PATIENT_TRANSPORT', 'SAMPLE_COLLECTION', 'MEDICATION_DELIVERY', 'EQUIPMENT_REQUEST',
+                              'CODE_RESPONSE', 'OT_ASSISTANCE', 'ICU_ASSISTANCE', 'SECURITY_ASSISTANCE',
+                              'HOUSEKEEPING', 'TECHNICAL_SUPPORT', 'OTHER'
+                            )),
+  title                     TEXT NOT NULL,
+  instructions              TEXT,
+  destination_building      TEXT,
+  destination_floor         TEXT,
+  destination_ward          TEXT,
+  destination_room          TEXT,
+  destination_bed           TEXT,
+  patient_ref               TEXT, -- initials / bed reference (strictly privacy compliant)
+  required_arrival_time     TIMESTAMPTZ,
+  ack_required              BOOLEAN DEFAULT TRUE,
+  loc_verification_required BOOLEAN DEFAULT TRUE,
+  photo_proof_required      BOOLEAN DEFAULT FALSE,
+  completion_required       BOOLEAN DEFAULT TRUE,
+  status                    TEXT NOT NULL CHECK (status IN (
+                              'CREATED', 'SENT', 'DELIVERED', 'ACKNOWLEDGED', 'ACCEPTED', 'EN_ROUTE',
+                              'ARRIVED', 'IN_PROGRESS', 'COMPLETED', 'DECLINED', 'CANCELLED', 'EXPIRED', 'ESCALATED'
+                            )) DEFAULT 'CREATED',
+  assigned_staff_id         UUID REFERENCES staff_profiles(id) ON DELETE CASCADE,
+  created_by                UUID REFERENCES staff_profiles(id),
+  created_at                TIMESTAMPTZ DEFAULT NOW(),
+  declined_reason           TEXT,
+  escalated_at              TIMESTAMPTZ,
+  escalation_action_taken   TEXT,
+  acknowledged_at           TIMESTAMPTZ,
+  accepted_at               TIMESTAMPTZ,
+  arrived_at                TIMESTAMPTZ,
+  completed_at              TIMESTAMPTZ,
+  cancelled_at              TIMESTAMPTZ,
+  cancelled_by              UUID REFERENCES staff_profiles(id)
+);
+
+-- 2. Arrival Verifications Table
+CREATE TABLE IF NOT EXISTS arrival_verifications (
+  id                    UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  assignment_id         UUID REFERENCES staff_assignments(id) ON DELETE CASCADE,
+  staff_id              UUID REFERENCES staff_profiles(id) ON DELETE CASCADE,
+  verification_method   TEXT NOT NULL CHECK (verification_method IN ('GPS', 'QR', 'NFC', 'PHOTO', 'SUPERVISOR')),
+  verified_at           TIMESTAMPTZ DEFAULT NOW(),
+  lat                   DOUBLE PRECISION,
+  lng                   DOUBLE PRECISION,
+  qr_code_scanned       TEXT,
+  photo_url             TEXT,
+  supervisor_id         UUID REFERENCES staff_profiles(id),
+  supervisor_reason     TEXT,
+  verification_status   TEXT NOT NULL CHECK (verification_status IN ('PENDING_REVIEW', 'VERIFIED', 'REJECTED')) DEFAULT 'VERIFIED',
+  rejected_reason       TEXT,
+  reviewed_by           UUID REFERENCES staff_profiles(id),
+  reviewed_at           TIMESTAMPTZ
+);
+
+-- 3. Operational Availability Table
+CREATE TABLE IF NOT EXISTS operational_availabilities (
+  staff_id              UUID PRIMARY KEY REFERENCES staff_profiles(id) ON DELETE CASCADE,
+  availability_state    TEXT NOT NULL CHECK (availability_state IN (
+                          'AVAILABLE', 'BUSY', 'RESPONDING', 'AT_LOCATION', 'ON_BREAK', 'ON_CALL', 'UNAVAILABLE', 'ENDING_SHIFT_SOON'
+                        )) DEFAULT 'AVAILABLE',
+  last_updated          TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 4. Emergency Broadcasts
+CREATE TABLE IF NOT EXISTS emergency_broadcasts (
+  id                    UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  title                 TEXT NOT NULL,
+  message               TEXT NOT NULL,
+  priority              TEXT NOT NULL CHECK (priority IN ('URGENT', 'EMERGENCY')) DEFAULT 'EMERGENCY',
+  created_by            UUID REFERENCES staff_profiles(id),
+  created_at            TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 5. Emergency Broadcast Recipients/Responses
+CREATE TABLE IF NOT EXISTS emergency_broadcast_recipients (
+  id                    UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  broadcast_id          UUID REFERENCES emergency_broadcasts(id) ON DELETE CASCADE,
+  staff_id              UUID REFERENCES staff_profiles(id) ON DELETE CASCADE,
+  response_status       TEXT NOT NULL CHECK (response_status IN (
+                          'PENDING', 'RESPONDING', 'UNAVAILABLE', 'ALREADY_ASSIGNED'
+                        )) DEFAULT 'PENDING',
+  updated_at            TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Indexes
+CREATE INDEX IF NOT EXISTS idx_staff_assignments_staff ON staff_assignments(assigned_staff_id, status);
+CREATE INDEX IF NOT EXISTS idx_staff_assignments_priority ON staff_assignments(priority);
+CREATE INDEX IF NOT EXISTS idx_arrival_verifications_assignment ON arrival_verifications(assignment_id);
+CREATE INDEX IF NOT EXISTS idx_emergency_broadcast_recipients_staff ON emergency_broadcast_recipients(staff_id);
+
+-- Realtime Publications
+ALTER PUBLICATION supabase_realtime ADD TABLE staff_assignments;
+ALTER PUBLICATION supabase_realtime ADD TABLE arrival_verifications;
+ALTER PUBLICATION supabase_realtime ADD TABLE operational_availabilities;
+ALTER PUBLICATION supabase_realtime ADD TABLE emergency_broadcasts;
+ALTER PUBLICATION supabase_realtime ADD TABLE emergency_broadcast_recipients;
+
+

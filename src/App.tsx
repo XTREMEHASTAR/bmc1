@@ -41,7 +41,8 @@ import {
   Scissors,
   FileCheck,
   Sparkles,
-  Briefcase
+  Briefcase,
+  Fingerprint
 } from 'lucide-react';
 
 import Onboarding from './components/Onboarding';
@@ -70,6 +71,7 @@ import QualityEngineeringDashboard from './components/QualityEngineeringDashboar
 import Vision2035Dashboard from './components/Vision2035Dashboard';
 import PMODashboard from './components/PMODashboard';
 import VoiceAssistantOverlay from './components/VoiceAssistantOverlay';
+import StaffPortal from './components/StaffPortal';
 
 
 
@@ -88,7 +90,7 @@ import { Appointment, HealthRecord, Transaction, NotificationItem, Patient } fro
 
 export default function App() {
   // Navigation & Core States
-  const [portal, setPortal] = useState<'doctor' | 'patient' | 'nurse' | 'reception' | 'command' | 'ai' | 'laboratory' | 'radiology' | 'pharmacy' | 'emergency' | 'surgery' | 'icu' | 'gov' | 'research' | 'security' | 'integration' | 'devops' | 'quality' | 'vision' | 'pmo'>('doctor');
+  const [portal, setPortal] = useState<'doctor' | 'patient' | 'nurse' | 'reception' | 'command' | 'ai' | 'laboratory' | 'radiology' | 'pharmacy' | 'emergency' | 'surgery' | 'icu' | 'gov' | 'research' | 'security' | 'integration' | 'devops' | 'quality' | 'vision' | 'pmo' | 'staff'>('doctor');
   const [toast, setToast] = useState<{ title: string; message: string; type: 'success' | 'warning' | 'info' } | null>(null);
   const [isSwitcherExpanded, setIsSwitcherExpanded] = useState(false);
   const [isDesktopSwitcherCollapsed, setIsDesktopSwitcherCollapsed] = useState(true);
@@ -466,6 +468,7 @@ export default function App() {
       { id: 'patient', label: 'Patient Portal', icon: User, className: 'bg-[#0A5BFF] hover:bg-blue-900' },
       { id: 'doctor', label: 'Doctor Portal', icon: Activity, className: 'bg-[#0A5BFF] hover:bg-blue-800' },
       { id: 'nurse', label: 'Nurse Portal', icon: ClipboardList, className: 'bg-emerald-600 hover:bg-emerald-700' },
+      { id: 'staff', label: 'Staff Attendance', icon: Fingerprint, className: 'bg-indigo-600 hover:bg-indigo-700' },
       { id: 'reception', label: 'Reception Desk', icon: Building, className: 'bg-purple-600 hover:bg-purple-700' },
       { id: 'command', label: 'Command Center', icon: Activity, className: 'bg-[#0f172a] hover:bg-slate-900', isPulse: true, iconClass: 'text-rose-500 animate-pulse' },
       { id: 'ai', label: 'AI Copilot', icon: Brain, className: 'bg-gradient-to-r from-indigo-600 via-purple-600 to-rose-500 hover:opacity-90' },
@@ -813,6 +816,14 @@ export default function App() {
             isDarkMode={isDarkMode} 
             setIsDarkMode={setIsDarkMode} 
             onLogout={handleLogout}
+          />
+        )}
+        {portal === 'staff' && (
+          <StaffPortal 
+            isDarkMode={isDarkMode} 
+            setIsDarkMode={setIsDarkMode} 
+            onLogout={handleLogout}
+            setPortal={setPortal}
           />
         )}
         
