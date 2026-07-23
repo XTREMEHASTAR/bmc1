@@ -72,6 +72,7 @@ import Vision2035Dashboard from './components/Vision2035Dashboard';
 import PMODashboard from './components/PMODashboard';
 import VoiceAssistantOverlay from './components/VoiceAssistantOverlay';
 import StaffPortal from './components/StaffPortal';
+import DeanCommandCenter from './app/dean-command-center/page';
 
 
 
@@ -90,7 +91,7 @@ import { Appointment, HealthRecord, Transaction, NotificationItem, Patient } fro
 
 export default function App() {
   // Navigation & Core States
-  const [portal, setPortal] = useState<'doctor' | 'patient' | 'nurse' | 'reception' | 'command' | 'ai' | 'laboratory' | 'radiology' | 'pharmacy' | 'emergency' | 'surgery' | 'icu' | 'gov' | 'research' | 'security' | 'integration' | 'devops' | 'quality' | 'vision' | 'pmo' | 'staff'>('doctor');
+  const [portal, setPortal] = useState<'doctor' | 'patient' | 'nurse' | 'reception' | 'command' | 'ai' | 'laboratory' | 'radiology' | 'pharmacy' | 'emergency' | 'surgery' | 'icu' | 'gov' | 'research' | 'security' | 'integration' | 'devops' | 'quality' | 'vision' | 'pmo' | 'staff' | 'dean'>('doctor');
   const [toast, setToast] = useState<{ title: string; message: string; type: 'success' | 'warning' | 'info' } | null>(null);
   const [isSwitcherExpanded, setIsSwitcherExpanded] = useState(false);
   const [isDesktopSwitcherCollapsed, setIsDesktopSwitcherCollapsed] = useState(true);
@@ -485,7 +486,8 @@ export default function App() {
       { id: 'devops', label: 'DevOps & Infrastructure', icon: Server, className: 'bg-gradient-to-tr from-rose-900 via-[#0e0a13] to-slate-950 border border-rose-800/40 hover:opacity-90' },
       { id: 'quality', label: 'Quality & Validation', icon: FileCheck, className: 'bg-gradient-to-tr from-amber-900 via-[#100c14] to-slate-950 border border-amber-800/40 hover:opacity-90' },
       { id: 'vision', label: 'Vision 2035 Hub', icon: Sparkles, className: 'bg-gradient-to-tr from-cyan-900 via-[#0a111a] to-slate-950 border border-cyan-800/40 hover:opacity-90' },
-      { id: 'pmo', label: 'PMO Deployment', icon: Briefcase, className: 'bg-gradient-to-tr from-indigo-900 via-[#0b0c15] to-slate-950 border border-indigo-800/40 hover:opacity-90' }
+      { id: 'pmo', label: 'PMO Deployment', icon: Briefcase, className: 'bg-gradient-to-tr from-indigo-900 via-[#0b0c15] to-slate-950 border border-indigo-800/40 hover:opacity-90' },
+      { id: 'dean', label: 'Dean Portal', icon: ShieldCheck, className: 'bg-gradient-to-tr from-amber-600 via-rose-700 to-[#8B0000] hover:opacity-90', isPulse: true }
     ];
 
     return (
@@ -820,6 +822,14 @@ export default function App() {
         )}
         {portal === 'staff' && (
           <StaffPortal 
+            isDarkMode={isDarkMode} 
+            setIsDarkMode={setIsDarkMode} 
+            onLogout={handleLogout}
+            setPortal={setPortal}
+          />
+        )}
+        {portal === 'dean' && (
+          <DeanCommandCenter 
             isDarkMode={isDarkMode} 
             setIsDarkMode={setIsDarkMode} 
             onLogout={handleLogout}

@@ -1,5 +1,5 @@
 /**
- * MCGM Arogya Voice AI — Global Command Registry
+ * MCGM Arogya Voice AI â€” Global Command Registry
  * Every page/portal registers its available voice commands here.
  * The Voice Command Agent looks up this registry FIRST before any LLM call.
  */
@@ -8,7 +8,7 @@ import type { RegisteredCommand, PageCommands } from '../agents/types';
 
 class CommandRegistryClass {
   private commands: Map<string, RegisteredCommand> = new Map();
-  private pageIndex: Map<string, Set<string>> = new Map(); // page → command IDs
+  private pageIndex: Map<string, Set<string>> = new Map(); // page â†’ command IDs
 
   /** Register a single command */
   register(command: RegisteredCommand): void {
@@ -62,7 +62,7 @@ class CommandRegistryClass {
 // Singleton instance
 export const CommandRegistry = new CommandRegistryClass();
 
-// ── GLOBAL COMMANDS (always available) ──────────────────────────────────────
+// â”€â”€ GLOBAL COMMANDS (always available) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function dispatchEvent(name: string, detail?: any) {
   window.dispatchEvent(new CustomEvent(name, { detail }));
 }
@@ -191,12 +191,12 @@ CommandRegistry.registerPage({
       speakResponse: 'Arogya Clinical OS online. All systems operational. Voice OS active. ABHA integration live.',
     },
     // Portal navigation
-    ...(['doctor', 'nurse', 'patient', 'command', 'ai', 'laboratory', 'radiology', 'pharmacy', 'emergency', 'surgery', 'icu', 'pmo', 'integration', 'devops', 'quality', 'vision'] as const).map(p => ({
+    ...(['doctor', 'nurse', 'patient', 'command', 'ai', 'laboratory', 'radiology', 'pharmacy', 'emergency', 'surgery', 'icu', 'pmo', 'integration', 'devops', 'quality', 'vision', 'dean'] as const).map(p => ({
       id: `global-portal-${p}`,
       page: 'global',
       category: 'navigation',
       triggers: [`open ${p}`, `${p} portal`, `switch to ${p}`, `${p} dashboard`],
-      synonyms: p === 'laboratory' ? ['open lab', 'pathology portal'] : p === 'emergency' ? ['casualty', 'emergency department'] : p === 'icu' ? ['intensive care', 'critical care'] : p === 'radiology' ? ['imaging portal', 'ris pacs'] : [],
+      synonyms: p === 'laboratory' ? ['open lab', 'pathology portal'] : p === 'emergency' ? ['casualty', 'emergency department'] : p === 'icu' ? ['intensive care', 'critical care'] : p === 'radiology' ? ['imaging portal', 'ris pacs'] : p === 'dean' ? ['dean command center', 'dean portal', 'executive portal'] : [],
       description: `Open ${p} portal`,
       confirmRequired: false,
       execute: () => {
@@ -209,7 +209,7 @@ CommandRegistry.registerPage({
   ],
 });
 
-// ── APPOINTMENTS / QUEUE (global scope) ─────────────────────────────────────
+// â”€â”€ APPOINTMENTS / QUEUE (global scope) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 CommandRegistry.registerPage({
   page: 'global',
   portal: 'global',
@@ -229,7 +229,7 @@ CommandRegistry.registerPage({
   ],
 });
 
-// ── DOCTOR COMMANDS ─────────────────────────────────────────────────────────
+// â”€â”€ DOCTOR COMMANDS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 CommandRegistry.registerPage({
   page: 'doctor',
   portal: 'doctor',
@@ -414,7 +414,7 @@ CommandRegistry.registerPage({
   ],
 });
 
-// ── NURSE COMMANDS ──────────────────────────────────────────────────────────
+// â”€â”€ NURSE COMMANDS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 CommandRegistry.registerPage({
   page: 'nurse',
   portal: 'nurse',
@@ -510,7 +510,7 @@ CommandRegistry.registerPage({
   ],
 });
 
-// ── PATIENT COMMANDS ────────────────────────────────────────────────────────
+// â”€â”€ PATIENT COMMANDS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 CommandRegistry.registerPage({
   page: 'patient',
   portal: 'patient',
@@ -594,7 +594,7 @@ CommandRegistry.registerPage({
   ],
 });
 
-// ── EMERGENCY COMMANDS ──────────────────────────────────────────────────────
+// â”€â”€ EMERGENCY COMMANDS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 CommandRegistry.registerPage({
   page: 'emergency',
   portal: 'emergency',
@@ -645,5 +645,656 @@ CommandRegistry.registerPage({
       speakResponse: 'Emergency scribing stopped. Notes saved.',
     },
   ],
+});
+
+// â”€â”€ DEAN ADMINISTRATIVE COMMANDS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+CommandRegistry.registerPage({
+  page: 'dean',
+  portal: 'admin',
+  commands: [
+    // Executive dashboard access
+    ...([
+      { tab: 'overview', triggers: ['show overview', 'dashboard', 'main screen'] },
+      { tab: 'operations', triggers: ['operations', 'hospital operations', 'live ops'] },
+      { tab: 'patient-flow', triggers: ['patient flow', 'arrival queue', 'triage'] },
+      { tab: 'emergency', triggers: ['emergency', 'command center', 'critical care'] },
+      { tab: 'resources', triggers: ['resources', 'beds', 'capacity'] },
+      { tab: 'staff', triggers: ['staff', 'workforce', 'dispatches'] },
+      { tab: 'diagnostics', triggers: ['diagnostics', 'labs', 'imaging'] },
+      { tab: 'pharmacy', triggers: ['pharmacy', 'blood bank', 'medications'] },
+      { tab: 'finance', triggers: ['finance', 'budget', 'revenue'] },
+      { tab: 'quality', triggers: ['quality', 'safety', 'metrics'] },
+      { tab: 'compliance', triggers: ['compliance', 'regulatory', 'audit'] },
+    ] as const).map(t => ({
+      id: `dean-tab-${t.tab}`,
+      page: 'dean',
+      category: 'navigation',
+      triggers: [...t.triggers],
+      description: `Open ${t.tab} dashboard`,
+      confirmRequired: false,
+      execute: () => window.dispatchEvent(new CustomEvent('mcgm-dean-tab-change', { detail: t.tab })),
+      speakResponse: `Opening ${t.tab} dashboard.`,
+    })),
+    // Administrative actions
+    {
+      id: 'dean-issue-directive',
+      page: 'dean',
+      category: 'action',
+      triggers: ['issue directive', 'send command', 'create administrative order'],
+      description: 'Issue administrative directive',
+      confirmRequired: true,
+      execute: () => dispatchEvent('mcgm-dean-issue-directive'),
+      speakResponse: 'Opening directive creation panel.',
+    },
+    {
+      id: 'dean-show-status',
+      page: 'dean',
+      category: 'system',
+      triggers: ['show hospital status', 'hospital overview', 'system health', 'show emergency status'],
+      description: 'Display comprehensive hospital system status',
+      confirmRequired: false,
+      execute: () => window.dispatchEvent(new CustomEvent('mcgm-dean-tab-change', { detail: 'overview' })),
+      speakResponse: 'Displaying hospital system overview.',
+    },
+    {
+      id: 'dean-icu-occupancy',
+      page: 'dean',
+      category: 'system',
+      triggers: ['show icu occupancy', 'icu occupancy status', 'icu capacity'],
+      description: 'Show ICU capacity and occupancy',
+      confirmRequired: false,
+      execute: () => window.dispatchEvent(new CustomEvent('mcgm-dean-tab-change', { detail: 'bed-management' })),
+      speakResponse: 'Opening Bed Management dashboard with ICU capacity.',
+    },
+    {
+      id: 'dean-longest-queues',
+      page: 'dean',
+      category: 'system',
+      triggers: ['which departments have the longest queues', 'longest queues', 'opd queues status'],
+      description: 'Identify departments with longest waiting queues',
+      confirmRequired: false,
+      execute: () => window.dispatchEvent(new CustomEvent('mcgm-dean-tab-change', { detail: 'patient-flow' })),
+      speakResponse: 'Opening Patient Flow Command to display department waiting queues.',
+    },
+    {
+      id: 'dean-critical-alerts',
+      page: 'dean',
+      category: 'system',
+      triggers: ['show critical alerts', 'view alerts', 'alerts notifications'],
+      description: 'Display central alerts inbox',
+      confirmRequired: false,
+      execute: () => window.dispatchEvent(new CustomEvent('mcgm-dean-tab-change', { detail: 'alerts' })),
+      speakResponse: 'Opening central Alerts and Notifications panel.',
+    },
+    {
+      id: 'dean-doctors-on-duty',
+      page: 'dean',
+      category: 'system',
+      triggers: ['how many doctors are on duty', 'doctors on duty', 'physicians scheduled'],
+      description: 'Query active doctors count',
+      confirmRequired: false,
+      execute: () => window.dispatchEvent(new CustomEvent('mcgm-dean-tab-change', { detail: 'staff' })),
+      speakResponse: 'Opening Staff and Workforce panel to view present doctors.',
+    },
+    {
+      id: 'dean-pending-surgeries',
+      page: 'dean',
+      category: 'system',
+      triggers: ['show pending surgeries', 'scheduled surgeries', 'ot surgeries list'],
+      description: 'Display scheduled OT cases',
+      confirmRequired: false,
+      execute: () => window.dispatchEvent(new CustomEvent('mcgm-dean-tab-change', { detail: 'ot-surgery' })),
+      speakResponse: 'Opening OT and Surgery dashboard.',
+    },
+    {
+      id: 'dean-blood-bank',
+      page: 'dean',
+      category: 'system',
+      triggers: ['open blood bank status', 'blood bank inventory', 'blood stock'],
+      description: 'Display blood bank inventories',
+      confirmRequired: false,
+      execute: () => window.dispatchEvent(new CustomEvent('mcgm-dean-tab-change', { detail: 'pharmacy-blood' })),
+      speakResponse: 'Opening Pharmacy and Blood bank dashboard.',
+    },
+    {
+      id: 'dean-ct-scanner-status',
+      page: 'dean',
+      category: 'system',
+      triggers: ['show ct scanner status', 'ct scanner status', 'ct machine offline'],
+      description: 'Display CT scanner status',
+      confirmRequired: false,
+      execute: () => window.dispatchEvent(new CustomEvent('mcgm-dean-tab-change', { detail: 'infrastructure' })),
+      speakResponse: 'Opening Infrastructure panel with critical diagnostic scanner telemetry.',
+    },
+    {
+      id: 'dean-crisis-mode',
+      page: 'dean',
+      category: 'action',
+      triggers: ['crisis mode', 'emergency mode', 'activate crisis'],
+      description: 'Activate crisis response mode',
+      confirmRequired: true,
+      execute: () => dispatchEvent('mcgm-dean-activate-crisis'),
+      speakResponse: 'Crisis response mode activated.',
+    },
+    {
+      id: 'dean-approve-escalation',
+      page: 'dean',
+      category: 'action',
+      triggers: ['approve escalation', 'authorize emergency response', 'sign off on incident'],
+      description: 'Approve administrative escalation',
+      confirmRequired: true,
+      execute: () => dispatchEvent('mcgm-dean-approve-escalation'),
+      speakResponse: 'Opening escalation approval panel.',
+    },
+    {
+      id: 'dean-generate-report',
+      page: 'dean',
+      category: 'action',
+      triggers: ['generate report', 'create executive report', 'produce analytics'],
+      description: 'Generate executive report',
+      confirmRequired: false,
+      execute: () => dispatchEvent('mcgm-dean-generate-report'),
+      speakResponse: 'Opening report generation panel.',
+    },
+    {
+      id: 'dean-staff-deployment',
+      page: 'dean',
+      category: 'action',
+      triggers: ['deploy staff', 'staff assignment', 'resource allocation'],
+      description: 'Initiate staff deployment',
+      confirmRequired: true,
+      execute: () => dispatchEvent('mcgm-dean-staff-deployment'),
+      speakResponse: 'Opening staff deployment panel.',
+    },
+    {
+      id: 'dean-compliance-review',
+      page: 'dean',
+      category: 'action',
+      triggers: ['compliance review', 'audit status', 'regulatory check'],
+      description: 'Initiate compliance review',
+      confirmRequired: false,
+      execute: () => dispatchEvent('mcgm-dean-compliance-review'),
+      speakResponse: 'Opening compliance review panel.',
+    },
+    {
+      id: 'dean-remote-portal',
+      page: 'dean',
+      category: 'navigation',
+      triggers: ['open remote portal', 'switch to admin', 'dean access'],
+      description: 'Switch to administrative portal',
+      confirmRequired: false,
+      execute: () => {
+        dispatchEvent('mcgm-portal-change', { detail: 'dean' });
+        window.dispatchEvent(new CustomEvent('mcgm-portal-change', { detail: 'dean' }));
+      },
+      speakResponse: 'Switching to administrative portal.',
+    },
+  ],
+});
+
+// â”€â”€ LABORATORY / LIMS COMMANDS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+CommandRegistry.registerPage({
+  page: 'laboratory',
+  portal: 'laboratory',
+  commands: [
+    {
+      id: 'lab-open-stat',
+      page: 'laboratory',
+      category: 'navigation',
+      triggers: ['open stat samples', 'stat samples', 'show stat', 'open stat'],
+      description: 'Navigate to STAT queue',
+      confirmRequired: false,
+      execute: () => {
+        window.dispatchEvent(new CustomEvent('mcgm-lab-tab-change', { detail: 'sample-management' }));
+      },
+      speakResponse: 'Displaying STAT specimens in sample management.'
+    },
+    {
+      id: 'lab-find-barcode',
+      page: 'laboratory',
+      category: 'query',
+      triggers: ['find sample barcode', 'find barcode', 'search barcode', 'barcode lookup'],
+      description: 'Find a specimen by barcode',
+      confirmRequired: false,
+      execute: () => {
+        window.dispatchEvent(new CustomEvent('mcgm-lab-tab-change', { detail: 'sample-management' }));
+      },
+      speakResponse: 'Scanning registry for matching sample barcode.'
+    },
+    {
+      id: 'lab-show-validation',
+      page: 'laboratory',
+      category: 'navigation',
+      triggers: ['show validation pending', 'validation pending', 'pending authorization', 'pathology validation'],
+      description: 'Navigate to Pathologist authorization desk',
+      confirmRequired: false,
+      execute: () => {
+        window.dispatchEvent(new CustomEvent('mcgm-lab-tab-change', { detail: 'result-validation' }));
+      },
+      speakResponse: 'Opening pathologist validation queue.'
+    },
+    {
+      id: 'lab-open-critical',
+      page: 'laboratory',
+      category: 'navigation',
+      triggers: ['open critical alerts', 'show critical alerts', 'lab critical alerts', 'panic results'],
+      description: 'Navigate to Critical Alerts panel',
+      confirmRequired: false,
+      execute: () => {
+        window.dispatchEvent(new CustomEvent('mcgm-lab-tab-change', { detail: 'critical-alerts' }));
+      },
+      speakResponse: 'Opening LIMS critical value alerts dashboard.'
+    },
+    {
+      id: 'lab-analyzer-status',
+      page: 'laboratory',
+      category: 'navigation',
+      triggers: ['show analyzer status', 'analyzer status', 'online analyzers', 'instrument status'],
+      description: 'Navigate to Analyzer Dashboard',
+      confirmRequired: false,
+      execute: () => {
+        window.dispatchEvent(new CustomEvent('mcgm-lab-tab-change', { detail: 'analyzer-dashboard' }));
+      },
+      speakResponse: 'Opening analyzer status monitor.'
+    },
+    {
+      id: 'lab-show-rejected',
+      page: 'laboratory',
+      category: 'navigation',
+      triggers: ["show today's rejected samples", 'show rejected samples', 'rejected samples', 'rejections'],
+      description: 'Navigate to rejected samples list',
+      confirmRequired: false,
+      execute: () => {
+        window.dispatchEvent(new CustomEvent('mcgm-lab-tab-change', { detail: 'sample-management' }));
+      },
+      speakResponse: 'Filtering specimen queue to rejected samples.'
+    }
+  ]
+});
+
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// HOSPITAL COMMAND CENTER â€” 16-PAGE VOICE NAVIGATION
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+const commandPage = (id: string) =>
+  window.dispatchEvent(new CustomEvent('mcgm-command-tab-change', { detail: id }));
+
+CommandRegistry.registerPage({
+  page: 'command-center',
+  portal: 'command',
+  commands: [
+    {
+      id: 'cmd-overview',
+      page: 'command-center',
+      category: 'navigation',
+      triggers: ['command overview', 'hospital overview', 'command center overview', 'show overview', 'main dashboard'],
+      description: 'Navigate to Command Center Overview',
+      confirmRequired: false,
+      execute: () => commandPage('overview'),
+      speakResponse: 'Opening Hospital Command Center overview.'
+    },
+    {
+      id: 'cmd-map',
+      page: 'command-center',
+      category: 'navigation',
+      triggers: ['hospital map', 'show hospital map', 'floor plan', 'live map', 'department map'],
+      description: 'Navigate to Hospital Live Map',
+      confirmRequired: false,
+      execute: () => commandPage('map'),
+      speakResponse: 'Opening interactive hospital map.'
+    },
+    {
+      id: 'cmd-flow',
+      page: 'command-center',
+      category: 'navigation',
+      triggers: ['patient flow', 'show patient flow', 'patient pipeline', 'flow command', 'patient lifecycle'],
+      description: 'Navigate to Patient Flow Command',
+      confirmRequired: false,
+      execute: () => commandPage('flow'),
+      speakResponse: 'Opening patient flow command panel.'
+    },
+    {
+      id: 'cmd-beds',
+      page: 'command-center',
+      category: 'navigation',
+      triggers: ['bed board', 'show beds', 'bed status', 'bed occupancy', 'bed capacity', 'show bed board'],
+      description: 'Navigate to Bed & Capacity Command',
+      confirmRequired: false,
+      execute: () => commandPage('beds'),
+      speakResponse: 'Opening bed board and capacity command.'
+    },
+    {
+      id: 'cmd-emergency',
+      page: 'command-center',
+      category: 'navigation',
+      triggers: ['emergency command', 'show emergency', 'emergency panel', 'ambulance status', 'er command'],
+      description: 'Navigate to Emergency Command',
+      confirmRequired: false,
+      execute: () => commandPage('emergency'),
+      speakResponse: 'Opening emergency command panel.'
+    },
+    {
+      id: 'cmd-icu-ot',
+      page: 'command-center',
+      category: 'navigation',
+      triggers: ['icu command', 'ot command', 'icu and ot', 'show icu', 'operation theatre status', 'ot status'],
+      description: 'Navigate to ICU & OT Command',
+      confirmRequired: false,
+      execute: () => commandPage('icu_ot'),
+      speakResponse: 'Opening ICU and operation theatre command.'
+    },
+    {
+      id: 'cmd-workforce',
+      page: 'command-center',
+      category: 'navigation',
+      triggers: ['workforce command', 'staff command', 'show staff', 'deploy staff', 'staff deployment', 'workforce panel'],
+      description: 'Navigate to Workforce Command',
+      confirmRequired: false,
+      execute: () => commandPage('workforce'),
+      speakResponse: 'Opening workforce command and staff deployment.'
+    },
+    {
+      id: 'cmd-departments',
+      page: 'command-center',
+      category: 'navigation',
+      triggers: ['departments', 'department status', 'all departments', 'department operations', 'show departments'],
+      description: 'Navigate to Department Operations',
+      confirmRequired: false,
+      execute: () => commandPage('departments'),
+      speakResponse: 'Opening department operations control.'
+    },
+    {
+      id: 'cmd-diagnostics',
+      page: 'command-center',
+      category: 'navigation',
+      triggers: ['diagnostics command', 'lab command', 'radiology command', 'diagnostic status', 'show lab status'],
+      description: 'Navigate to Diagnostics Command',
+      confirmRequired: false,
+      execute: () => commandPage('diagnostics'),
+      speakResponse: 'Opening diagnostics command â€” laboratory and radiology.'
+    },
+    {
+      id: 'cmd-pharmacy-blood',
+      page: 'command-center',
+      category: 'navigation',
+      triggers: ['pharmacy blood', 'blood bank command', 'show blood bank', 'drug stock', 'pharmacy command', 'blood inventory'],
+      description: 'Navigate to Pharmacy & Blood Command',
+      confirmRequired: false,
+      execute: () => commandPage('pharmacy_blood'),
+      speakResponse: 'Opening pharmacy and blood bank command.'
+    },
+    {
+      id: 'cmd-alerts',
+      page: 'command-center',
+      category: 'navigation',
+      triggers: ['command alerts', 'show alerts', 'critical alerts command', 'alert management', 'open alerts'],
+      description: 'Navigate to Centralized Alert Management',
+      confirmRequired: false,
+      execute: () => commandPage('alerts'),
+      speakResponse: 'Opening centralized alert management.'
+    },
+    {
+      id: 'cmd-incidents',
+      page: 'command-center',
+      category: 'navigation',
+      triggers: ['incidents', 'show incidents', 'mci command', 'disaster command', 'incident management'],
+      description: 'Navigate to Incident & Disaster Command',
+      confirmRequired: false,
+      execute: () => commandPage('incidents'),
+      speakResponse: 'Opening incident and disaster command.'
+    },
+    {
+      id: 'cmd-network',
+      page: 'command-center',
+      category: 'navigation',
+      triggers: ['hospital network', 'inter hospital', 'mcgm network', 'transfer command', 'nearby hospitals'],
+      description: 'Navigate to Inter-Hospital Network',
+      confirmRequired: false,
+      execute: () => commandPage('inter_hospital'),
+      speakResponse: 'Opening MCGM inter-hospital network command.'
+    },
+    {
+      id: 'cmd-ai-analytics',
+      page: 'command-center',
+      category: 'navigation',
+      triggers: ['ai analytics', 'predictive insights', 'correlation engine', 'ai command', 'decision support', 'ai insights'],
+      description: 'Navigate to AI Analytics & Decision Support',
+      confirmRequired: false,
+      execute: () => commandPage('ai_analytics'),
+      speakResponse: 'Opening AI analytics and decision support.'
+    },
+    {
+      id: 'cmd-reports',
+      page: 'command-center',
+      category: 'navigation',
+      triggers: ['command reports', 'hospital reports', 'generate report', 'download report', 'reports center'],
+      description: 'Navigate to Reports Center',
+      confirmRequired: false,
+      execute: () => commandPage('reports'),
+      speakResponse: 'Opening hospital reports center.'
+    },
+    {
+      id: 'cmd-governance',
+      page: 'command-center',
+      category: 'navigation',
+      triggers: ['audit log', 'governance', 'command audit', 'access control', 'rbac', 'settings audit', 'tamper proof log'],
+      description: 'Navigate to Governance & Audit',
+      confirmRequired: false,
+      execute: () => commandPage('governance'),
+      speakResponse: 'Opening governance, audit, and access control.'
+    },
+  ]
+});
+
+// ─────────────────────────────────────────────────────────────
+// RADIOLOGY PACS + RIS — VOICE NAVIGATION & COMMANDS
+// ─────────────────────────────────────────────────────────────
+const radPage = (id: string) =>
+  window.dispatchEvent(new CustomEvent('mcgm-rad-tab-change', { detail: id }));
+
+CommandRegistry.registerPage({
+  page: 'radiology',
+  portal: 'radiology',
+  commands: [
+    {
+      id: 'rad-command',
+      page: 'radiology',
+      category: 'navigation',
+      triggers: ['radiology command', 'radiology dashboard', 'imaging overview', 'modalities status', 'radiology overview'],
+      description: 'Navigate to Radiology Command Overview',
+      confirmRequired: false,
+      execute: () => radPage('command'),
+      speakResponse: 'Opening Radiology Command Dashboard.'
+    },
+    {
+      id: 'rad-reporting',
+      page: 'radiology',
+      category: 'navigation',
+      triggers: ['pacs reporting desk', 'pacs viewer', 'dicom viewer', 'open pacs', 'patient worklist', 'reporting desk'],
+      description: 'Navigate to PACS Reporting Desk',
+      confirmRequired: false,
+      execute: () => radPage('reporting'),
+      speakResponse: 'Opening PACS Reporting Desk.'
+    },
+    {
+      id: 'rad-schedule',
+      page: 'radiology',
+      category: 'navigation',
+      triggers: ['ris scheduling', 'radiology schedule', 'book scan', 'scan appointment', 'schedule scan'],
+      description: 'Navigate to RIS Scheduling',
+      confirmRequired: false,
+      execute: () => radPage('schedule'),
+      speakResponse: 'Opening RIS Scheduling System.'
+    },
+    {
+      id: 'rad-orders',
+      page: 'radiology',
+      category: 'navigation',
+      triggers: ['radiology order inbox', 'order inbox', 'imaging orders', 'radiology requests', 'doctor orders radiology'],
+      description: 'Navigate to Radiology Order Inbox',
+      confirmRequired: false,
+      execute: () => radPage('orders'),
+      speakResponse: 'Opening Radiology Order Inbox.'
+    },
+    {
+      id: 'rad-safety',
+      page: 'radiology',
+      category: 'navigation',
+      triggers: ['patient safety', 'pre scan checklist', 'mri safety', 'contrast allergy check', 'safety screening'],
+      description: 'Navigate to Patient Safety & Pre-Scan',
+      confirmRequired: false,
+      execute: () => radPage('safety'),
+      speakResponse: 'Opening Patient Safety & Pre-Scan Screening.'
+    },
+    {
+      id: 'rad-worklist',
+      page: 'radiology',
+      category: 'navigation',
+      triggers: ['modality worklist', 'technologist worklist', 'tech worklist', 'scan queue', 'modality queue'],
+      description: 'Navigate to Modality Worklist',
+      confirmRequired: false,
+      execute: () => radPage('worklist'),
+      speakResponse: 'Opening Technologist Modality Worklist.'
+    },
+    {
+      id: 'rad-machines',
+      page: 'radiology',
+      category: 'navigation',
+      triggers: ['machine control board', 'imaging machines', 'ct status', 'mri status', 'scanner status', 'device health'],
+      description: 'Navigate to Live Machine Control Board',
+      confirmRequired: false,
+      execute: () => radPage('machines'),
+      speakResponse: 'Opening Live Machine Control Board.'
+    },
+    {
+      id: 'rad-emergency',
+      page: 'radiology',
+      category: 'navigation',
+      triggers: ['emergency radiology', 'stroke protocol', 'stat scan', 'trauma radiology', 'emergency ct'],
+      description: 'Navigate to Emergency Radiology',
+      confirmRequired: false,
+      execute: () => radPage('emergency'),
+      speakResponse: 'Opening Emergency Radiology Command.'
+    },
+    {
+      id: 'rad-ai-assistant',
+      page: 'radiology',
+      category: 'navigation',
+      triggers: ['ai radiology assistant', 'rad ai', 'ai findings', 'ai decision support', 'show ai findings'],
+      description: 'Navigate to AI Radiology Assistant',
+      confirmRequired: false,
+      execute: () => radPage('ai_assistant'),
+      speakResponse: 'Opening AI Radiology Assistant.'
+    },
+    {
+      id: 'rad-dictation',
+      page: 'radiology',
+      category: 'navigation',
+      triggers: ['structured dictation', 'voice dictation', 'dictate report', 'start dictation', 'speech to text report'],
+      description: 'Navigate to Dictation Desk',
+      confirmRequired: false,
+      execute: () => radPage('dictation'),
+      speakResponse: 'Opening Structured Dictation Desk.'
+    },
+    {
+      id: 'rad-comparison',
+      page: 'radiology',
+      category: 'navigation',
+      triggers: ['compare previous ct', 'compare study', 'previous studies', 'side by side compare', 'delta comparison'],
+      description: 'Navigate to Previous Studies & Comparison',
+      confirmRequired: false,
+      execute: () => radPage('comparison'),
+      speakResponse: 'Opening Previous Studies & Comparison view.'
+    },
+    {
+      id: 'rad-critical',
+      page: 'radiology',
+      category: 'navigation',
+      triggers: ['critical findings center', 'mark as critical', 'critical alerts radiology', 'critical findings queue', 'acute findings'],
+      description: 'Navigate to Critical Findings Center',
+      confirmRequired: false,
+      execute: () => radPage('critical'),
+      speakResponse: 'Opening Critical Findings Center.'
+    },
+    {
+      id: 'rad-sign-release',
+      page: 'radiology',
+      category: 'navigation',
+      triggers: ['sign report', 'sign and release', 'release report', 'report authorization', 'sign radiology report'],
+      description: 'Navigate to Report Sign & Release',
+      confirmRequired: false,
+      execute: () => radPage('sign_release'),
+      speakResponse: 'Opening Report Sign & Release desk.'
+    },
+    {
+      id: 'rad-distribution',
+      page: 'radiology',
+      category: 'navigation',
+      triggers: ['report distribution', 'dispatched reports', 'sync report', 'emr sync', 'doctor portal sync'],
+      description: 'Navigate to Report Distribution',
+      confirmRequired: false,
+      execute: () => radPage('distribution'),
+      speakResponse: 'Opening Report Distribution portal.'
+    },
+    {
+      id: 'rad-quality',
+      page: 'radiology',
+      category: 'navigation',
+      triggers: ['quality control', 'qc calibration', 'repeat scan tracking', 'image quality logs', 'qa audit'],
+      description: 'Navigate to Quality Control',
+      confirmRequired: false,
+      execute: () => radPage('quality'),
+      speakResponse: 'Opening Quality Control & QC Logs.'
+    },
+    {
+      id: 'rad-dose',
+      page: 'radiology',
+      category: 'navigation',
+      triggers: ['radiation dose monitoring', 'dose tracker', 'msv dose', 'ctdivol', 'aerb compliance'],
+      description: 'Navigate to Radiation Dose Monitoring',
+      confirmRequired: false,
+      execute: () => radPage('dose'),
+      speakResponse: 'Opening Radiation Dose Monitoring.'
+    },
+    {
+      id: 'rad-analytics',
+      page: 'radiology',
+      category: 'navigation',
+      triggers: ['radiology analytics', 'imaging volume', 'tat trends', 'radiologist productivity'],
+      description: 'Navigate to Radiology Analytics',
+      confirmRequired: false,
+      execute: () => radPage('analytics'),
+      speakResponse: 'Opening Radiology Analytics.'
+    },
+    {
+      id: 'rad-sharing',
+      page: 'radiology',
+      category: 'navigation',
+      triggers: ['image sharing', 'share dicom', 'abdm link', 'qr code report', 'share study'],
+      description: 'Navigate to Image & Report Sharing',
+      confirmRequired: false,
+      execute: () => radPage('sharing'),
+      speakResponse: 'Opening Image & Report Sharing.'
+    },
+    {
+      id: 'rad-communication',
+      page: 'radiology',
+      category: 'navigation',
+      triggers: ['radiology communication hub', 'radiologist chat', 'doctor message radiology', 'radiology hub'],
+      description: 'Navigate to Radiology Communication Hub',
+      confirmRequired: false,
+      execute: () => radPage('communication'),
+      speakResponse: 'Opening Radiology Communication Hub.'
+    },
+    {
+      id: 'rad-audit',
+      page: 'radiology',
+      category: 'navigation',
+      triggers: ['radiology audit', 'pacs audit log', 'dicom audit trail', 'report release audit'],
+      description: 'Navigate to Audit & Governance',
+      confirmRequired: false,
+      execute: () => radPage('audit'),
+      speakResponse: 'Opening Radiology Audit & Governance.'
+    },
+  ]
 });
 

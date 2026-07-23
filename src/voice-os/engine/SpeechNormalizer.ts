@@ -12,7 +12,7 @@ const KNOWN_KEYWORDS = [
   'show', 'switch', 'navigate', 'home', 'settings', 'logout', 'help',
   'dark', 'light', 'theme', 'mode', 'status', 'refresh', 'next', 'skip',
   'previous', 'back', 'confirm', 'cancel', 'submit', 'approve', 'reject',
-  'save', 'record', 'start', 'stop', 'end', 'begin', 'toggle',
+  'save', 'record', 'start', 'stop', 'end', 'begin', 'toggle', 'dean', 'executive',
 
   // Doctor Portal
   'patient', 'patients', 'prescribe', 'prescription', 'medication',
